@@ -46,6 +46,16 @@
         <li>View the <a href="/about.jsp">about</a> page to learn more about the
             project.</li>
       </ul>
+
+      <h2>Meet Team Pied Piper!</h2>
+
+      <ul>
+        <li>Steven Abreu</li>
+        <li>Iliana Cantu</li>
+        <li>Asma Makhdoom</li>
+        <li>Matthew Oakley</li>
+      </ul>
+
     </div>
   </div>
 </body>
