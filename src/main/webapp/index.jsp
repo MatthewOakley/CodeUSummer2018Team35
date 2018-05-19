@@ -39,6 +39,15 @@
       <h1>CodeU Chat App</h1>
       <h2>Welcome!</h2>
 
+      <h2>Meet Team Pied Piper!</h2>
+
+      <ul>
+        <li>Steven Abreu</li>
+        <li>Iliana Cantu</li>
+        <li>Asma Makhdoom</li>
+        <li>Matthew Oakley</li>
+      </ul>
+
       <ul>
         <li><a href="/login">Login</a> to get started.</li>
         <li>Go to the <a href="/conversations">conversations</a> page to
