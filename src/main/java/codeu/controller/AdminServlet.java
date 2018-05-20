@@ -1,5 +1,3 @@
-// Admin Servlet
-
 package codeu.controller;
 
 import codeu.model.data.Conversation;
@@ -19,12 +17,17 @@ import javax.servlet.http.HttpServletResponse;
 import org.jsoup.Jsoup;
 import org.jsoup.safety.Whitelist;
 
-/**
- * AdminServlet 
- *
+/** 
  * This servlet class is for the admin page
+ * it will handle getting all the database information
+ * and showing stats about it.
  */
 public class AdminServlet extends HttpServlet {
+  /** 
+   * TO-DO(Matthew Oakley) I need to add getting the data from the 
+   * the database and checking to make sure its valid and not null
+   * and sending this information to the webpage
+   */
   
   // setup the admin page
   @Override
