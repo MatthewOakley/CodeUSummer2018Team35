@@ -39,14 +39,6 @@
       <h1>CodeU Chat App</h1>
       <h2>Welcome!</h2>
 
-      <ul>
-        <li><a href="/login">Login</a> to get started.</li>
-        <li>Go to the <a href="/conversations">conversations</a> page to
-            create or join a conversation.</li>
-        <li>View the <a href="/about.jsp">about</a> page to learn more about the
-            project.</li>
-      </ul>
-
       <h2>Meet Team Pied Piper!</h2>
 
       <ul>
@@ -56,6 +48,13 @@
         <li>Matthew Oakley</li>
       </ul>
 
+      <ul>
+        <li><a href="/login">Login</a> to get started.</li>
+        <li>Go to the <a href="/conversations">conversations</a> page to
+            create or join a conversation.</li>
+        <li>View the <a href="/about.jsp">about</a> page to learn more about the
+            project.</li>
+      </ul>
     </div>
   </div>
 </body>
