@@ -180,7 +180,6 @@ public class ChatServletTest {
 
     Mockito.verify(mockResponse).sendRedirect("/chat/test_conversation");
   }
-}
 
   @Test
   public void testDoPost_CleansHtmlContent() throws IOException, ServletException {
@@ -212,3 +211,4 @@ public class ChatServletTest {
 
     Mockito.verify(mockResponse).sendRedirect("/chat/test_conversation");
   }
+}
