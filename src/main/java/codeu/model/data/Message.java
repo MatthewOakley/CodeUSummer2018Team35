@@ -16,6 +16,9 @@ package codeu.model.data;
 
 import java.time.Instant;
 import java.util.UUID;
+import org.commonmark.node.*;
+import org.commonmark.parser.Parser;
+import org.commonmark.renderer.html.HtmlRenderer;
 
 /** Class representing a message. Messages are sent by a User in a Conversation. */
 public class Message {
@@ -68,8 +71,10 @@ public class Message {
   }
 
   private String styledText(String s){
-    //must parse, and then render HTML 
-    return s; //for now to avoid error 
+    Parser parser = Parser.builder().build();
+    Node document = parser.parse(s);
+    HtmlRenderer renderer = HtmlRenderer.builder().build();
+    return renderer.render(document);
   }
 
   /** Returns the creation time of this Message. */
