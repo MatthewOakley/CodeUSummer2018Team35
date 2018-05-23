@@ -34,6 +34,7 @@ List<Message> messages = (List<Message>) request.getAttribute("messages");
       height: 500px;
       overflow-y: scroll
     }
+
   </style>
 
   <script>
@@ -45,7 +46,6 @@ List<Message> messages = (List<Message>) request.getAttribute("messages");
   </script>
 </head>
 <body onload="scrollChat()">
-
   <nav>
     <a id="navTitle" href="/">CodeU Chat App</a>
     <a href="/conversations">Conversations</a>
@@ -71,7 +71,7 @@ List<Message> messages = (List<Message>) request.getAttribute("messages");
         String author = UserStore.getInstance()
           .getUser(message.getAuthorId()).getName();
     %>
-      <li><strong><%= author %>:</strong> <%= message.getContent() %></li>
+      <li><strong><%= author %>:</strong> <%= message.getStyledContent() %></li>
     <%
       }
     %>

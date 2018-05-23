@@ -63,6 +63,15 @@ public class Message {
     return content;
   }
 
+  public String getStyledContent(){
+    return styledText(content); 
+  }
+
+  private String styledText(String s){
+    //must parse, and then render HTML 
+    return s; //for now to avoid error 
+  }
+
   /** Returns the creation time of this Message. */
   public Instant getCreationTime() {
     return creation;
