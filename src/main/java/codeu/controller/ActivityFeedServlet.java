@@ -26,19 +26,20 @@ public class ActivityFeedServlet extends HttpServlet {
     
     /**
      * Sets the UserStore used by this servlet.
-     * This function provides a common setup method for use by the test framework or servlet's init() function.
+     * This function provides a common setup method for use by the test
+      framework or servlet's init() function.
      */
     void setUserStore(UserStore userStore) {
         this.userStore = userStore;
     }
     
     /**
-     * This function firex when a user navigates to the activity feed page.
+     * This function fires when a user navigates to the activity feed page.
      * It forwards the request to activityfeed.jsp
      */
     @Override
     public void doGet(HttpServletRequest request, HttpServletResponse response)
         throws IOException, ServletException {
-            request.getRequestDispatcher("/WEB-INF/view/activityfeed.jsp").forward(request, response);
+            request.getRequestDispatcher("/WEB-INF/view/activity-feed.jsp").forward(request, response);
     }
 }
