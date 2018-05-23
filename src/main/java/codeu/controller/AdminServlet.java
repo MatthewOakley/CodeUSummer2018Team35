@@ -23,15 +23,16 @@ public class AdminServlet extends HttpServlet {
    * and sending this information to the webpage
    */
   
-  // setup the admin page
+  /** This is for the inital setup of the admin page */
   @Override
   public void init() throws ServletException {
     super.init();
   }
   
-  // when user visits sends them to admin page
+  /** when user visits this sends them to admin page */
   @Override
-  public void doGet(HttpServletRequest request, HttpServletResponse response)
+  public void doGet(HttpServletRequest request, HttpServletRe
+      sponse response)
       throws IOException, ServletException {
     String requestUrl = request.getRequestURI();
     
