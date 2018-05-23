@@ -66,11 +66,7 @@ public class Message {
     return content;
   }
 
-  public String getStyledContent(){
-    return styledText(content); 
-  }
-
-  private String styledText(String s){
+  public String getStyledContent(String s) {
     Parser parser = Parser.builder().build();
     Node document = parser.parse(s);
     HtmlRenderer renderer = HtmlRenderer.builder().build();
