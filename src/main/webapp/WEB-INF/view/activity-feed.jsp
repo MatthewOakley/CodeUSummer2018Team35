@@ -6,6 +6,13 @@
 </head>
 <body>
 
+<!--TODO(StevenAb):
+
+ Need to get all login, conversation, and message data
+ and display it in chronological order.
+
+-->
+
     <nav>
         <a id="navTitle" href="/">CodeU Chat App</a>
         <a href="/activityfeed">Activity Feed</a>
