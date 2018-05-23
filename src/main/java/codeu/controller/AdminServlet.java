@@ -31,8 +31,8 @@ public class AdminServlet extends HttpServlet {
   
   /** when user visits this sends them to admin page */
   @Override
-  public void doGet(HttpServletRequest request, HttpServletRe
-      sponse response)
+  public void doGet(HttpServletRequest request, 
+      HttpServletResponse response)
       throws IOException, ServletException {
     String requestUrl = request.getRequestURI();
     
