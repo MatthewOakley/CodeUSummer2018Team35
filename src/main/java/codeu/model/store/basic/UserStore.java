@@ -126,5 +126,14 @@ public class UserStore {
   public void setUsers(List<User> users) {
     this.users = users;
   }
+  
+  /** Returns the amount of users currently registrated. */
+  public int getUserAmount(){
+    if(this == null){
+      return 0;
+    }
+    
+    return users.size();
+  }
 }
 

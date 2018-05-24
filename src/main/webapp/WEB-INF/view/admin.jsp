@@ -8,10 +8,6 @@
   <link rel="stylesheet" href="/css/main.css">
 </head>
 <body>
-  <!-- 
-    TO-DO(Matthew Oakley) I am going to add the stats for the admin page
-    I just have this basic setup to see if I could get the servlets working
-  -->
   <nav>
     <a id="navTitle" href="/">CodeU Chat App</a>
     <a href="/conversations">Conversations</a>
@@ -24,7 +20,22 @@
   </nav>
   <!-- to see if I made it to the right page -->
   <p>
-    Admin Page!!!
+    Welcome to the admin page!
   </p>
+  <!-- The stats about the web app -->
+  <p> Stats about the web app </p>
+  <ul id="stats">
+    <!-- 
+      TO-DO(Matthew Oakley) I am going to add checking the current stats
+      I just have this basic setup to get the users information and will
+      carry it over to the other stats
+    -->
+    <li>Users: <span id="users"><%= request.getAttribute("userCount") %></span></li>
+    <li>Conversations: <span id="conversations"></span></li>
+    <li>Messages: <span id="messages"></span></li>
+    <li>Most active user: <span id="mostActive"></span></li>
+    <li>Newest User: <span id="newestUser"></span></li>
+    <li>Wordiest user: <span id="wordiestUser"></span></li>
+  </ul>
 </body>
 </html>
