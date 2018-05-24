@@ -4,6 +4,10 @@ package codeu.controller;
 import codeu.model.data.User;
 import codeu.model.store.basic.UserStore;
 
+/** Getting the conversation stats for the webpage */
+import codeu.model.data.Conversation;
+import codeu.model.store.basic.ConversationStore;
+
 import java.io.IOException;
 import java.time.Instant;
 import java.util.List;
@@ -30,6 +34,9 @@ public class AdminServlet extends HttpServlet {
   /** Store class that gives access to Users. */
   private UserStore userStore;
   
+  /** Store class that gives access to Conversations. */
+  private ConversationStore conversationStore;
+  
   /** This is for the inital setup of the admin page */
   @Override
   public void init() throws ServletException {
@@ -37,6 +44,9 @@ public class AdminServlet extends HttpServlet {
     
     /** This is for getting the current instance of users */
     setUserStore(UserStore.getInstance());
+    
+    /** This is for getting the current instance of conversations */
+    setConversationStore(ConversationStore.getInstance());
   }
   
   /**
@@ -48,6 +58,14 @@ public class AdminServlet extends HttpServlet {
     this.userStore = userStore;
   }
   
+  /**
+   * Sets the ConversationStore used by this servlet. This function provides a common setup method
+   * for use by the test framework or the servlet's init() function.
+   */
+  void setConversationStore(ConversationStore conversationStore) {
+    this.conversationStore = conversationStore;
+  }
+  
   /** when user visits this sends them to admin page */
   @Override
   public void doGet(HttpServletRequest request, 
@@ -55,8 +73,12 @@ public class AdminServlet extends HttpServlet {
       throws IOException, ServletException {
     
     /** This gets the current number of users in the database*/
-    int count = userStore.getUserAmount();
-    request.setAttribute("userCount", count);
+    int userCount = userStore.getUserAmount();
+    request.setAttribute("userCount", userCount);
+    
+    /** This gets the amount of conversations in the database */
+    int conversationCount = conversationStore.getConversationAmount();
+    request.setAttribute("conversationCount", conversationCount);
     
     request.getRequestDispatcher("/WEB-INF/view/admin.jsp").forward(request, response);
   }

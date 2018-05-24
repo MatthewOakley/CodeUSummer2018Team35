@@ -31,7 +31,8 @@
       carry it over to the other stats
     -->
     <li>Users: <span id="users"><%= request.getAttribute("userCount") %></span></li>
-    <li>Conversations: <span id="conversations"></span></li>
+    <li>Conversations: <span id="conversations"><%= 
+        request.getAttribute("conversationCount") %></span></li>
     <li>Messages: <span id="messages"></span></li>
     <li>Most active user: <span id="mostActive"></span></li>
     <li>Newest User: <span id="newestUser"></span></li>
