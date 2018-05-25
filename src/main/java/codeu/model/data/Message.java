@@ -16,7 +16,7 @@ package codeu.model.data;
 
 import java.time.Instant;
 import java.util.UUID;
-import org.commonmark.node.*;
+import org.commonmark.node.Node;
 import org.commonmark.parser.Parser;
 import org.commonmark.renderer.html.HtmlRenderer;
 
