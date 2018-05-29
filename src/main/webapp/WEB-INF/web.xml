@@ -55,7 +55,7 @@
     <servlet-name>ChatServlet</servlet-name>
     <url-pattern>/chat/*</url-pattern>
   </servlet-mapping>
-  
+
   <servlet>
     <servlet-name>RegisterServlet</servlet-name>
     <servlet-class>codeu.controller.RegisterServlet</servlet-class>
@@ -66,6 +66,15 @@
     <url-pattern>/register</url-pattern>
   </servlet-mapping>
   
+  <servlet>
+      <servlet-name>ActivityFeedServlet</servlet-name>
+      <servlet-class>codeu.controller.ActivityFeedServlet</servlet-class>
+  </servlet>
+  
+  <servlet-mapping>
+      <servlet-name>ActivityFeedServlet</servlet-name>
+      <url-pattern>/activityfeed</url-pattern>
+    
   <!-- This is the setup for the admin webpages and servlets -->
   <servlet>
     <servlet-name>AdminServlet</servlet-name>
@@ -76,6 +85,28 @@
   <servlet-mapping>
     <servlet-name>AdminServlet</servlet-name>
     <url-pattern>/admin</url-pattern>
+  </servlet-mapping>
+
+  <!-- This is the setup for the admin webpages and servlets -->
+  <servlet>
+    <servlet-name>AdminServlet</servlet-name>
+    <servlet-class>codeu.controller.AdminServlet</servlet-class>
+  </servlet>
+
+  <!-- This maps it to the required file -->
+  <servlet-mapping>
+    <servlet-name>AdminServlet</servlet-name>
+    <url-pattern>/admin</url-pattern>
+  </servlet-mapping>
+
+  <servlet>
+    <servlet-name>ProfilePagesServlet</servlet-name>
+    <servlet-class>codeu.controller.ProfilePagesServlet</servlet-class>
+  </servlet>
+
+  <servlet-mapping>
+    <servlet-name>ProfilePagesServlet</servlet-name>
+    <url-pattern>/profile-pages</url-pattern>
   </servlet-mapping>
 
 </web-app>
