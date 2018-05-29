@@ -1,13 +1,9 @@
 package codeu.controller;
 
-/** Getting the user stats for the webpage. */
 import codeu.model.data.User;
 import codeu.model.store.basic.UserStore;
-
-/** Getting the conversation stats for the webpage */
 import codeu.model.data.Conversation;
 import codeu.model.store.basic.ConversationStore;
-
 import java.io.IOException;
 import java.time.Instant;
 import java.util.List;
@@ -31,10 +27,10 @@ public class AdminServlet extends HttpServlet {
    * and sending this information to the webpage
    */
    
-  /** Store class that gives access to Users. */
+  // Store class that gives access to Users. 
   private UserStore userStore;
   
-  /** Store class that gives access to Conversations. */
+  // Store class that gives access to Conversations.
   private ConversationStore conversationStore;
   
   /** This is for the inital setup of the admin page */
@@ -42,10 +38,7 @@ public class AdminServlet extends HttpServlet {
   public void init() throws ServletException {
     super.init();
     
-    /** This is for getting the current instance of users */
     setUserStore(UserStore.getInstance());
-    
-    /** This is for getting the current instance of conversations */
     setConversationStore(ConversationStore.getInstance());
   }
   
@@ -72,7 +65,7 @@ public class AdminServlet extends HttpServlet {
       HttpServletResponse response)
       throws IOException, ServletException {
     
-    /** This gets the current number of users in the database*/
+    /** This gets the current number of users in the database */
     int userCount = userStore.getUserAmount();
     request.setAttribute("userCount", userCount);
     

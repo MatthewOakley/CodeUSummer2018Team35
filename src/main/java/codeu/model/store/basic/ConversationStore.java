@@ -102,11 +102,7 @@ public class ConversationStore {
   }
   
   /** Returns the amount of conversations currently in the database. */
-  public int getConversationAmount(){
-    if(this == null){
-      return 0;
-    }
-    
+  public int getConversationAmount() {
     return conversations.size();
   }
 }

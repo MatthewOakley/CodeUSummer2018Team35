@@ -128,11 +128,7 @@ public class UserStore {
   }
   
   /** Returns the amount of users currently registrated. */
-  public int getUserAmount(){
-    if(this == null){
-      return 0;
-    }
-    
+  public int getUserAmount() {
     return users.size();
   }
 }
