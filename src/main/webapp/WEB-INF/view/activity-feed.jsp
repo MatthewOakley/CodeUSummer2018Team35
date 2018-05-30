@@ -1,4 +1,6 @@
 <%@ page import="java.util.List" %>
+<%@ page import="java.util.UUID" %>
+<%@ page import="codeu.model.data.User" %>
 <%@ page import="codeu.model.data.Conversation" %>
 <%@ page import="codeu.model.data.Message" %>
 <%@ page import="codeu.model.store.basic.UserStore" %>
@@ -41,7 +43,7 @@
         List<Conversation> conversations =
           (List<Conversation>) request.getAttribute("conversations");
 
-        if(!(conversations == null || conversations.isEmpty())) {
+        if(conversations != null && !conversations.isEmpty()) {
             for(Conversation conversation : conversations) {
         %>
                 <li>
@@ -56,7 +58,7 @@
                 List<Message> messages = (List<Message>) MessageStore.getInstance()
                   .getMessagesInConversation(conversation.getId());
 
-                if(!(messages == null || messages.isEmpty())) {
+                if(messages != null && !messages.isEmpty()) {
                     for(Message message : messages) {
         %>
                         <li>
@@ -71,6 +73,20 @@
         <%
                     }
                 }
+            }
+        }
+
+        List<UUID> userIds = (List<UUID>) UserStore.getInstance().getUserIds();
+
+        if(userIds != null && !userIds.isEmpty()) {
+            for(UUID id : userIds) {
+                User user = UserStore.getInstance().getUser(id);
+        %>
+                <li>
+                    <strong><%= user.getCreationTime() %>:</strong>
+                    <%= user.getName() %> joined!
+                </li>
+        <%
             }
         }
         %>

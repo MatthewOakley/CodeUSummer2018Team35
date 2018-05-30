@@ -126,5 +126,16 @@ public class UserStore {
   public void setUsers(List<User> users) {
     this.users = users;
   }
+
+  //Returns a list of all user IDs
+  public List<UUID> getUserIds() {
+    List<UUID> userIds = new ArrayList();
+    
+    for(User user : users) {
+      userIds.add(user.getId());
+    }
+      
+    return userIds;
+  }
 }
 
