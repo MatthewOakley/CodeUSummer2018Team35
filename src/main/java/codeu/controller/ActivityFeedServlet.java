@@ -1,7 +1,10 @@
 package codeu.controller;
 
 import codeu.model.data.User;
+import codeu.model.data.Conversation;
 import codeu.model.store.basic.UserStore;
+import codeu.model.store.basic.ConversationStore;
+import java.util.List;
 import java.io.IOException;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -14,6 +17,9 @@ public class ActivityFeedServlet extends HttpServlet {
     /** Store class that gives access to Users. */
     private UserStore userStore;
     
+    /** Store class that gives access to Conversations. */
+    private ConversationStore conversationStore;
+    
     /**
      * Set up state for handling activity feed related requests.
      * This method is only called when running in a server, not when running in a test.
@@ -22,6 +28,7 @@ public class ActivityFeedServlet extends HttpServlet {
     public void init() throws ServletException {
         super.init();
         setUserStore(UserStore.getInstance());
+        setConversationStore(ConversationStore.getInstance());
     }
     
     /**
@@ -31,6 +38,13 @@ public class ActivityFeedServlet extends HttpServlet {
      */
     void setUserStore(UserStore userStore) {
         this.userStore = userStore;
+    }
+    
+    /**
+     * Sets the ConversationStore used by this servlet.
+     */
+    void setConversationStore(ConversationStore conversationStore) {
+        this.conversationStore = conversationStore;
     }
     
     /**
