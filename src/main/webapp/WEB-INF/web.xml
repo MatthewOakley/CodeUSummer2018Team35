@@ -74,6 +74,7 @@
   <servlet-mapping>
       <servlet-name>ActivityFeedServlet</servlet-name>
       <url-pattern>/activityfeed</url-pattern>
+  </servlet-mapping>
     
   <!-- This is the setup for the admin webpages and servlets -->
   <servlet>

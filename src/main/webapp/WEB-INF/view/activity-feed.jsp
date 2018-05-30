@@ -1,3 +1,7 @@
+<%@ page import="java.util.List" %>
+<%@ page import="codeu.model.data.Conversation" %>
+<%@ page import="codeu.model.store.basic.UserStore" %>
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -29,6 +33,34 @@
 
         <h1>Welcome to the activity feed.</h1>
 
+        <div id = "container">
+        <%
+        List<Conversation> conversations =
+            (List<Conversation>) request.getAttribute("conversations");
+
+        if(!(conversations == null || conversations.isEmpty())) {
+        %>
+            <ul>
+        <%
+            for(Conversation conversation : conversations) {
+        %>
+                <li>
+                  <strong><%= conversation.getCreationTime() %>:</strong>
+                  <%= UserStore.getInstance().getUser(
+                    conversation.getOwnerId()).getName() %> created conversation
+                  <a href="/chat/<%= conversation.getTitle() %>">
+                    <%= conversation.getTitle() %>
+                  </a>
+                </li>
+        <%
+            }
+        %>
+            </ul>
+        <%
+        }
+        %>
+
+        </div>
     </div>
 
 </body>
