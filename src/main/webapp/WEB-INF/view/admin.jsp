@@ -33,7 +33,8 @@
     <li>Users: <span id="users"><%= request.getAttribute("userCount") %></span></li>
     <li>Conversations: <span id="conversations"><%= 
         request.getAttribute("conversationCount") %></span></li>
-    <li>Messages: <span id="messages"></span></li>
+    <li>Messages: <span id="messages"><%= 
+        request.getAttribute("messageCount") %></span></li>
     <li>Most active user: <span id="mostActive"></span></li>
     <li>Newest User: <span id="newestUser"></span></li>
     <li>Wordiest user: <span id="wordiestUser"></span></li>

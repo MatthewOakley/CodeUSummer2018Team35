@@ -4,7 +4,10 @@ import codeu.model.data.User;
 import codeu.model.store.basic.UserStore;
 import codeu.model.data.Conversation;
 import codeu.model.store.basic.ConversationStore;
+import codeu.model.data.Message;
+import codeu.model.store.basic.MessageStore;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.time.Instant;
 import java.util.List;
 import java.util.UUID;
@@ -33,6 +36,9 @@ public class AdminServlet extends HttpServlet {
   // Store class that gives access to Conversations.
   private ConversationStore conversationStore;
   
+  // Store class that gives acces to messages
+  private MessageStore messageStore;
+  
   /** This is for the inital setup of the admin page */
   @Override
   public void init() throws ServletException {
@@ -40,6 +46,7 @@ public class AdminServlet extends HttpServlet {
     
     setUserStore(UserStore.getInstance());
     setConversationStore(ConversationStore.getInstance());
+    setMessageStore(MessageStore.getInstance());
   }
   
   /**
@@ -52,11 +59,21 @@ public class AdminServlet extends HttpServlet {
   }
   
   /**
-   * Sets the ConversationStore used by this servlet. This function provides a common setup method
+   * Sets the ConversationStore used by this servlet. 
+   * This function provides a common setup method
    * for use by the test framework or the servlet's init() function.
    */
   void setConversationStore(ConversationStore conversationStore) {
     this.conversationStore = conversationStore;
+  }
+  
+  /**
+   * Sets the MessageStore used by this servlet. 
+   * This function provides a common setup method
+   * for use by the test framework or the servlet's init() function.
+   */
+  void setMessageStore(MessageStore messageStore) {
+    this.messageStore = messageStore;
   }
   
   /** when user visits this sends them to admin page */
@@ -72,6 +89,10 @@ public class AdminServlet extends HttpServlet {
     /** This gets the amount of conversations in the database */
     int conversationCount = conversationStore.getConversationAmount();
     request.setAttribute("conversationCount", conversationCount);
+    
+    /** This gets the amount of messages from the database */
+    int messageCount = messageStore.getMessageCount();
+    request.setAttribute("messageCount", messageCount);
     
     request.getRequestDispatcher("/WEB-INF/view/admin.jsp").forward(request, response);
   }
