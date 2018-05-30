@@ -76,21 +76,18 @@ public class AdminServlet extends HttpServlet {
     this.messageStore = messageStore;
   }
   
-  /** when user visits this sends them to admin page */
+  /** When user visits this sends them to admin page */
   @Override
   public void doGet(HttpServletRequest request, 
       HttpServletResponse response)
       throws IOException, ServletException {
     
-    /** This gets the current number of users in the database */
     int userCount = userStore.getUserAmount();
     request.setAttribute("userCount", userCount);
     
-    /** This gets the amount of conversations in the database */
     int conversationCount = conversationStore.getConversationAmount();
     request.setAttribute("conversationCount", conversationCount);
     
-    /** This gets the amount of messages from the database */
     int messageCount = messageStore.getMessageCount();
     request.setAttribute("messageCount", messageCount);
     
