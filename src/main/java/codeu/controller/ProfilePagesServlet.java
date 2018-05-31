@@ -74,8 +74,13 @@ public class ProfilePagesServlet extends HttpServlet {
       return;
     }
 
-    // redirect to a GET request
-    userStore.updateUser(user);
+    String aboutMeContent = request.getParameter("aboutMe");
+    // this removes any HTML from the about me content
+    String cleanedAboutMeContent = Jsoup.clean(aboutMeContent, Whitelist.none());
+
+    user.setAboutMe(cleanedAboutMeContent);
+    UserStore.getInstance().updateUser(user);
     response.sendRedirect("/users/" + username);
+
   }
 }
