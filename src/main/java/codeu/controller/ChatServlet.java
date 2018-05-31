@@ -152,7 +152,7 @@ public class ChatServlet extends HttpServlet {
             UUID.randomUUID(),
             conversation.getId(),
             user.getId(),
-            cleanedMessageContent,
+            cleanedAndEmojiMessage,
             Instant.now());
 
 
