@@ -94,15 +94,7 @@ public class MessageStore {
 
     List<Message> userMessages = new ArrayList<>();
 
-    // for (Message message : messages) {
-    //   if (message.getAuthorId().equals(author)) {
-    //     userMessages.add(message);
-    //   }
-    // }
-
     return messages.stream().filter(m -> m.getAuthorId().equals(author)).collect(Collectors.toList());
-
-    // return userMessages;
   }
 
   /** Sets the List of Messages stored by this MessageStore. */
