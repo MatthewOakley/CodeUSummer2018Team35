@@ -42,44 +42,44 @@
 
     <% if(request.getAttribute("error") != null){ %>
         <h2 style="color:red"><%= request.getAttribute("error") %></h2>
-    <% } %>
+    <% } else {%>
+      <% if(request.getSession().getAttribute("user") != null){ %>
 
-    <% if(request.getSession().getAttribute("user") != null){ %>
+        <h1><%= request.getSession().getAttribute("user") %>'s Profile Page</h1>
 
-      <h1><%= request.getSession().getAttribute("user") %>'s Profile Page</h1>
+        <hr/>
 
-      <hr/>
+        <h2>About <%= request.getSession().getAttribute("user") %> </h2>
+        <p> <%= UserStore.getInstance().getUser((String)request.getSession().getAttribute("user")).getAboutMe() %> </p>
 
-      <h2>About <%= request.getSession().getAttribute("user") %> </h2>
-      <p> <%= UserStore.getInstance().getUser((String)request.getSession().getAttribute("user")).getAboutMe() %> </p>
+        <% if(request.getSession().getAttribute("user").equals(request.getAttribute("username"))){ %>
+          <h2>Edit About Me</h2>
 
-      <% if(request.getSession().getAttribute("user").equals(request.getAttribute("username"))){ %>
-        <h2>Edit About Me</h2>
+          <form action="/users/<%= request.getSession().getAttribute("user") %>" method="POST">
 
-        <form action="/users/<%= request.getSession().getAttribute("user") %>" method="POST">
+            <div class="form-group">
+              <input type="text" name="aboutMe">
+            </div>
 
-          <div class="form-group">
-            <input type="text" name="aboutMe">
-          </div>
+            <br/>
 
-          <br/>
+            <button type="submit">Submit</button>
+          </form>
+        <% } %>
 
-          <button type="submit">Submit</button>
-        </form>
+        <hr/>
+
+        <h2><%= request.getSession().getAttribute("user") %>'s Sent Messages</h2>
+        <div id="profileMessages">
+          <ul>
+        <% for (Message message : messages) {
+            String author = UserStore.getInstance().getUser(message.getAuthorId()).getName();
+        %>
+            <li><strong><%= author %>:</strong> <%=message.getStyledContent(message.getContent()) %></li>
+        <% } %>
+          </ul>
+        </div>
       <% } %>
-
-      <hr/>
-
-      <h2><%= request.getSession().getAttribute("user") %>'s Sent Messages</h2>
-      <div id="profileMessages">
-        <ul>
-      <% for (Message message : messages) {
-          String author = UserStore.getInstance().getUser(message.getAuthorId()).getName();
-      %>
-          <li><strong><%= author %>:</strong> <%=message.getStyledContent(message.getContent()) %></li>
-      <% } %>
-        </ul>
-      </div>
     <% } %>
   </div>
 </body>
