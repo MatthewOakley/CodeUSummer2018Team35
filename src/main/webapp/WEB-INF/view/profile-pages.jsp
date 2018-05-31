@@ -1,10 +1,23 @@
+<%@ page import="java.util.List" %>
 <%@ page import="codeu.model.store.basic.UserStore" %>
+<%@ page import="codeu.model.data.Message" %>
+
+<% List<Message> messages = (List<Message>) request.getAttribute("messages"); %>
 
 <!DOCTYPE html>
 <html>
 <head>
   <title>Profile Pages</title>
   <link rel="stylesheet" href="/css/main.css">
+
+  <style>
+    #profileMessages {
+      background-color: white;
+      height: 200px;
+      overflow-y: scroll
+    }
+
+  </style>
 </head>
 <body>
 
@@ -49,12 +62,26 @@
         </div>
 
         <br/>
-        
+
         <button type="submit">Submit</button>
       </form>
 
       <hr/>
     <% } %>
+
+    <h2><%= request.getSession().getAttribute("user") %>'s Sent Messages</h2>
+    <div id="profileMessages">
+      <ul>
+    <%
+      for (Message message : messages) {
+        String author = UserStore.getInstance().getUser(message.getAuthorId()).getName();
+    %>
+      <li><strong><%= author %>:</strong> <%=message.getStyledContent(message.getContent()) %></li>
+    <%
+      }
+    %>
+      </ul>
+    </div>
 
   </div>
 </body>

@@ -30,6 +30,8 @@ public class MessageStore {
   /** Singleton instance of MessageStore. */
   private static MessageStore instance;
 
+  private static final int USERNAME_INDEX = "/users/".length();
+
   /**
    * Returns the singleton instance of MessageStore that should be shared between all servlet
    * classes. Do not call this function from a test; use getTestInstance() instead.
@@ -83,6 +85,23 @@ public class MessageStore {
     }
 
     return messagesInConversation;
+  }
+
+  /** Access the set of Messages sent by the user. */
+  public List<Message> getMessagesByUser(UUID author) {
+
+    // String requestUrl = request.getRequestURI();
+    // String username = requestUrl.substring(USERNAME_INDEX);
+
+    List<Message> messagesByUser = new ArrayList<>();
+
+    for (Message message : messages) {
+      if (message.getAuthorId().equals(author)) {
+        messagesByUser.add(message);
+      }
+    }
+
+    return messagesByUser;
   }
 
   /** Sets the List of Messages stored by this MessageStore. */

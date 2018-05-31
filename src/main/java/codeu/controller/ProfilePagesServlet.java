@@ -23,6 +23,9 @@ public class ProfilePagesServlet extends HttpServlet {
   /** Store class that gives access to Users. */
   private UserStore userStore;
 
+  /** Store class that gives access to Messages. */
+  private MessageStore messageStore;
+
   private static final int USERNAME_INDEX = "/users/".length();
 
   /**
@@ -33,6 +36,7 @@ public class ProfilePagesServlet extends HttpServlet {
   public void init() throws ServletException {
     super.init();
     setUserStore(UserStore.getInstance());
+    setMessageStore(MessageStore.getInstance());
   }
 
   /**
@@ -41,6 +45,14 @@ public class ProfilePagesServlet extends HttpServlet {
    */
   void setUserStore(UserStore userStore) {
     this.userStore = userStore;
+  }
+
+  /**
+   * Sets the MessageStore used by this servlet. This function provides a common setup method for
+   * use by the test framework or the servlet's init() function.
+   */
+  void setMessageStore(MessageStore messageStore) {
+    this.messageStore = messageStore;
   }
 
   /**
@@ -57,7 +69,11 @@ public class ProfilePagesServlet extends HttpServlet {
     // String username = requestUrl.substring("/users/".length());
 
     User user = userStore.getUser(username);
+    UUID userId = user.getId();
 
+    List<Message> messages = messageStore.getMessagesByUser(userId);
+
+    request.setAttribute("messages", messages);
     request.setAttribute("user", user);
     request.getRequestDispatcher("/WEB-INF/view/profile-pages.jsp").forward(request, response);
   }
@@ -81,8 +97,11 @@ public class ProfilePagesServlet extends HttpServlet {
     }
 
     String aboutMeContent = request.getParameter("aboutMe");
+    // String messageContent = request.getParameter("message");
+
     // this removes any HTML from the about me content
     String cleanedAboutMeContent = Jsoup.clean(aboutMeContent, Whitelist.none());
+    // String cleanedMessageContent = Jsoup.clean(MessageContent, Whitelist.none());
 
     user.setAboutMe(cleanedAboutMeContent);
     UserStore.getInstance().updateUser(user);
