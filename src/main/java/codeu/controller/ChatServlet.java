@@ -30,6 +30,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.jsoup.Jsoup;
 import org.jsoup.safety.Whitelist;
+import com.vdurmont.emoji.EmojiParser;
+
 
 /** Servlet class responsible for the chat page. */
 public class ChatServlet extends HttpServlet {
@@ -140,10 +142,10 @@ public class ChatServlet extends HttpServlet {
 
     String messageContent = request.getParameter("message");
 
-
     // this removes any HTML from the message content
     String cleanedMessageContent = Jsoup.clean(messageContent, Whitelist.none());
     
+    String cleanedAndEmojiMessage = EmojiParser.parseToUnicode(cleanedMessageContent);
 
     Message message =
         new Message(
