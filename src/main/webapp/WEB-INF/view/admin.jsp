@@ -8,6 +8,11 @@
   <link rel="stylesheet" href="/css/main.css">
 </head>
 <body>
+  <% if(request.getSession().getAttribute("user") == null) { %>
+    <meta http-equiv="refresh" content="www.google.com">
+  <% } else if(!(request.getSession.getAttribute("adminStatus"))) { %>
+    <meta http-equiv="refresh" content="www.google.com">
+  <% }
   <nav>
     <a id="navTitle" href="/">CodeU Chat App</a>
     <a href="/conversations">Conversations</a>
