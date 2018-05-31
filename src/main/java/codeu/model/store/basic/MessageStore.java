@@ -90,9 +90,6 @@ public class MessageStore {
   /** Access the set of Messages sent by the user. */
   public List<Message> getMessagesByUser(UUID author) {
 
-    // String requestUrl = request.getRequestURI();
-    // String username = requestUrl.substring(USERNAME_INDEX);
-
     List<Message> messagesByUser = new ArrayList<>();
 
     for (Message message : messages) {

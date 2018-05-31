@@ -62,11 +62,7 @@ public class ProfilePagesServlet extends HttpServlet {
   public void doGet(HttpServletRequest request, HttpServletResponse response)
       throws IOException, ServletException {
     String requestUrl = request.getRequestURI();
-
     String username = requestUrl.substring(USERNAME_INDEX);
-
-    // String requestUrl = request.getRequestURI();
-    // String username = requestUrl.substring("/users/".length());
 
     User user = userStore.getUser(username);
     UUID userId = user.getId();
@@ -97,11 +93,9 @@ public class ProfilePagesServlet extends HttpServlet {
     }
 
     String aboutMeContent = request.getParameter("aboutMe");
-    // String messageContent = request.getParameter("message");
 
     // this removes any HTML from the about me content
     String cleanedAboutMeContent = Jsoup.clean(aboutMeContent, Whitelist.none());
-    // String cleanedMessageContent = Jsoup.clean(MessageContent, Whitelist.none());
 
     user.setAboutMe(cleanedAboutMeContent);
     UserStore.getInstance().updateUser(user);

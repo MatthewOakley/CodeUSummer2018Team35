@@ -35,8 +35,7 @@
 
   <!--TODO(asma526):
 
-  Add an about me box that can only be edited by the user
-  Add a box that displays all messages sent out by the user
+  Add profile pic option
 
   -->
   <div id="container">
