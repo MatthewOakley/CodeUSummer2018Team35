@@ -23,6 +23,8 @@ public class ProfilePagesServlet extends HttpServlet {
   /** Store class that gives access to Users. */
   private UserStore userStore;
 
+  private static final int USERNAME_INDEX = "/users/".length();
+
   /**
    * Set up state for handling profile page requests.
    * This method is only called when running in a server, not when running in a test.
@@ -48,7 +50,11 @@ public class ProfilePagesServlet extends HttpServlet {
   public void doGet(HttpServletRequest request, HttpServletResponse response)
       throws IOException, ServletException {
     String requestUrl = request.getRequestURI();
-    String username = requestUrl.substring("/users/".length());
+
+    String username = requestUrl.substring(USERNAME_INDEX);
+
+    // String requestUrl = request.getRequestURI();
+    // String username = requestUrl.substring("/users/".length());
 
     User user = userStore.getUser(username);
 
