@@ -45,6 +45,7 @@
     <% } %>
 
     <% if(request.getSession().getAttribute("user") != null){ %>
+
       <h1><%= request.getSession().getAttribute("user") %>'s Profile Page</h1>
 
       <hr/>
@@ -52,18 +53,20 @@
       <h2>About <%= request.getSession().getAttribute("user") %> </h2>
       <p> <%= UserStore.getInstance().getUser((String)request.getSession().getAttribute("user")).getAboutMe() %> </p>
 
-      <h2>Edit About Me</h2>
+      <% if(request.getSession().getAttribute("user").equals(request.getAttribute("username"))){ %>
+        <h2>Edit About Me</h2>
 
-      <form action="/users/<%= request.getSession().getAttribute("user") %>" method="POST">
+        <form action="/users/<%= request.getSession().getAttribute("user") %>" method="POST">
 
-        <div class="form-group">
-          <input type="text" name="aboutMe">
-        </div>
+          <div class="form-group">
+            <input type="text" name="aboutMe">
+          </div>
 
-        <br/>
+          <br/>
 
-        <button type="submit">Submit</button>
-      </form>
+          <button type="submit">Submit</button>
+        </form>
+      <% } %>
 
       <hr/>
 
@@ -78,7 +81,6 @@
         </ul>
       </div>
     <% } %>
-
   </div>
 </body>
 </html>
