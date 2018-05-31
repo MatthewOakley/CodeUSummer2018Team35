@@ -66,17 +66,13 @@ public class Message {
     return content;
   }
 
-  /*public String getStyledContent(String s) {
+  public String getStyledContent(String s) {
     Parser parser = Parser.builder().build();
     Node document = parser.parse(s);
     HtmlRenderer renderer = HtmlRenderer.builder().build();
     return renderer.render(document);
-     
-
-
-
   }
-  */ 
+
 
   /** Returns the creation time of this Message. */
   public Instant getCreationTime() {
