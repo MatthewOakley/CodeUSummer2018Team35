@@ -26,7 +26,8 @@ public class ProfilePagesServlet extends HttpServlet {
   /** Store class that gives access to Messages. */
   private MessageStore messageStore;
 
-  private static final int USERNAME_INDEX = "/users/".length();
+  /**  Evaluates to the length of /users/ */
+  private static final int USERNAME_INDEX = 7;
 
   /**
    * Set up state for handling profile page requests.
@@ -63,9 +64,8 @@ public class ProfilePagesServlet extends HttpServlet {
       throws IOException, ServletException {
     String requestUrl = request.getRequestURI();
     String username = requestUrl.substring(USERNAME_INDEX);
-
     User user = userStore.getUser(username);
-    UUID userId = user.getId();
+    UUID userId = userStore.getUser(username).getId();
 
     List<Message> messages = messageStore.getMessagesByUser(userId);
 

@@ -66,21 +66,18 @@
       </form>
 
       <hr/>
-    <% } %>
 
-    <h2><%= request.getSession().getAttribute("user") %>'s Sent Messages</h2>
-    <div id="profileMessages">
-      <ul>
-    <%
-      for (Message message : messages) {
-        String author = UserStore.getInstance().getUser(message.getAuthorId()).getName();
-    %>
-      <li><strong><%= author %>:</strong> <%=message.getStyledContent(message.getContent()) %></li>
-    <%
-      }
-    %>
-      </ul>
-    </div>
+      <h2><%= request.getSession().getAttribute("user") %>'s Sent Messages</h2>
+      <div id="profileMessages">
+        <ul>
+      <% for (Message message : messages) {
+          String author = UserStore.getInstance().getUser(message.getAuthorId()).getName();
+      %>
+          <li><strong><%= author %>:</strong> <%=message.getStyledContent(message.getContent()) %></li>
+      <% } %>
+        </ul>
+      </div>
+    <% } %>
 
   </div>
 </body>
