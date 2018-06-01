@@ -127,7 +127,9 @@ public class UserStore {
     this.users = users;
   }
 
-  //Returns a list of all user IDs
+  /**
+   *Returns a list of all user IDs
+   */
   public List<UUID> getUserIds() {
     List<UUID> userIds = new ArrayList();
     

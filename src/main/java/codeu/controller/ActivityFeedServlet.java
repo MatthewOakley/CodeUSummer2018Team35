@@ -46,12 +46,16 @@ public class ActivityFeedServlet extends HttpServlet {
         this.userStore = userStore;
     }
     
-    //Sets the ConversationStore used by this servlet.
+    /**
+     *Sets the ConversationStore used by this servlet.
+     */
     void setConversationStore(ConversationStore conversationStore) {
         this.conversationStore = conversationStore;
     }
     
-    //Sets the MessageStore used by this servlet.
+    /**
+     *Sets the MessageStore used by this servlet.
+     */
     void setMessageStore(MessageStore messageStore) {
         this.messageStore = messageStore;
     }
