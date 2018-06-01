@@ -45,11 +45,11 @@
     <% } else {%>
       <% if(request.getSession().getAttribute("user") != null){ %>
 
-        <h1><%= request.getSession().getAttribute("user") %>'s Profile Page</h1>
+        <h1><%= request.getAttribute("username") %>'s Profile Page</h1>
 
         <hr/>
 
-        <h2>About <%= request.getSession().getAttribute("user") %> </h2>
+        <h2>About <%= request.getAttribute("username") %> </h2>
         <p> <%= UserStore.getInstance().getUser((String)request.getSession().getAttribute("user")).getAboutMe() %> </p>
 
         <% if(request.getSession().getAttribute("user").equals(request.getAttribute("username"))){ %>
@@ -69,7 +69,7 @@
 
         <hr/>
 
-        <h2><%= request.getSession().getAttribute("user") %>'s Sent Messages</h2>
+        <h2><%= request.getAttribute("username") %>'s Sent Messages</h2>
         <div id="profileMessages">
           <ul>
         <% for (Message message : messages) {

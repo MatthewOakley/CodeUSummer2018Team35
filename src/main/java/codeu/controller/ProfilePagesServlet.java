@@ -71,6 +71,7 @@ public class ProfilePagesServlet extends HttpServlet {
 
     request.setAttribute("messages", messages);
     request.setAttribute("user", user);
+    request.setAttribute("username", username);
     request.getRequestDispatcher("/WEB-INF/view/profile-pages.jsp").forward(request, response);
   }
 
