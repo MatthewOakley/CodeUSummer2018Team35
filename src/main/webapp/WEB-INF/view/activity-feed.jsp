@@ -43,51 +43,47 @@
         List<Conversation> conversations =
           (List<Conversation>) request.getAttribute("conversations");
 
-        if(conversations != null && !conversations.isEmpty()) {
-            for(Conversation conversation : conversations) {
+        for(Conversation conversation : conversations) {
         %>
-                <li>
-                  <strong><%= conversation.getCreationTime() %>:</strong>
-                  <%= UserStore.getInstance().getUser(
-                    conversation.getOwnerId()).getName() %> created conversation
-                  <a href="/chat/<%= conversation.getTitle() %>">
-                    <%= conversation.getTitle() %>
-                  </a>
-                </li>
+            <li>
+              <strong><%= conversation.getCreationTime() %>:</strong>
+              <%= UserStore.getInstance().getUser(
+                conversation.getOwnerId()).getName() %> created conversation
+              <a href="/chat/<%= conversation.getTitle() %>">
+                <%= conversation.getTitle() %>
+              </a>
+            </li>
         <%
-                List<Message> messages = (List<Message>) MessageStore.getInstance()
-                  .getMessagesInConversation(conversation.getId());
+            List<Message> messages = (List<Message>) MessageStore.getInstance()
+              .getMessagesInConversation(conversation.getId());
 
-                if(messages != null && !messages.isEmpty()) {
-                    for(Message message : messages) {
+            if(messages != null && !messages.isEmpty()) {
+                for(Message message : messages) {
         %>
-                        <li>
-                            <strong><%= message.getCreationTime() %>:</strong>
-                            <%= UserStore.getInstance().getUser(
-                              message.getAuthorId()).getName() %> sent a message in
-                            <a href="/chat/<%= conversation.getTitle() %>">
-                              <%= conversation.getTitle() %>
-                            </a>: "
-                            <%= message.getContent() %>"
-                        </li>
+                    <li>
+                        <strong><%= message.getCreationTime() %>:</strong>
+                        <%= UserStore.getInstance().getUser(
+                          message.getAuthorId()).getName() %> sent a message in
+                        <a href="/chat/<%= conversation.getTitle() %>">
+                          <%= conversation.getTitle() %>
+                        </a>: "
+                        <%= message.getContent() %>"
+                    </li>
         <%
-                    }
                 }
             }
         }
 
         List<UUID> userIds = (List<UUID>) UserStore.getInstance().getUserIds();
 
-        if(userIds != null && !userIds.isEmpty()) {
-            for(UUID id : userIds) {
-                User user = UserStore.getInstance().getUser(id);
+        for(UUID id : userIds) {
+            User user = UserStore.getInstance().getUser(id);
         %>
-                <li>
-                    <strong><%= user.getCreationTime() %>:</strong>
-                    <%= user.getName() %> joined!
-                </li>
+            <li>
+                <strong><%= user.getCreationTime() %>:</strong>
+                <%= user.getName() %> joined!
+            </li>
         <%
-            }
         }
         %>
 
