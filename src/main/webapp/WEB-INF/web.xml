@@ -87,7 +87,7 @@
     <servlet-name>AdminServlet</servlet-name>
     <url-pattern>/admin</url-pattern>
   </servlet-mapping>
-
+  
   <!-- This is the setup for the admin webpages and servlets -->
   <servlet>
     <servlet-name>AdminServlet</servlet-name>
@@ -99,6 +99,7 @@
     <servlet-name>AdminServlet</servlet-name>
     <url-pattern>/admin</url-pattern>
   </servlet-mapping>
+  
 
   <servlet>
     <servlet-name>ProfilePagesServlet</servlet-name>
