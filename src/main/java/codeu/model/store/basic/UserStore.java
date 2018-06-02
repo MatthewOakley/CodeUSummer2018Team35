@@ -134,5 +134,10 @@ public class UserStore {
   public List<UUID> getUserIds() {
     return users.stream().map(User::getId).collect(Collectors.toList());
   }
+  
+  /** Returns the amount of users currently registrated. */
+  public int getUserAmount() {
+    return users.size();
+  }
 }
 
