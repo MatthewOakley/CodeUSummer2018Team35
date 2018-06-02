@@ -19,6 +19,7 @@ import codeu.model.store.persistence.PersistentStorageAgent;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 /**
  * Store class that uses in-memory data structures to hold values and automatically loads from and
@@ -131,13 +132,7 @@ public class UserStore {
    *Returns a list of all user IDs
    */
   public List<UUID> getUserIds() {
-    List<UUID> userIds = new ArrayList();
-    
-    for(User user : users) {
-      userIds.add(user.getId());
-    }
-      
-    return userIds;
+    return users.stream().map(User::getId).collect(Collectors.toList());
   }
 }
 
