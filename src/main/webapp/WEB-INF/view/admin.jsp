@@ -8,11 +8,14 @@
   <link rel="stylesheet" href="/css/main.css">
 </head>
 <body>
-  <% if(request.getSession().getAttribute("user") == null) { %>
-    <meta http-equiv="refresh" content="www.google.com">
-  <% } else if(!(request.getSession.getAttribute("adminStatus"))) { %>
-    <meta http-equiv="refresh" content="www.google.com">
-  <% }
+  <!-- This is redirecting the user if they are not an admin -->
+  <%  if(request.getSession().getAttribute("user") == null) {
+        String redirectURL = "http://localhost:8080/";
+        response.sendRedirect(redirectURL);
+      } else if((boolean)request.getSession().getAttribute("adminStatus") == false) {
+        String redirectURL = "http://localhost:8080/";
+        response.sendRedirect(redirectURL);
+      } %>
   <nav>
     <a id="navTitle" href="/">CodeU Chat App</a>
     <a href="/conversations">Conversations</a>
@@ -35,14 +38,12 @@
       I just have this basic setup to get the users information and will
       carry it over to the other stats
     -->
-    <li>Users: <span id="users"><%= request.getAttribute("userCount") %></span></li>
-    <li>Conversations: <span id="conversations"><%= 
-        request.getAttribute("conversationCount") %></span></li>
-    <li>Messages: <span id="messages"><%= 
-        request.getAttribute("messageCount") %></span></li>
-    <li>Most active user: <span id="mostActive"></span></li>
-    <li>Newest User: <span id="newestUser"></span></li>
-    <li>Wordiest user: <span id="wordiestUser"></span></li>
+    <li>Users: <%= request.getAttribute("userCount") %></li>
+    <li>Conversations: <%= request.getAttribute("conversationCount") %></li>
+    <li>Messages: <%= request.getAttribute("messageCount") %></li>
+    <li>Most active user: </li>
+    <li>Newest User: <%= request.getAttribute("newestUser") %></li>
+    <li>Wordiest user: </li>
   </ul>
 </body>
 </html>

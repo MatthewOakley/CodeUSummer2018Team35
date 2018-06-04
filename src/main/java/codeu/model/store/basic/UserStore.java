@@ -131,5 +131,21 @@ public class UserStore {
   public int getUserAmount() {
     return users.size();
   }
+  
+  public String getNewestUser() {
+    if(users.size() == 0) {
+      return "Nobody";
+    }
+    
+    User newest = users.get(0);
+    for(int i = 1; i < users.size(); i++) {
+      // compare the two times of the users
+      if(users.get(i).getCreationTime().isAfter(newest.getCreationTime())) {
+        newest = users.get(i);
+      }
+    }
+    
+    return newest.getName();
+  }
 }
 

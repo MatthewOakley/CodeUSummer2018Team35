@@ -91,6 +91,10 @@ public class AdminServlet extends HttpServlet {
     int messageCount = messageStore.getMessageCount();
     request.setAttribute("messageCount", messageCount);
     
+    // get the newest user by creation time
+    String newestUser = userStore.getNewestUser();
+    request.setAttribute("newestUser", newestUser);
+    
     request.getRequestDispatcher("/WEB-INF/view/admin.jsp").forward(request, response);
   }
 }
