@@ -20,6 +20,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
+import java.util.*;
 
 /**
  * Store class that uses in-memory data structures to hold values and automatically loads from and
@@ -141,17 +142,12 @@ public class UserStore {
   }
   
   public String getNewestUser() {
-    if(users.size() == 0) {
-      return "Nobody";
+    if (users.isEmpty()) {
+      return "";
     }
     
-    User newest = users.get(0);
-    for(int i = 1; i < users.size(); i++) {
-      // compare the two times of the users
-      if(users.get(i).getCreationTime().isAfter(newest.getCreationTime())) {
-        newest = users.get(i);
-      }
-    }
+    // this will get the newest user
+    User newest = Collections.max(users, Comparator.comparing(User::getCreationTime));
     
     return newest.getName();
   }

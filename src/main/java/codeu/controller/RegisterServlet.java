@@ -68,11 +68,9 @@ public class RegisterServlet extends HttpServlet {
     
     String aboutMe = request.getParameter("aboutMe");
     
-    if(username.equals("admin") && password.equals("admin")) {
-      user = new User(UUID.randomUUID(), username, hashedPassword, Instant.now(), aboutMe, true);
-    } else {
-      user = new User(UUID.randomUUID(), username, hashedPassword, Instant.now(), aboutMe, false);
-    }
+    boolean isAdmin = username.equals("admin") && password.equals("admin");
+    
+    user = new User(UUID.randomUUID(), username, hashedPassword, Instant.now(), aboutMe, isAdmin);
     
     userStore.addUser(user);
 
