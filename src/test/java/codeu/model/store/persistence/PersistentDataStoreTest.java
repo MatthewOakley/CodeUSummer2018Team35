@@ -42,16 +42,18 @@ public class PersistentDataStoreTest {
     String nameOne = "test_username_one";
     String passwordHashOne = "$2a$10$BNte6sC.qoL4AVjO3Rk8ouY6uFaMnsW8B9NjtHWaDNe8GlQRPRT1S";
     Instant creationOne = Instant.ofEpochMilli(1000);
+    String aboutMeOne = "test_aboutme_one";
     boolean adminStatusOne = true;
-    User inputUserOne = new User(idOne, nameOne, passwordHashOne, creationOne, adminStatusOne);
+    User inputUserOne = new User(idOne, nameOne, passwordHashOne, creationOne, aboutMeOne, adminStatusOne);
 
     UUID idTwo = UUID.fromString("10000001-2222-3333-4444-555555555555");
     String nameTwo = "test_username_two";
     String passwordHashTwo = "$2a$10$ttaMOMMGLKxBBuTN06VPvu.jVKif.IczxZcXfLcqEcFi1lq.sLb6i";
     Instant creationTwo = Instant.ofEpochMilli(2000);
+    String aboutMeTwo = "test_aboutme_two";
     boolean adminStatusTwo = false;
-    User inputUserTwo = new User(idTwo, nameTwo, passwordHashTwo, creationTwo, adminStatusTwo);
-    
+    User inputUserTwo = new User(idTwo, nameTwo, passwordHashTwo, creationTwo, aboutMeTwo, adminStatusTwo);
+
     // save
     persistentDataStore.writeThrough(inputUserOne);
     persistentDataStore.writeThrough(inputUserTwo);
@@ -65,6 +67,7 @@ public class PersistentDataStoreTest {
     Assert.assertEquals(nameOne, resultUserOne.getName());
     Assert.assertEquals(passwordHashOne, resultUserOne.getPasswordHash());
     Assert.assertEquals(creationOne, resultUserOne.getCreationTime());
+    Assert.assertEquals(aboutMeOne, resultUserOne.getAboutMe());
     Assert.assertEquals(adminStatusOne, resultUserOne.isAdmin());
 
     User resultUserTwo = resultUsers.get(1);
@@ -72,6 +75,7 @@ public class PersistentDataStoreTest {
     Assert.assertEquals(nameTwo, resultUserTwo.getName());
     Assert.assertEquals(passwordHashTwo, resultUserTwo.getPasswordHash());
     Assert.assertEquals(creationTwo, resultUserTwo.getCreationTime());
+    Assert.assertEquals(aboutMeTwo, resultUserTwo.getAboutMe());
     Assert.assertEquals(adminStatusTwo, resultUserTwo.isAdmin());
   }
 

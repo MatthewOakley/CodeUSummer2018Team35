@@ -24,11 +24,6 @@ import org.jsoup.safety.Whitelist;
  * and showing stats about it.
  */
 public class AdminServlet extends HttpServlet {
-  /** 
-   * TO-DO(Matthew Oakley) I need to add getting the data from the 
-   * the database and checking to make sure its valid and not null
-   * and sending this information to the webpage
-   */
    
   // Store class that gives access to Users. 
   private UserStore userStore;

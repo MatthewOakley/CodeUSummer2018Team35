@@ -33,17 +33,10 @@
   <!-- The stats about the web app -->
   <p> Stats about the web app </p>
   <ul id="stats">
-    <!-- 
-      TO-DO(Matthew Oakley) I am going to add checking the current stats
-      I just have this basic setup to get the users information and will
-      carry it over to the other stats
-    -->
     <li>Users: <%= request.getAttribute("userCount") %></li>
     <li>Conversations: <%= request.getAttribute("conversationCount") %></li>
     <li>Messages: <%= request.getAttribute("messageCount") %></li>
-    <li>Most active user: </li>
     <li>Newest User: <%= request.getAttribute("newestUser") %></li>
-    <li>Wordiest user: </li>
   </ul>
 </body>
 </html>

@@ -63,13 +63,17 @@ public class RegisterServlet extends HttpServlet {
 
     String password = request.getParameter("password");
     String hashedPassword = BCrypt.hashpw(password, BCrypt.gensalt());
-    
+
     User user;
+    
+    String aboutMe = request.getParameter("aboutMe");
+    
     if(username.equals("admin") && password.equals("admin")) {
-      user = new User(UUID.randomUUID(), username, hashedPassword, Instant.now(), true);
+      user = new User(UUID.randomUUID(), username, hashedPassword, Instant.now(), aboutMe, true);
     } else {
-      user = new User(UUID.randomUUID(), username, hashedPassword, Instant.now(), false);
+      user = new User(UUID.randomUUID(), username, hashedPassword, Instant.now(), aboutMe, false);
     }
+    
     userStore.addUser(user);
 
     response.sendRedirect("/login");
