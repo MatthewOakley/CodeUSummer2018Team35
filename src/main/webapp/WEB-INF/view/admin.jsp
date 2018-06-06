@@ -12,7 +12,7 @@
   <%  if (request.getSession().getAttribute("user") == null) {
         String redirectURL = "http://localhost:8080/";
         response.sendRedirect(redirectURL);
-      } else if ((boolean)request.getSession().getAttribute("adminStatus") == false) {
+      } else if (!(boolean)request.getSession().getAttribute("adminStatus")) {
         String redirectURL = "http://localhost:8080/";
         response.sendRedirect(redirectURL);
       } %>
