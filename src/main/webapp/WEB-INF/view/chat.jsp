@@ -17,6 +17,7 @@
 <%@ page import="codeu.model.data.Conversation" %>
 <%@ page import="codeu.model.data.Message" %>
 <%@ page import="codeu.model.store.basic.UserStore" %>
+<%@ page import="Mentions" %>
 
 <%
 Conversation conversation = (Conversation) request.getAttribute("conversation");
@@ -73,7 +74,8 @@ List<Message> messages = (List<Message>) request.getAttribute("messages");
         String author = UserStore.getInstance()
           .getUser(message.getAuthorId()).getName();
     %>
-      <li><strong><%= author %>:</strong> <%= message.getStyledContent(message.getContent()) %></li>
+      <li><strong><%= author %>:</strong> <%= 
+        message.getStyledContent(message.getContent()) %></li>
     <%
       }
     %>

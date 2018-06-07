@@ -147,13 +147,31 @@ public class ChatServlet extends HttpServlet {
     
     String cleanedAndEmojiMessage = EmojiParser.parseToUnicode(cleanedMessageContent);
 
+    String mentionedUser = "";
+
+    for (int i = 0; i < cleanedAndEmojiMessage.length(); i++){
+      if (cleanedAndEmojiMessage.charAt(i).equals("@")){
+        for (j = i; j < cleanedAndEmojiMessage.length(); j++){
+          if (cleanedAndEmojiMessage.charAt(j).equals(" ")){
+            int end = j; 
+          }
+
+        }
+      
+      mentionedUser = cleanedAndEmojiMessage.substring(i,end+i); 
+
+      }
+    } 
+
+
     Message message =
         new Message(
             UUID.randomUUID(),
             conversation.getId(),
             user.getId(),
             cleanedAndEmojiMessage,
-            Instant.now());
+            Instant.now(),
+            mentionedUser);
 
 
     messageStore.addMessage(message);
