@@ -84,7 +84,7 @@ public class Message {
   public String getStyledContentandMentioned(String s){
     String styled = getStyledContent(s); 
     for (int i = 0; i < styled.length(); i++){
-      if ((styled.substring(i, i + getMentionedUser.length())).equals(getMentionedUser))
+      if ((styled.substring(i, i + getMentionedUser().length())).equals(getMentionedUser()))
         styled = styled + " Menitoned User Found";
     }
     return styled;
