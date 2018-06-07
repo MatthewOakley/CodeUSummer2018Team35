@@ -80,6 +80,7 @@ List<Message> messages = (List<Message>) request.getAttribute("messages");
           <form action="/chat/<%= conversation.getTitle() %>" method="POST">
             <button type="submit">Edit</button>
             <input type="text" name="edit">
+            <input type="hidden" name="messageId" value="<%= message.getId() %>">
           </form>
         <% } %>
       </li>
