@@ -73,7 +73,12 @@ List<Message> messages = (List<Message>) request.getAttribute("messages");
         String author = UserStore.getInstance()
           .getUser(message.getAuthorId()).getName();
     %>
-      <li><strong><%= author %>:</strong> <%= message.getStyledContent(message.getContent()) %></li>
+      <li>
+        <strong><%= author %>:</strong> <%= message.getStyledContent(message.getContent()) %>
+        <form action="/chat/<%= conversation.getTitle() %>" method="POST">
+          <button type="submit">Delete</button>
+        </form>
+      </li>
     <%
       }
     %>
