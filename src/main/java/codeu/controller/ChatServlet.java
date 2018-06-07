@@ -132,6 +132,13 @@ public class ChatServlet extends HttpServlet {
 
     String requestUrl = request.getRequestURI();
     String conversationTitle = requestUrl.substring("/chat/".length());
+          
+    String edit = (String) request.getParameter("edit");
+    if (edit != null) {
+      System.out.println("Edit: " + edit);
+      response.sendRedirect("/chat/" + conversationTitle);
+      return;
+    }
 
     Conversation conversation = conversationStore.getConversationWithTitle(conversationTitle);
     if (conversation == null) {

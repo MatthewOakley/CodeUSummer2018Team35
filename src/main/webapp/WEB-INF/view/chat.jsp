@@ -73,7 +73,16 @@ List<Message> messages = (List<Message>) request.getAttribute("messages");
         String author = UserStore.getInstance()
           .getUser(message.getAuthorId()).getName();
     %>
-      <li><strong><%= author %>:</strong> <%= message.getStyledContent(message.getContent()) %></li>
+      <li>
+        <strong><%= author %>:</strong> <%= message.getStyledContent(message.getContent()) %>
+        <% if (UserStore.getInstance().getUser(author).getName().equals(
+                request.getSession().getAttribute("user"))) { %>
+          <form action="/chat/<%= conversation.getTitle() %>" method="POST">
+            <button type="submit">Edit</button>
+            <input type="text" name="edit">
+          </form>
+        <% } %>
+      </li>
     <%
       }
     %>
