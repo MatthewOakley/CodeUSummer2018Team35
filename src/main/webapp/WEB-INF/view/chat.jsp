@@ -83,11 +83,14 @@ List<Message> messages = (List<Message>) request.getAttribute("messages");
             <input type="hidden" name="messageId" value="<%= message.getId() %>">
           </form>
         <% } %>
-        <form action="/chat/<%= conversation.getTitle() %>" method="POST">
+        <% if (request.getSession().getAttribute("user") != null) { %>
+          <form action="/chat/<%= conversation.getTitle() %>" method="POST">
             <button type="submit">Reply</button>
-            <input type="text" name="reply">
+            <input type="text" name="message">
             <input type="hidden" name="messageId" value="<%= message.getId() %>">
-        </form>
+            <input type="hidden" name="reply" value="true">
+          </form>
+        <% } %>
       </li>
     <%
       }
@@ -101,6 +104,7 @@ List<Message> messages = (List<Message>) request.getAttribute("messages");
     <form action="/chat/<%= conversation.getTitle() %>" method="POST">
         <input type="text" name="message">
         <br/>
+        <input type="hidden" name="reply" value="false">
         <button type="submit">Send</button>
     </form>
     <% } else { %>

@@ -162,8 +162,12 @@ public class ChatServlet extends HttpServlet {
             cleanedAndEmojiMessage,
             Instant.now());
 
-
-    messageStore.addMessage(message);
+    String isReply = request.getParameter("reply");
+    if (isReply == null || isReply.equals("false")) {
+      messageStore.addMessage(message);
+    } else {
+      messageStore.getMessage(request.getParameter("messageId")).addReply(message);
+    }
 
     // redirect to a GET request
     response.sendRedirect("/chat/" + conversationTitle);

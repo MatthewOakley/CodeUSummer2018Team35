@@ -106,7 +106,7 @@ public class MessageStore {
   }
     
   /** Access Message by UUID. */
-  private Message getMessage(String messageId) {
+  public Message getMessage(String messageId) {
       for (Message message : messages) {
           if (message.getId().toString().equals(messageId)) {
               return message;
