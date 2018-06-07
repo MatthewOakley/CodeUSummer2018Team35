@@ -28,6 +28,7 @@ public class Message {
   private final UUID author;
   private final String content;
   private final Instant creation;
+  private final String mentionedUser;
 
   /**
    * Constructs a new Message.
@@ -37,13 +38,15 @@ public class Message {
    * @param author the ID of the User who sent this Message
    * @param content the text content of this Message
    * @param creation the creation time of this Message
+   * @param mentions in message
    */
-  public Message(UUID id, UUID conversation, UUID author, String content, Instant creation) {
+  public Message(UUID id, UUID conversation, UUID author, String content, Instant creation, String mentionedUser) {
     this.id = id;
     this.conversation = conversation;
     this.author = author;
     this.content = content;
     this.creation = creation;
+    this.mentionedUser = mentionedUser; 
   }
 
   /** Returns the ID of this Message. */
@@ -66,11 +69,26 @@ public class Message {
     return content;
   }
 
+ /** Returns mentioned user. */
+  public String getMentionedUser(){
+    return mentionedUser;
+  }
+
   public String getStyledContent(String s) {
     Parser parser = Parser.builder().build();
     Node document = parser.parse(s);
     HtmlRenderer renderer = HtmlRenderer.builder().build();
     return renderer.render(document);
+  }
+
+  public String getStyledContentandMentioned(String s){
+    String styled = getStyledContent(s); 
+    for (int i = 0; i < styled.length(); i++){
+      if ((styled.substring(i, i + getMentionedUser.length())).equals(getMentionedUser))
+        styled = styled + " Menitoned User Found";
+    }
+    return styled;
+
   }
 
   /** Returns the creation time of this Message. */
