@@ -149,11 +149,13 @@ public class ChatServlet extends HttpServlet {
 
     String mentionedUser = "";
 
+    int end = 0;
+
     for (int i = 0; i < cleanedAndEmojiMessage.length(); i++){
-      if (cleanedAndEmojiMessage.charAt(i).equals("@")){
-        for (j = i; j < cleanedAndEmojiMessage.length(); j++){
-          if (cleanedAndEmojiMessage.charAt(j).equals(" ")){
-            int end = j; 
+      if ((Character.toString(cleanedAndEmojiMessage.charAt(i))).equals("@")){
+        for (int j = i; j < cleanedAndEmojiMessage.length(); j++){
+          if ((Character.toString(cleanedAndEmojiMessage.charAt(j))).equals(" ")){
+            end = j; 
           }
 
         }
