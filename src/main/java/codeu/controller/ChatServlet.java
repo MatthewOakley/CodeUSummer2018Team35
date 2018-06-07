@@ -135,8 +135,7 @@ public class ChatServlet extends HttpServlet {
           
     String edit = (String) request.getParameter("edit");
     if (edit != null) {
-      System.out.println("MessageId: " + (String) request.getParameter("messageId"));
-      System.out.println("Edit: " + edit);
+      messageStore.editMessage((String) request.getParameter("messageId"), edit);
       response.sendRedirect("/chat/" + conversationTitle);
       return;
     }

@@ -104,4 +104,21 @@ public class MessageStore {
   public int getMessageCount() {
     return messages.size();
   }
+    
+  /** Access Message by UUID. */
+  private Message getMessage(String messageId) {
+      for (Message message : messages) {
+          if (message.getId().toString().equals(messageId)) {
+              return message;
+          }
+      }
+      return null;
+  }
+
+  /** Changes message content to new string sent by the user. */
+  public void editMessage(String messageId, String edit) {
+    Message message = getMessage(messageId);
+    System.out.println(message.getContent());
+    System.out.println(edit);
+  }
 }
