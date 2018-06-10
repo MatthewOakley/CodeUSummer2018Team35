@@ -9,13 +9,12 @@
 </head>
 <body>
   <!-- This is redirecting the user if they are not an admin -->
-  <%  if (request.getSession().getAttribute("user") == null) {
+  <%  if (request.getSession().getAttribute("user") == null ||
+            !(boolean)request.getSession().getAttribute("adminStatus")) {
         String redirectURL = "http://localhost:8080/";
         response.sendRedirect(redirectURL);
-      } else if (!(boolean)request.getSession().getAttribute("adminStatus")) {
-        String redirectURL = "http://localhost:8080/";
-        response.sendRedirect(redirectURL);
-      } %>
+      }
+  %>
   <nav>
     <a id="navTitle" href="/">CodeU Chat App</a>
     <a href="/conversations">Conversations</a>
