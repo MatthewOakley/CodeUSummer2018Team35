@@ -118,7 +118,7 @@ public class MessageStore {
   /** Changes message content to new string sent by the user. */
   public void editMessage(String messageId, String edit) {
     Message message = getMessage(messageId);
-    System.out.println(message.getContent());
-    System.out.println(edit);
+    System.out.println("Original: " + message.getContent());
+    System.out.println("Edit: " + edit);
   }
 }

@@ -16,6 +16,7 @@ package codeu.model.data;
 
 import java.time.Instant;
 import java.util.UUID;
+import java.util.List;
 import java.util.ArrayList;
 import org.commonmark.node.Node;
 import org.commonmark.parser.Parser;
@@ -27,9 +28,9 @@ public class Message {
   private final UUID id;
   private final UUID conversation;
   private final UUID author;
-  private String content;
+  private final String content;
   private final Instant creation;
-  private ArrayList<Message> replies;
+  private List<Message> replies;
 
   /**
    * Constructs a new Message.
@@ -82,7 +83,7 @@ public class Message {
   }
 
   /** Access list of replies */
-  public ArrayList<Message> getReplies() {
+  public List<Message> getReplies() {
     return replies;
   }
     

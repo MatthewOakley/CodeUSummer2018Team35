@@ -133,7 +133,7 @@ public class ChatServlet extends HttpServlet {
     String requestUrl = request.getRequestURI();
     String conversationTitle = requestUrl.substring("/chat/".length());
           
-    String edit = (String) request.getParameter("edit");
+    String edit = request.getParameter("edit");
     if (edit != null) {
       messageStore.editMessage((String) request.getParameter("messageId"), edit);
       response.sendRedirect("/chat/" + conversationTitle);
@@ -162,8 +162,8 @@ public class ChatServlet extends HttpServlet {
             cleanedAndEmojiMessage,
             Instant.now());
 
-    String isReply = request.getParameter("reply");
-    if (isReply == null || isReply.equals("false")) {
+    Boolean isReply = Boolean.valueOf(request.getParameter("reply"));
+    if (isReply == null || isReply == false) {
       messageStore.addMessage(message);
     } else {
       messageStore.getMessage(request.getParameter("messageId")).addReply(message);
