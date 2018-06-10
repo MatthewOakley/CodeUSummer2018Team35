@@ -91,5 +91,7 @@ public class Message {
   public void addReply(Message reply) {
     System.out.println("Parent: " + this.getContent());
     System.out.println("Reply: " + reply.getContent());
+      
+    replies.add(reply);
   }
 }

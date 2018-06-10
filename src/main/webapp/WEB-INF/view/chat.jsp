@@ -70,8 +70,7 @@ List<Message> messages = (List<Message>) request.getAttribute("messages");
       <ul>
     <%
       for (Message message : messages) {
-        String author = UserStore.getInstance()
-          .getUser(message.getAuthorId()).getName();
+        String author = UserStore.getInstance().getUser(message.getAuthorId()).getName();
     %>
       <li>
         <strong><%= author %>:</strong> <%= message.getStyledContent(message.getContent()) %>
@@ -92,6 +91,26 @@ List<Message> messages = (List<Message>) request.getAttribute("messages");
           </form>
         <% } %>
       </li>
+        <ul class="tab">
+      <%
+        for (Message reply : message.getReplies()) {
+        author = UserStore.getInstance().getUser(reply.getAuthorId()).getName();
+      %>
+        <li>
+            <strong><%= author %>:</strong> <%= reply.getStyledContent(reply.getContent()) %>
+            <% if (UserStore.getInstance().getUser(author).getName().equals(
+                    request.getSession().getAttribute("user"))) { %>
+              <form action="/chat/<%= conversation.getTitle() %>" method="POST">
+                <button type="submit">Edit</button>
+                <input type="text" name="edit">
+                <input type="hidden" name="messageId" value="<%= message.getId() %>">
+              </form>
+            <% } %>
+        </li>
+      <%
+        }
+      %>
+        </ul>
     <%
       }
     %>
