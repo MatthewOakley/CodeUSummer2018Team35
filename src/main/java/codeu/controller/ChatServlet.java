@@ -140,11 +140,18 @@ public class ChatServlet extends HttpServlet {
       return;
     }
 
+    String delete = request.getParameter("deleteButton");
+    if (delete != null) {
+      System.out.println("deleted message success");
+      response.sendRedirect("/chat/" + conversationTitle);
+      return;
+    }
+
     String messageContent = request.getParameter("message");
 
     // this removes any HTML from the message content
     String cleanedMessageContent = Jsoup.clean(messageContent, Whitelist.none());
-    
+
     String cleanedAndEmojiMessage = EmojiParser.parseToUnicode(cleanedMessageContent);
 
     Message message =
@@ -157,6 +164,7 @@ public class ChatServlet extends HttpServlet {
 
 
     messageStore.addMessage(message);
+
 
     // redirect to a GET request
     response.sendRedirect("/chat/" + conversationTitle);
