@@ -75,6 +75,11 @@ public class MessageStore {
     persistentStorageAgent.writeThrough(message);
   }
 
+  /** Deletes a message from the current set of messages known to the application. */
+  public void deleteMessage() {
+    System.out.println("deleted message success again");
+  }
+
   /** Access the current set of Messages within the given Conversation. */
   public List<Message> getMessagesInConversation(UUID conversationId) {
 
@@ -99,7 +104,7 @@ public class MessageStore {
   public void setMessages(List<Message> messages) {
     this.messages = messages;
   }
-  
+
   /** Returns the size of the messages */
   public int getMessageCount() {
     return messages.size();

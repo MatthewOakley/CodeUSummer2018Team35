@@ -142,7 +142,7 @@ public class ChatServlet extends HttpServlet {
 
     String delete = request.getParameter("deleteButton");
     if (delete != null) {
-      System.out.println("deleted message success");
+      messageStore.deleteMessage();
       response.sendRedirect("/chat/" + conversationTitle);
       return;
     }
