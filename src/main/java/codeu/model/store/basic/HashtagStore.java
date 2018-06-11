@@ -26,9 +26,9 @@ public class HashtagStore {
    * Returns the singleton instance of HashtagStore that should be shared between all servlet classes.
    * Do not call this function from a test; use getTestInstance() instead.
    */
-  public static UserStore getInstance() {
+  public static HashtagStore getInstance() {
     if (instance == null) {
-      instance = new HashTagStore(PersistentStorageAgent.getInstance());
+      instance = new HashtagStore(PersistentStorageAgent.getInstance());
     }
     return instance;
   }
@@ -87,7 +87,7 @@ public class HashtagStore {
   /** Return true if the given Hashtag exists. */
   public boolean doesHashtagExist(String name) {
     for (Hashtag hashtag : hashtags) {
-      if (hashtag.getName.equals(name)) {
+      if (hashtag.getName().equals(name)) {
         return true;
       }
     }

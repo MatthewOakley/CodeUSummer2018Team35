@@ -29,6 +29,9 @@ import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
+import java.util.Collection;
+import java.util.Collections;
+
 
 /**
  * This class handles all interactions with Google App Engine's Datastore service. On startup it
@@ -169,7 +172,7 @@ public class PersistentDataStore {
     for (Entity entity : results.asIterable()) {
       try {
         String tagName = (String) entity.getProperty("tagName");
-        List<String> messageIds = new ArrayList((String) entity.getProperty("uuidList"));
+        List<String> messageIds = new ArrayList( (Collection<String>) entity.getProperty("uuidList"));
         List<UUID> messageIdsList = new ArrayList<UUID>();
         for (String uuid : messageIds){
           messageIdsList.add(UUID.fromString(uuid));
@@ -184,7 +187,7 @@ public class PersistentDataStore {
       }
     }
 
-    return users;
+    return hashtags;
   }
   
   /** Write a User object to the Datastore service. */
@@ -224,8 +227,8 @@ public class PersistentDataStore {
   public void writeThrough(Hashtag hashtag) {
     Entity hashtagEntity = new Entity("chat-hashtags", hashtag.getName());
     hashtagEntity.setProperty("tagName", hashtag.getName());
-    hashtagEntity.setProperty("uuidList", 
-        Collections.asList(hashtag.getMessageIds()));
+    Collection<UUID> collection = hashtag.getMessageIds();
+    hashtagEntity.setProperty("uuidList", collection);
     datastore.put(hashtagEntity);
   }
 }
