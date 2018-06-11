@@ -23,6 +23,7 @@ public class User {
   private final String name;
   private final String passwordHash;
   private final Instant creation;
+  private final boolean isAdmin;
   private String aboutMe;
 
   /**
@@ -33,13 +34,15 @@ public class User {
    * @param passwordHash the password hash of this User
    * @param creation the creation time of this User
    * @param aboutMe the aboutMe of this User
+   * @param admin if the User is an admin or not
    */
-  public User(UUID id, String name, String passwordHash, Instant creation, String AboutMe) {
+  public User(UUID id, String name, String passwordHash, Instant creation, String aboutMe, boolean isAdmin) {
     this.id = id;
     this.name = name;
     this.passwordHash = passwordHash;
     this.creation = creation;
     this.aboutMe = aboutMe;
+    this.isAdmin = isAdmin;
   }
 
   /** Returns the ID of this User. */
@@ -60,6 +63,11 @@ public class User {
   /** Returns the creation time of this User. */
   public Instant getCreationTime() {
     return creation;
+  }
+  
+  /** Returns true if the user is an admin. */
+  public boolean isAdmin() {
+    return isAdmin;
   }
 
   public void setAboutMe(String aboutMe) {

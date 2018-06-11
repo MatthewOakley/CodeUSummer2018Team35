@@ -8,10 +8,17 @@
   <link rel="stylesheet" href="/css/main.css">
 </head>
 <body>
+  <!-- This is redirecting the user if they are not an admin -->
+  <%  if (request.getSession().getAttribute("user") == null ||
+            !(boolean)request.getSession().getAttribute("adminStatus")) {
+        String redirectURL = "http://localhost:8080/";
+        response.sendRedirect(redirectURL);
+      }
+  %>
   <nav>
     <a id="navTitle" href="/">CodeU Chat App</a>
     <a href="/conversations">Conversations</a>
-    <% if(request.getSession().getAttribute("user") != null) { %>
+    <% if (request.getSession().getAttribute("user") != null) { %>
       <a>Hello <%= request.getSession().getAttribute("user") %>!</a>
     <% } else { %>
       <a href="/login">Login</a>
@@ -25,19 +32,10 @@
   <!-- The stats about the web app -->
   <p> Stats about the web app </p>
   <ul id="stats">
-    <!-- 
-      TO-DO(Matthew Oakley) I am going to add checking the current stats
-      I just have this basic setup to get the users information and will
-      carry it over to the other stats
-    -->
-    <li>Users: <span id="users"><%= request.getAttribute("userCount") %></span></li>
-    <li>Conversations: <span id="conversations"><%= 
-        request.getAttribute("conversationCount") %></span></li>
-    <li>Messages: <span id="messages"><%= 
-        request.getAttribute("messageCount") %></span></li>
-    <li>Most active user: <span id="mostActive"></span></li>
-    <li>Newest User: <span id="newestUser"></span></li>
-    <li>Wordiest user: <span id="wordiestUser"></span></li>
+    <li>Users: <%= request.getAttribute("userCount") %></li>
+    <li>Conversations: <%= request.getAttribute("conversationCount") %></li>
+    <li>Messages: <%= request.getAttribute("messageCount") %></li>
+    <li>Newest User: <%= request.getAttribute("newestUser") %></li>
   </ul>
 </body>
 </html>

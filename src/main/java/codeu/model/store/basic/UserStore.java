@@ -20,6 +20,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
+import java.util.Comparator;
+import java.util.Collections;
 
 /**
  * Store class that uses in-memory data structures to hold values and automatically loads from and
@@ -138,6 +140,17 @@ public class UserStore {
   /** Returns the amount of users currently registrated. */
   public int getUserAmount() {
     return users.size();
+  }
+  
+  public String getNewestUser() {
+    if (users.isEmpty()) {
+      return "";
+    }
+    
+    // this will get the newest user
+    User newest = Collections.max(users, Comparator.comparing(User::getCreationTime));
+    
+    return newest.getName();
   }
 }
 

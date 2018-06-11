@@ -83,7 +83,11 @@ public class LoginServlet extends HttpServlet {
       return;
     }
 
+    // Here we know that the user exists so we check admin status
+    boolean adminStatus = user.isAdmin();
+    
     request.getSession().setAttribute("user", username);
+    request.getSession().setAttribute("adminStatus", adminStatus);
     response.sendRedirect("/conversations");
   }
 }
