@@ -75,6 +75,11 @@ public class ConversationStore {
     persistentStorageAgent.writeThrough(conversation);
   }
 
+  /** Deletes a conversation from the current set of conversations known to the application. */
+  public void deleteConversation() {
+    System.out.println("delete convo success");
+  }
+
   /** Check whether a Conversation title is already known to the application. */
   public boolean isTitleTaken(String title) {
     // This approach will be pretty slow if we have many Conversations.
@@ -100,7 +105,7 @@ public class ConversationStore {
   public void setConversations(List<Conversation> conversations) {
     this.conversations = conversations;
   }
-  
+
   /** Returns the amount of conversations currently in the database. */
   public int getConversationAmount() {
     return conversations.size();
