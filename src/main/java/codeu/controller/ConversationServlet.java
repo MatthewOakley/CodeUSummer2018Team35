@@ -99,6 +99,13 @@ public class ConversationServlet extends HttpServlet {
       return;
     }
 
+    String deleteConvo = request.getParameter("deleteConvoButton");
+    if (deleteConvo != null) {
+      System.out.println("delete convo success");
+      response.sendRedirect("/conversations");
+      return;
+    }
+
     String conversationTitle = request.getParameter("conversationTitle");
     if (!conversationTitle.matches("[\\w*]*")) {
       request.setAttribute("error", "Please enter only letters and numbers.");
@@ -117,6 +124,7 @@ public class ConversationServlet extends HttpServlet {
         new Conversation(UUID.randomUUID(), user.getId(), conversationTitle, Instant.now());
 
     conversationStore.addConversation(conversation);
+
     response.sendRedirect("/chat/" + conversationTitle);
   }
 }
