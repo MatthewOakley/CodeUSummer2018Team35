@@ -17,6 +17,7 @@ package codeu.model.store.persistence;
 import codeu.model.data.Conversation;
 import codeu.model.data.Message;
 import codeu.model.data.User;
+import codeu.model.data.Mention;
 import codeu.model.store.persistence.PersistentDataStore;
 import java.util.List;
 
@@ -89,6 +90,18 @@ public class PersistentStorageAgent {
     return persistentDataStore.loadMessages();
   }
 
+  /**
+   * Retrieve all Message objects from the Datastore service. The returned list may be empty.
+   *
+   * @throws PersistentDataStoreException if an error was detected during the load from the
+   *     Datastore service
+   */
+  public List<Mention> loadMentions() throws PersistentDataStoreException {
+    return persistentDataStore.loadMentions();
+  }
+
+
+
   /** Write a User object to the Datastore service. */
   public void writeThrough(User user) {
     persistentDataStore.writeThrough(user);
@@ -103,4 +116,10 @@ public class PersistentStorageAgent {
   public void writeThrough(Message message) {
     persistentDataStore.writeThrough(message);
   }
+
+    /** Write a Mention object to the Datastore service. */
+  public void writeThrough(Mention mention) {
+    persistentDataStore.writeThrough(mention);
+  }
+
 }
