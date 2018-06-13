@@ -50,7 +50,7 @@ public class ChatServlet extends HttpServlet {
   private UserStore userStore;
 
   /** Store class that gives access to Mentions. */
-  private UserStore MentionStore;
+  private UserStore mentionStore;
 
 
   /** Set up state for handling chat requests. */
@@ -60,7 +60,7 @@ public class ChatServlet extends HttpServlet {
     setConversationStore(ConversationStore.getInstance());
     setMessageStore(MessageStore.getInstance());
     setUserStore(UserStore.getInstance());
-    setMentionStore(MentionStore.getInstance());
+    setMentionStore(mentionStore.getInstance());
   }
 
   /**
@@ -91,8 +91,8 @@ public class ChatServlet extends HttpServlet {
    * Sets the MentionStore used by this servlet. This function provides a common setup method for use
    * by the test framework or the servlet's init() function.
    */
-  void setMentionStore(MentionStore MentionStore) {
-    this.MentionStore = MentionStore;
+  void setMentionStore(MentionStore mentionStore) {
+    this.mentionStore = mentionStore;
   }
 
   /**
