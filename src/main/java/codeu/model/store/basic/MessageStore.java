@@ -14,6 +14,7 @@
 
 package codeu.model.store.basic;
 
+import java.util.stream.Collectors;
 import codeu.model.data.Message;
 import codeu.model.store.persistence.PersistentStorageAgent;
 import java.util.ArrayList;
@@ -29,6 +30,9 @@ public class MessageStore {
 
   /** Singleton instance of MessageStore. */
   private static MessageStore instance;
+
+  /**  Evaluates to the length of /users/ */
+  private static final int USERNAME_INDEX = 7;
 
   /**
    * Returns the singleton instance of MessageStore that should be shared between all servlet
@@ -85,8 +89,19 @@ public class MessageStore {
     return messagesInConversation;
   }
 
+  /** Access the set of Messages sent by the user. */
+  public List<Message> getMessagesByUser(UUID author) {
+
+    return messages.stream().filter(m -> m.getAuthorId().equals(author)).collect(Collectors.toList());
+  }
+
   /** Sets the List of Messages stored by this MessageStore. */
   public void setMessages(List<Message> messages) {
     this.messages = messages;
+  }
+  
+  /** Returns the size of the messages */
+  public int getMessageCount() {
+    return messages.size();
   }
 }

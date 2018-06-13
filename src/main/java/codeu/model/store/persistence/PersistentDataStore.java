@@ -67,7 +67,9 @@ public class PersistentDataStore {
         String userName = (String) entity.getProperty("username");
         String passwordHash = (String) entity.getProperty("password_hash");
         Instant creationTime = Instant.parse((String) entity.getProperty("creation_time"));
-        User user = new User(uuid, userName, passwordHash, creationTime);
+        String aboutMe = (String) entity.getProperty("aboutMe");
+        boolean adminStatus = (boolean) entity.getProperty("adminStatus");
+        User user = new User(uuid, userName, passwordHash, creationTime, aboutMe, adminStatus);
         users.add(user);
       } catch (Exception e) {
         // In a production environment, errors should be very rare. Errors which may
@@ -136,8 +138,7 @@ public class PersistentDataStore {
         UUID authorUuid = UUID.fromString((String) entity.getProperty("author_uuid"));
         Instant creationTime = Instant.parse((String) entity.getProperty("creation_time"));
         String content = (String) entity.getProperty("content");
-        String mentionedUser = (String) entity.getProperty("mentionedUser");
-        Message message = new Message(uuid, conversationUuid, authorUuid, content, creationTime, mentionedUser);
+        Message message = new Message(uuid, conversationUuid, authorUuid, content, creationTime);
         messages.add(message);
       } catch (Exception e) {
         // In a production environment, errors should be very rare. Errors which may
@@ -157,6 +158,8 @@ public class PersistentDataStore {
     userEntity.setProperty("username", user.getName());
     userEntity.setProperty("password_hash", user.getPasswordHash());
     userEntity.setProperty("creation_time", user.getCreationTime().toString());
+    userEntity.setProperty("aboutMe", user.getAboutMe());
+    userEntity.setProperty("adminStatus", user.isAdmin());
     datastore.put(userEntity);
   }
 
@@ -181,4 +184,3 @@ public class PersistentDataStore {
     datastore.put(conversationEntity);
   }
 }
-
