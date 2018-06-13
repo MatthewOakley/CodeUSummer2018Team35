@@ -78,6 +78,7 @@ public class HashtagServlet extends HttpServlet {
       messages.add(messageStore.getMessageById(id));
     }
     
+    
     request.setAttribute("hashtagName", hashtag.getName());
     request.setAttribute("messages", messages);
     
