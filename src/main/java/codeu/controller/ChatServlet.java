@@ -31,6 +31,10 @@ import javax.servlet.http.HttpServletResponse;
 import org.jsoup.Jsoup;
 import org.jsoup.safety.Whitelist;
 import com.vdurmont.emoji.EmojiParser;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern; 
+import java.util.ArrayList;
+
 
 
 /** Servlet class responsible for the chat page. */
@@ -45,6 +49,10 @@ public class ChatServlet extends HttpServlet {
   /** Store class that gives access to Users. */
   private UserStore userStore;
 
+  /** Store class that gives access to Mentions. */
+  private UserStore MentionStore;
+
+
   /** Set up state for handling chat requests. */
   @Override
   public void init() throws ServletException {
@@ -52,6 +60,7 @@ public class ChatServlet extends HttpServlet {
     setConversationStore(ConversationStore.getInstance());
     setMessageStore(MessageStore.getInstance());
     setUserStore(UserStore.getInstance());
+    setMentionStore(MentionStore.getInstance());
   }
 
   /**
@@ -76,6 +85,14 @@ public class ChatServlet extends HttpServlet {
    */
   void setUserStore(UserStore userStore) {
     this.userStore = userStore;
+  }
+
+   /**
+   * Sets the MentionStore used by this servlet. This function provides a common setup method for use
+   * by the test framework or the servlet's init() function.
+   */
+  void setMentionStore(MentionStore MentionStore) {
+    this.MentionStore = MentionStore;
   }
 
   /**
@@ -147,24 +164,12 @@ public class ChatServlet extends HttpServlet {
     
     String cleanedAndEmojiMessage = EmojiParser.parseToUnicode(cleanedMessageContent);
 
-    String mentionedUser = "";
+    Pattern p = new regex("@[^@]+(\s|\n|$)");
 
-    int end = 0;
-
-    for (int i = 0; i < cleanedAndEmojiMessage.length(); i++){
-      if ((Character.toString(cleanedAndEmojiMessage.charAt(i))).equals("@")){
-        for (int j = i; j < cleanedAndEmojiMessage.length(); j++){
-          if ((Character.toString(cleanedAndEmojiMessage.charAt(j))).equals(" ")){
-            end = j; 
-          }
-
-        }
-      
-      mentionedUser = cleanedAndEmojiMessage.substring(i,end+i); 
-
-      }
-    } 
-
+    List<String> mentionedUsers = p.matches(cleanedAndEmojiMessage);
+  
+    Mention mention = 
+        new Mention()
 
     Message message =
         new Message(
@@ -172,8 +177,7 @@ public class ChatServlet extends HttpServlet {
             conversation.getId(),
             user.getId(),
             cleanedAndEmojiMessage,
-            Instant.now(),
-            mentionedUser);
+            Instant.now());
 
 
     messageStore.addMessage(message);
