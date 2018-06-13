@@ -28,7 +28,6 @@ public class Message {
   private final UUID author;
   private final String content;
   private final Instant creation;
-  private final String mentionedUser;
 
   /**
    * Constructs a new Message.
