@@ -22,7 +22,7 @@ import java.util.ArrayList;
 /** Class representing a mention. */
 public class Mention {
 
-  private List<UUID> conversation;
+  private List<UUID> conversationIds;
   private final String mentionedUser;
 
   /**
@@ -31,9 +31,15 @@ public class Mention {
    * @param id the ID of conversation
    * @param string of mentioned user
    */
-  public Mention(List<UUID> conversation, String mentionedUser) {
-    this.conversation = conversation;
-    this.mentionedUser = mentionedUser; 
+  public Mention(UUID conversationId, String mentionedUser) {
+    this.conversationIds = new ArrayList<UUID>(); 
+    this.conversationIds.add(conversationId);
+    this.mentionedUser = mentionedUser;
+  }
+
+public Mention(List<UUID> conversationIds, String mentionedUser) {
+    this.conversationIds = conversationIds; 
+    this.mentionedUser = mentionedUser;
   }
 
   /** Returns the ID of the Conversation this Message belongs to. */
