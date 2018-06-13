@@ -138,8 +138,7 @@ public class PersistentDataStore {
         UUID authorUuid = UUID.fromString((String) entity.getProperty("author_uuid"));
         Instant creationTime = Instant.parse((String) entity.getProperty("creation_time"));
         String content = (String) entity.getProperty("content");
-        String mentionedUser = (String) entity.getProperty("mentionedUser");
-        Message message = new Message(uuid, conversationUuid, authorUuid, content, creationTime, mentionedUser);
+        Message message = new Message(uuid, conversationUuid, authorUuid, content, creationTime);
         messages.add(message);
       } catch (Exception e) {
         // In a production environment, errors should be very rare. Errors which may
