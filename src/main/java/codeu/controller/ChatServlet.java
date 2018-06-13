@@ -34,7 +34,7 @@ import com.vdurmont.emoji.EmojiParser;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern; 
 import java.util.ArrayList;
-
+import codeu.model.store.basic.MentionStore;
 
 
 /** Servlet class responsible for the chat page. */
@@ -164,12 +164,14 @@ public class ChatServlet extends HttpServlet {
     
     String cleanedAndEmojiMessage = EmojiParser.parseToUnicode(cleanedMessageContent);
 
-    Pattern p = new regex("@[^@]+(\s|\n|$)");
+    Pattern p = new regex("@[^@]+(\\s|\\n|$)");
 
     List<String> mentionedUsers = p.matches(cleanedAndEmojiMessage);
   
     Mention mention = 
-        new Mention()
+        new Mention(
+          conversation.getId(), 
+          mentoinedUsers);
 
     Message message =
         new Message(

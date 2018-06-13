@@ -11,6 +11,7 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.package codeu.model.data;
+package codeu.model.data;
 
 import java.time.Instant;
 import java.util.UUID;
@@ -30,13 +31,13 @@ public class Mention {
    * @param id the ID of conversation
    * @param string of mentioned user
    */
-  public Mention(UUID conversation, String mentionedUser) {
+  public Mention(List<UUID> conversation, String mentionedUser) {
     this.conversation = conversation;
     this.mentionedUser = mentionedUser; 
   }
 
   /** Returns the ID of the Conversation this Message belongs to. */
-  public UUID getConversationId() {
+  public List<UUID> getConversationId() {
     return conversation;
   }
 

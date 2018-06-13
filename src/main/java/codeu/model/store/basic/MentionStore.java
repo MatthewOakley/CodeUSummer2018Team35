@@ -15,10 +15,14 @@
 package codeu.model.store.basic;
 
 import codeu.model.data.Mention;
+import codeu.model.data.Conversation;
 import codeu.model.store.persistence.PersistentStorageAgent;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
+import java.util.Comparator;
+import java.util.Collections;
 
 /**
  * Store class that uses in-memory data structures to hold values and automatically loads from and
@@ -85,28 +89,19 @@ public class MentionStore {
    * @return null if the UUID does not match any existing User.
    */
   public Mention getMention(UUID id) {
-    for (Mention mention : mentionss) {
-      if (mention.getConversationID().equals(id)) {
-        return user;
+    for (Mention mention : mentions) {
+      if (mention.getConversationId().equals(id)) {
+        return mention;
       }
     }
     return null;
-  }
-
-  /**
-   * Add a new user to the current set of users known to the application. This should only be called
-   * to add a new user, not to update an existing user.
-   */
-  public void addMention(Mention mention) {
-    mentions.add(mention);
-    persistentStorageAgent.writeThrough(mention);
   }
 
 
   /** Return true if the given username is known to the application. */
   public boolean doesMentionExist(String name) {
     for (Mention mention : mentions) {
-      if (mention.getName().equals(name)) {
+      if (mention.getMentionedUser().equals(name)) {
         return true;
       }
     }
