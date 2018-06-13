@@ -24,5 +24,8 @@
   </p>
   <!-- The stats about the web app -->
   <p> Your hashtag is <%= request.getAttribute("hashtag") %></p>
+  <!-- 
+  TO-DO(Matthew Oakley) I need to get the entire hashtag the user wants
+  then display all corresponding messages here -->
 </body>
 </html>

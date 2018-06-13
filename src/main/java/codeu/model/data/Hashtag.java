@@ -10,17 +10,18 @@ public class Hashtag {
   private final String hashtag;
   
   /** The list of message ids for this hashtag. */
-  private List<UUID> messageIds = new ArrayList<UUID>();
+  private List<UUID> messageIds;
   
   /** Setup the hashtag object */
   public Hashtag(String tag, UUID initialId) {
     this.hashtag = tag.toUpperCase();
-    messageIds.add(initialId);
+    this.messageIds = new ArrayList<UUID>();
+    this.messageIds.add(initialId);
   }
   
   /** Setup when making a hashtag from datastore */
   public Hashtag(String tag, List<UUID> messageIdsList) {
-    this.hashtag = tag;
+    this.hashtag = tag.toUpperCase();
     this.messageIds = messageIdsList;
   }
   
@@ -40,7 +41,7 @@ public class Hashtag {
     return hashtag;
   }
   
-  /** This will return an array of the ids that are linked ot this hashtag*/
+  /** This will return an array of the ids that are linked to this hashtag*/
   public List<UUID> getMessageIds() {
     return messageIds;
   }

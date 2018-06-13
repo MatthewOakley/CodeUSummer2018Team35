@@ -70,9 +70,13 @@ public class HashtagStore {
 
   /**
    * Add a new hashtag to the current set of hashtags known to the application. This should only be called
-   * to add a new hashtag, not to update an existing user.
+   * to add a new hashtag, not to update an existing hashtag.
    */
   public void addHashtag(Hashtag hashtag) {
+    if (doesHashtagExist(hashtag.getName())) {
+      return;
+    }
+    
     hashtags.add(hashtag);
     persistentStorageAgent.writeThrough(hashtag);
   }
@@ -81,7 +85,9 @@ public class HashtagStore {
    * Update an existing Hashtag.
    */
   public void updateHashtag(Hashtag hashtag) {
-    persistentStorageAgent.writeThrough(hashtag);
+    if (doesHashtagExist(hashtag.getName())) {
+      persistentStorageAgent.writeThrough(hashtag);
+    }
   }
 
   /** Return true if the given Hashtag exists. */

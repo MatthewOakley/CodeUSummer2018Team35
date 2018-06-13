@@ -171,8 +171,8 @@ public class PersistentDataStore {
 
     for (Entity entity : results.asIterable()) {
       try {
-        String tagName = (String) entity.getProperty("tagName");
-        List<String> messageIds = new ArrayList( (Collection<String>) entity.getProperty("uuidList"));
+        String tagName = (String) entity.getProperty("tag_name");
+        List<String> messageIds = new ArrayList( (Collection<String>) entity.getProperty("uuid_list"));
         List<UUID> messageIdsList = new ArrayList<UUID>();
         for (String uuid : messageIds){
           messageIdsList.add(UUID.fromString(uuid));
@@ -226,9 +226,9 @@ public class PersistentDataStore {
   /** Write a Hashtag object to the Datastore service. */
   public void writeThrough(Hashtag hashtag) {
     Entity hashtagEntity = new Entity("chat-hashtags", hashtag.getName());
-    hashtagEntity.setProperty("tagName", hashtag.getName());
+    hashtagEntity.setProperty("tag_name", hashtag.getName());
     Collection<UUID> collection = hashtag.getMessageIds();
-    hashtagEntity.setProperty("uuidList", collection);
+    hashtagEntity.setProperty("uuid_list", collection);
     datastore.put(hashtagEntity);
   }
 }

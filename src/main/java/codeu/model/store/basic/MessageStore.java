@@ -100,6 +100,17 @@ public class MessageStore {
     this.messages = messages;
   }
   
+  /** Get message by its unique id */
+  public Message getMessageById(UUID id) {
+    for (Message message : messages) {
+      if (message.getId().equals(id)) {
+        return message;
+      }
+    }
+    
+    return null;
+  }
+  
   /** Returns the size of the messages */
   public int getMessageCount() {
     return messages.size();
