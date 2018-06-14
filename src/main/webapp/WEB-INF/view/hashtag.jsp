@@ -3,7 +3,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Hashtag | <%= request.getAttribute("hashtag") %></title>
+  <title>Hashtag | <%= request.getAttribute("hashtagName") %></title>
   <link rel="stylesheet" href="/css/main.css">
 </head>
 <body>
@@ -17,11 +17,10 @@
     <% } %>
     <a href="/about.jsp">About</a>
   </nav>
-  <!-- to see if I made it to the right page -->
   <p>
     Welcome to the hashtag page!
   </p>
-  <!-- The stats about the web app -->
+  <!-- The current hashtag the user is on -->
   <p> Your hashtag is <%= request.getAttribute("hashtagName") %></p>
   <p> Messages: </p>
   <% List<Message> messages = (List<Message>)request.getAttribute("messages");
