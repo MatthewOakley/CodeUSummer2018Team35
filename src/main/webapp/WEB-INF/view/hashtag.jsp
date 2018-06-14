@@ -1,6 +1,5 @@
-<!-- 
-  hashtag.jsp
--->
+<%@ page import="java.util.List" %>
+<%@ page import="codeu.model.data.Message" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -24,8 +23,12 @@
   </p>
   <!-- The stats about the web app -->
   <p> Your hashtag is <%= request.getAttribute("hashtagName") %></p>
-  <!-- 
-  TO-DO(Matthew Oakley) I need to get the entire hashtag the user wants
-  then display all corresponding messages here -->
-</body>
+  <p> Messages: </p>
+  <% List<Message> messages = (List<Message>)request.getAttribute("messages");
+    for (Message message : messages) { %>
+    <p>
+    <%= message.getContent() %>
+    </p>
+  <% } %>
+  </body>
 </html>

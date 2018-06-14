@@ -16,6 +16,7 @@ import java.util.UUID;
 import java.util.Set;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.stream.Collectors;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -72,16 +73,17 @@ public class HashtagServlet extends HttpServlet {
 
     String tagName = requestUrl.substring(HASHTAG_INDEX);
 
+    tagName = tagName.toUpperCase();
+    
     Hashtag hashtag = hashtagStore.getHashtag(tagName);
     
     Set<UUID> messageIds = hashtag.getMessageIds();
     
-    // TO-DO(Matthew Oakley) Figure out why it is not working
-    //List<Message> messages = messageIds.stream().map(id -> messageStore.getMessageById(id)).collect(Collectors.toList());
+    List<Message> messages = messageIds.stream().map(id -> messageStore.getMessageById(id)).collect(Collectors.toList());
     
     
     request.setAttribute("hashtagName", hashtag.getName());
-    //request.setAttribute("messages", messages);
+    request.setAttribute("messages", messages);
     
     request.getRequestDispatcher("/WEB-INF/view/hashtag.jsp").forward(request, response);
   

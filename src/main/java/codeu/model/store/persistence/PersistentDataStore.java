@@ -33,6 +33,7 @@ import java.util.Set;
 import java.util.HashSet;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.stream.Collectors;
 
 
 /**
@@ -176,8 +177,7 @@ public class PersistentDataStore {
         String tagName = (String) entity.getProperty("tag_name");
         List<String> datastoreMessageIds = new ArrayList( (Collection<String>) entity.getProperty("uuid_list"));
         // TO-DO(Matthew Oakley) Get this bit of code to work
-        //List<UUID> messageIDs = messagesIds.stream()
-        //    .map(UUID::fromString).collect(Collectors.toList());
+        //List<UUID> messageIDs = messagesIds.stream().map(UUID::fromString).collect(Collectors.toList());
         Set<UUID> messageIds = new HashSet<UUID>();
         for (String uuid : datastoreMessageIds){
           messageIds.add(UUID.fromString(uuid));
@@ -232,8 +232,8 @@ public class PersistentDataStore {
   public void writeThrough(Hashtag hashtag) {
     Entity hashtagEntity = new Entity("chat_hashtags", hashtag.getName());
     hashtagEntity.setProperty("tag_name", hashtag.getName());
-    Collection<UUID> collection = hashtag.getMessageIds();
-    hashtagEntity.setProperty("uuid_list", collection);
+    Collection<String> messageIds = hashtag.getMessageIds().stream().map(id -> id.toString()).collect(Collectors.toList());
+    hashtagEntity.setProperty("uuid_list", messageIds);
     datastore.put(hashtagEntity);
   }
 }
