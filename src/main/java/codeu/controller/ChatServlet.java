@@ -17,12 +17,17 @@ package codeu.controller;
 import codeu.model.data.Conversation;
 import codeu.model.data.Message;
 import codeu.model.data.User;
+import codeu.model.data.Mention;
 import codeu.model.store.basic.ConversationStore;
 import codeu.model.store.basic.MessageStore;
 import codeu.model.store.basic.UserStore;
+import codeu.model.store.basic.MentionStore;
 import java.io.IOException;
 import java.time.Instant;
 import java.util.List;
+import java.util.ArrayList;
+import java.util.Set;
+import java.util.HashSet;
 import java.util.UUID;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -33,8 +38,11 @@ import org.jsoup.safety.Whitelist;
 import com.vdurmont.emoji.EmojiParser;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern; 
-import java.util.ArrayList;
-import codeu.model.store.basic.MentionStore;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.stream.Collectors;
+
+
 
 
 /** Servlet class responsible for the chat page. */
@@ -50,7 +58,7 @@ public class ChatServlet extends HttpServlet {
   private UserStore userStore;
 
   /** Store class that gives access to Mentions. */
-  private UserStore mentionStore;
+  private MentionStore mentionStore;
 
 
   /** Set up state for handling chat requests. */
@@ -60,7 +68,7 @@ public class ChatServlet extends HttpServlet {
     setConversationStore(ConversationStore.getInstance());
     setMessageStore(MessageStore.getInstance());
     setUserStore(UserStore.getInstance());
-    setMentionStore(mentionStore.getInstance());
+    setMentionStore(MentionStore.getInstance());
   }
 
   /**
@@ -159,23 +167,46 @@ public class ChatServlet extends HttpServlet {
 
     String messageContent = request.getParameter("message");
 
+    UUID messageUUID = UUID.randomUUID();
+
     // this removes any HTML from the message content
     String cleanedMessageContent = Jsoup.clean(messageContent, Whitelist.none());
     
     String cleanedAndEmojiMessage = EmojiParser.parseToUnicode(cleanedMessageContent);
 
-    Pattern p = new regex("@[^@]+(\\s|\\n|$)");
+    Pattern mentionPattern = Pattern.compile("@[^@]+(\\s|\\n|$)");
 
-    List<String> mentionedUsers = p.matches(cleanedAndEmojiMessage);
+    Matcher mentionMatch = mentionPattern.matcher(cleanedAndEmojiMessage);
+
+
+    Set<String> mentionedUsers = new HashSet<String>();
+
+    while (mentionMatch.find()) {
+      String mentionedUser = matcher.group();
+      mentionedUser = mentionedUser.trim();
+      mentionedUser = mentionedUser.substring(1);
+      mentionedUsers.add(mentionedUser);
+    }
+
+    for (String mentionedUser : mentionedUsers) {
+      mentionedUser  = mentionedUser.toUpperCase();
+      Mention currentMention = mentionStore.getMentionedUser(messageUUID, mentionedUser);
+      
+      if (currentMention == null) {
+        currentMention = new Mention (messageUUID, mentionedUser);
+        mentionStore.addMention(currentMention)
+      } else {
+        currentMention.addMessageId(messageUUID);
+        mentionStore.updateMention(currentMention);
+      }
+
+    }
+
+    }
   
-    Mention mention = 
-        new Mention(
-          conversation.getId(), 
-          mentoinedUsers);
-
     Message message =
         new Message(
-            UUID.randomUUID(),
+            messageUUID,
             conversation.getId(),
             user.getId(),
             cleanedAndEmojiMessage,

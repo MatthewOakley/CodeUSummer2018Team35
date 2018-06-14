@@ -172,7 +172,7 @@ public class PersistentDataStore {
       try {
         List<String> conversatoinIds = new ArrayList((Collection<String>) entity.getProperty("uuid_list")); 
         List<UUID> messageIdsList = new ArrayList<UUID>();
-        String mentionedUser = (String) entity.getProperty("Mentioned User")
+        String mentionedUser = (String) entity.getProperty("Mentioned User");
         
         for (String uuid: results.asIterable()) { 
           conversationIdsList.add(UUID.fromString(uuid));
@@ -224,7 +224,7 @@ public class PersistentDataStore {
     datastore.put(conversationEntity);
   }
 
-  /
+  /** Write a Conversation object to the Datastore service. */
   public void writeThrough(Mention mention) {
     Entity mentionEntity = new Entity("chat-mentions", mention.getId().toString());
     mentionEntity.setProperty("tag_name", hashtag.getName());
