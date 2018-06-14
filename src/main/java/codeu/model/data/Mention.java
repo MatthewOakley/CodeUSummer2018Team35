@@ -17,12 +17,14 @@ import java.time.Instant;
 import java.util.UUID;
 import java.util.List;
 import java.util.ArrayList;
+import java.util.Set;
+import java.util.HashSet;
 
 
 /** Class representing a mention. */
 public class Mention {
 
-  private List<UUID> conversationIds;
+  private Set<UUID> messageIds;
   private final String mentionedUser;
 
   /**
@@ -31,20 +33,25 @@ public class Mention {
    * @param id the ID of conversation
    * @param string of mentioned user
    */
-  public Mention(UUID conversationId, String mentionedUser) {
-    this.conversationIds = new ArrayList<UUID>(); 
-    this.conversationIds.add(conversationId);
+  public Mention(UUID messageId, String mentionedUser) {
+    this.messageIds = new HashSet<UUID>(); 
+    this.messageIds.add(messageId);
     this.mentionedUser = mentionedUser;
   }
 
-public Mention(List<UUID> conversationIds, String mentionedUser) {
-    this.conversationIds = conversationIds; 
+public Mention(Set<UUID> messageIds, String mentionedUser) {
+    this.messageIds = messageIds; 
     this.mentionedUser = mentionedUser;
   }
+
+public void addMessageId(UUID id) {
+  messageIds.add(id);
+  return;
+}
 
   /** Returns the ID of the Conversation this Message belongs to. */
-  public List<UUID> getConversationId() {
-    return conversation;
+  public Set<UUID> getMessageIds() {
+    return messageIds;
   }
 
  /** Returns mentioned user. */
