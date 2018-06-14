@@ -73,7 +73,7 @@ public class HashtagStore {
    * to add a new hashtag, not to update an existing hashtag.
    */
   public void addHashtag(Hashtag hashtag) {
-    if (doesHashtagExist(hashtag.getName())) {
+    if (isPresent(hashtag.getName())) {
       return;
     }
     
@@ -85,13 +85,13 @@ public class HashtagStore {
    * Update an existing Hashtag.
    */
   public void updateHashtag(Hashtag hashtag) {
-    if (doesHashtagExist(hashtag.getName())) {
+    if (isPresent(hashtag.getName())) {
       persistentStorageAgent.writeThrough(hashtag);
     }
   }
 
   /** Return true if the given Hashtag exists. */
-  public boolean doesHashtagExist(String name) {
+  public boolean isPresent(String name) {
     for (Hashtag hashtag : hashtags) {
       if (hashtag.getName().equals(name)) {
         return true;

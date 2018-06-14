@@ -29,6 +29,8 @@ import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
+import java.util.Set;
+import java.util.HashSet;
 import java.util.Collection;
 import java.util.Collections;
 
@@ -166,18 +168,21 @@ public class PersistentDataStore {
     List<Hashtag> hashtags = new ArrayList<>();
 
     // Retrieve all hashtags from the datastore.
-    Query query = new Query("chat-hashtags");
+    Query query = new Query("chat_hashtags");
     PreparedQuery results = datastore.prepare(query);
 
     for (Entity entity : results.asIterable()) {
       try {
         String tagName = (String) entity.getProperty("tag_name");
-        List<String> messageIds = new ArrayList( (Collection<String>) entity.getProperty("uuid_list"));
-        List<UUID> messageIdsList = new ArrayList<UUID>();
-        for (String uuid : messageIds){
-          messageIdsList.add(UUID.fromString(uuid));
+        List<String> datastoreMessageIds = new ArrayList( (Collection<String>) entity.getProperty("uuid_list"));
+        // TO-DO(Matthew Oakley) Get this bit of code to work
+        //List<UUID> messageIDs = messagesIds.stream()
+        //    .map(UUID::fromString).collect(Collectors.toList());
+        Set<UUID> messageIds = new HashSet<UUID>();
+        for (String uuid : datastoreMessageIds){
+          messageIds.add(UUID.fromString(uuid));
         }
-        Hashtag hashtag = new Hashtag(tagName, messageIdsList);
+        Hashtag hashtag = new Hashtag(tagName, messageIds);
         hashtags.add(hashtag);
       } catch (Exception e) {
         // In a production environment, errors should be very rare. Errors which may
@@ -225,7 +230,7 @@ public class PersistentDataStore {
 
   /** Write a Hashtag object to the Datastore service. */
   public void writeThrough(Hashtag hashtag) {
-    Entity hashtagEntity = new Entity("chat-hashtags", hashtag.getName());
+    Entity hashtagEntity = new Entity("chat_hashtags", hashtag.getName());
     hashtagEntity.setProperty("tag_name", hashtag.getName());
     Collection<UUID> collection = hashtag.getMessageIds();
     hashtagEntity.setProperty("uuid_list", collection);

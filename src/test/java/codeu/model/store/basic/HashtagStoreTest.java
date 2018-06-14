@@ -6,6 +6,8 @@ import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
+import java.util.Set;
+import java.util.HashSet;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -44,16 +46,16 @@ public class HashtagStoreTest {
   }
 
   @Test
-  public void testListConstructor() {
-    List<UUID> uuidList = new ArrayList<UUID>();
-    uuidList.add(UUID.randomUUID());
-    uuidList.add(UUID.randomUUID());
-    Hashtag listTag = new Hashtag("HASHTAG_LIST", uuidList);
+  public void testSetConstructor() {
+    Set<UUID> UUIDs = new HashSet<UUID>();
+    UUIDs.add(UUID.randomUUID());
+    UUIDs.add(UUID.randomUUID());
+    Hashtag setTag = new Hashtag("HASHTAG_SET", UUIDs);
     
-    hashtagStore.addHashtag(listTag);
-    Hashtag resultHashtag = hashtagStore.getHashtag("HASHTAG_LIST");
+    hashtagStore.addHashtag(setTag);
+    Hashtag resultHashtag = hashtagStore.getHashtag("HASHTAG_SET");
     
-    assertEquals(listTag, resultHashtag);
+    assertEquals(setTag, resultHashtag);
   }
   
   @Test
@@ -85,20 +87,20 @@ public class HashtagStoreTest {
   }
 
   @Test
-  public void testDoesHashtagExist_true() {
-    Assert.assertTrue(hashtagStore.doesHashtagExist(TAG_ONE.getName()));
+  public void testisPresent_true() {
+    Assert.assertTrue(hashtagStore.isPresent(TAG_ONE.getName()));
   }
 
   @Test
-  public void testDoesHashtagExist_false() {
-    Assert.assertFalse(hashtagStore.doesHashtagExist("fake hashtag"));
+  public void testisPresent_false() {
+    Assert.assertFalse(hashtagStore.isPresent("fake hashtag"));
   }
 
   private void assertEquals(Hashtag expectedHashtag, Hashtag actualHashtag) {
     Assert.assertEquals(expectedHashtag.getName(), actualHashtag.getName());
     
-    List<UUID> tagOne = expectedHashtag.getMessageIds();
-    List<UUID> tagTwo = actualHashtag.getMessageIds();
+    Set<UUID> tagOne = expectedHashtag.getMessageIds();
+    Set<UUID> tagTwo = actualHashtag.getMessageIds();
     
     for (UUID id : tagOne) {
       assert(tagTwo.contains(id));

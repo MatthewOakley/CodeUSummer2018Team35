@@ -13,6 +13,9 @@ import java.time.Instant;
 import java.util.List;
 import java.util.ArrayList;
 import java.util.UUID;
+import java.util.Set;
+import java.util.Collections;
+import java.util.Comparator;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -66,21 +69,19 @@ public class HashtagServlet extends HttpServlet {
       throws IOException, ServletException {
     
     String requestUrl = request.getRequestURI();
-    System.out.println(requestUrl);
+
     String tagName = requestUrl.substring(HASHTAG_INDEX);
-    System.out.println(tagName);
+
     Hashtag hashtag = hashtagStore.getHashtag(tagName);
     
-    List<UUID> idList = hashtag.getMessageIds();
-    List<Message> messages = new ArrayList<Message>();
+    Set<UUID> messageIds = hashtag.getMessageIds();
     
-    for (UUID id : idList) {
-      messages.add(messageStore.getMessageById(id));
-    }
+    // TO-DO(Matthew Oakley) Figure out why it is not working
+    //List<Message> messages = messageIds.stream().map(id -> messageStore.getMessageById(id)).collect(Collectors.toList());
     
     
     request.setAttribute("hashtagName", hashtag.getName());
-    request.setAttribute("messages", messages);
+    //request.setAttribute("messages", messages);
     
     request.getRequestDispatcher("/WEB-INF/view/hashtag.jsp").forward(request, response);
   

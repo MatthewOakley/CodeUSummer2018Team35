@@ -3,8 +3,11 @@ package codeu.model.data;
 
 import java.time.Instant;
 import java.util.UUID;
+import java.util.Set;
+import java.util.HashSet;
 import org.junit.Assert;
 import org.junit.Test;
+
 
 public class HashtagTest {
   @Test
@@ -15,8 +18,7 @@ public class HashtagTest {
     Hashtag tag = new Hashtag(name, messageId);
     
     Assert.assertEquals(name, tag.getName());
-    UUID returnedMessageId = (tag.getMessageIds()).get(0);
-    Assert.assertEquals(messageId, returnedMessageId);
+    assert(tag.getMessageIds().contains(messageId));
   }
   
   @Test
@@ -29,9 +31,7 @@ public class HashtagTest {
     tag.addMessageId(messageIdTwo);
     
     Assert.assertEquals(name, tag.getName());
-    UUID returnedMessageIdOne = tag.getMessageIds().get(0);
-    Assert.assertEquals(messageIdOne, returnedMessageIdOne);
-    UUID returnedMessageIdTwo = tag.getMessageIds().get(1);
-    Assert.assertEquals(messageIdTwo, returnedMessageIdTwo);
+    assert(tag.getMessageIds().contains(messageIdOne));
+    assert(tag.getMessageIds().contains(messageIdTwo));
   }
 }

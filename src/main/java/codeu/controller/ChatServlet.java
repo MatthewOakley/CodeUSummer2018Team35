@@ -26,6 +26,8 @@ import java.io.IOException;
 import java.time.Instant;
 import java.util.List;
 import java.util.ArrayList;
+import java.util.Set;
+import java.util.HashSet;
 import java.util.UUID;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -157,31 +159,42 @@ public class ChatServlet extends HttpServlet {
       return;
     }
     
-    
     String messageContent = request.getParameter("message");
 
+    UUID messageUUID = UUID.randomUUID();
+    
     // this removes any HTML from the message content
     String cleanedMessageContent = Jsoup.clean(messageContent, Whitelist.none());
     
     String cleanedAndEmojiMessage = EmojiParser.parseToUnicode(cleanedMessageContent);
 
-    Pattern hashtagPattern = Pattern.compile("[^#]+(\\s|\\n|$)");
+    Pattern hashtagPattern = Pattern.compile("(?:^|\\s|\\n)#([a-z\\d-]+)");
     
-    UUID messageUUID = UUID.randomUUID();
+    Matcher matcher = hashtagPattern.matcher(cleanedAndEmojiMessage);
     
-    List<String> hashtags = hashtagPattern.matches(cleanedAndEmojiMessage);
+    Set<String> hashtags = new HashSet<String>();
+    
+    while (matcher.find()) {
+      String tag = matcher.group();
+      tag = tag.trim();
+      tag = tag.substring(1);
+      hashtags.add(tag);
+    }
     
     for (String tag : hashtags) {
-      tag = tag.toUpperCase().trim();
+      tag = tag.toUpperCase();
       Hashtag currentTag = hashtagStore.getHashtag(tag);
       
       if (currentTag == null) {
         currentTag = new Hashtag(tag, messageUUID);
+        hashtagStore.addHashtag(currentTag);
       } else {
         currentTag.addMessageId(messageUUID);
         hashtagStore.updateHashtag(currentTag);
       }
+      
     }
+    
     
     Message message =
         new Message(
