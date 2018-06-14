@@ -89,9 +89,6 @@ public class Message {
     
   /** Adds reply sent by the user to message's list of replies */
   public void addReply(Message reply) {
-    System.out.println("Parent: " + this.getContent());
-    System.out.println("Reply: " + reply.getContent());
-      
     replies.add(reply);
   }
 }

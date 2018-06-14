@@ -137,8 +137,19 @@ public class PersistentDataStore {
         UUID authorUuid = UUID.fromString((String) entity.getProperty("author_uuid"));
         Instant creationTime = Instant.parse((String) entity.getProperty("creation_time"));
         String content = (String) entity.getProperty("content");
+        String parentId = (String) entity.getProperty("parent");
         Message message = new Message(uuid, conversationUuid, authorUuid, content, creationTime);
-        messages.add(message);
+        if (parentId != null) {
+          System.out.println("Reply: " + entity.getProperty("content"));
+          for (Message msg : messages) {
+            if (parentId.equals(msg.getId().toString())) {
+              msg.addReply(message);
+              break;
+            }
+          }
+        } else {
+          messages.add(message);
+        }
       } catch (Exception e) {
         // In a production environment, errors should be very rare. Errors which may
         // occur include network errors, Datastore service errors, authorization errors,
@@ -168,7 +179,21 @@ public class PersistentDataStore {
     messageEntity.setProperty("author_uuid", message.getAuthorId().toString());
     messageEntity.setProperty("content", message.getContent());
     messageEntity.setProperty("creation_time", message.getCreationTime().toString());
+    for (Message reply : message.getReplies()) {
+      datastore.put(getReplyEntity(message, reply));
+    }
     datastore.put(messageEntity);
+  }
+    
+  public Entity getReplyEntity(Message parent, Message reply) {
+    Entity messageEntity = new Entity("chat-messages", reply.getId().toString());
+    messageEntity.setProperty("uuid", reply.getId().toString());
+    messageEntity.setProperty("conv_uuid", reply.getConversationId().toString());
+    messageEntity.setProperty("author_uuid", reply.getAuthorId().toString());
+    messageEntity.setProperty("content", reply.getContent());
+    messageEntity.setProperty("creation_time", reply.getCreationTime().toString());
+    messageEntity.setProperty("parent", parent.getId().toString());
+    return messageEntity;
   }
 
   /** Write a Conversation object to the Datastore service. */

@@ -166,7 +166,7 @@ public class ChatServlet extends HttpServlet {
     if (isReply == null || isReply == false) {
       messageStore.addMessage(message);
     } else {
-      messageStore.getMessage(request.getParameter("messageId")).addReply(message);
+      messageStore.reply(messageStore.getMessage(request.getParameter("messageId")), message);
     }
 
     // redirect to a GET request

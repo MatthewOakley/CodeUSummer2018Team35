@@ -121,4 +121,9 @@ public class MessageStore {
     System.out.println("Original: " + message.getContent());
     System.out.println("Edit: " + edit);
   }
+    
+  public void reply(Message parent, Message reply) {
+    parent.addReply(reply);
+    persistentStorageAgent.writeThrough(parent);
+  }
 }
