@@ -183,7 +183,8 @@ public class PersistentDataStore {
     }
     datastore.put(messageEntity);
   }
-    
+
+  /** Creates an entity for a reply that contains the UUID of its parent. */
   public Entity getReplyEntity(Message parent, Message reply) {
     Entity messageEntity = new Entity("chat-messages", reply.getId().toString());
     messageEntity.setProperty("uuid", reply.getId().toString());

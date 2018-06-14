@@ -135,6 +135,8 @@ public class ChatServlet extends HttpServlet {
           
     String edit = request.getParameter("edit");
     if (edit != null) {
+      edit = Jsoup.clean(edit, Whitelist.none());
+      edit = EmojiParser.parseToUnicode(edit);
       messageStore.editMessage((String) request.getParameter("messageId"), edit);
       response.sendRedirect("/chat/" + conversationTitle);
       return;

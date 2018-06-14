@@ -14,11 +14,13 @@
 
 package codeu.model.store.basic;
 
+import java.time.Instant;
 import java.util.stream.Collectors;
 import codeu.model.data.Message;
 import codeu.model.store.persistence.PersistentStorageAgent;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.HashSet;
 import java.util.UUID;
 
 /**
@@ -79,10 +81,23 @@ public class MessageStore {
   public List<Message> getMessagesInConversation(UUID conversationId) {
 
     List<Message> messagesInConversation = new ArrayList<>();
+    HashSet<UUID>idSet = new HashSet<UUID>();
 
     for (Message message : messages) {
       if (message.getConversationId().equals(conversationId)) {
-        messagesInConversation.add(message);
+        if (!idSet.contains(message.getId())) {
+          idSet.add(message.getId());
+          messagesInConversation.add(message);
+        } else {
+          for (Message old : messagesInConversation) {
+            if (old.getId().equals(message.getId())
+                && old.getCreationTime().isBefore(message.getCreationTime())) {
+                messagesInConversation.remove(old);
+              messagesInConversation.add(message);
+              break;
+            }
+          }
+        }
       }
     }
 
@@ -115,13 +130,22 @@ public class MessageStore {
       return null;
   }
 
-  /** Changes message content to new string sent by the user. */
+  /** Creates new message from old with new content then persists it. */
   public void editMessage(String messageId, String edit) {
     Message message = getMessage(messageId);
-    System.out.println("Original: " + message.getContent());
-    System.out.println("Edit: " + edit);
-  }
+    Message editedMessage =
+    new Message(
+                message.getId(),
+                message.getConversationId(),
+                message.getAuthorId(),
+                edit,
+                Instant.now());
     
+    messages.add(editedMessage);
+    persistentStorageAgent.writeThrough(editedMessage);
+  }
+  
+  /** Adds reply to parent message and persists. */
   public void reply(Message parent, Message reply) {
     parent.addReply(reply);
     persistentStorageAgent.writeThrough(parent);
