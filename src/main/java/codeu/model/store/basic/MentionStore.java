@@ -15,7 +15,6 @@
 package codeu.model.store.basic;
 
 import codeu.model.data.Mention;
-import codeu.model.data.Conversation;
 import codeu.model.store.persistence.PersistentStorageAgent;
 import java.util.ArrayList;
 import java.util.List;
@@ -33,6 +32,9 @@ public class MentionStore {
 
   /** Singleton instance of MentionStore. */
   private static MentionStore instance;
+
+  /** The in-memory list of Mentions. */
+  private List<Mention> mentions;
 
   /**
    * Returns the singleton instance of MentionStore that should be shared between all servlet classes.
@@ -59,9 +61,6 @@ public class MentionStore {
    */
   private PersistentStorageAgent persistentStorageAgent;
 
-  /** The in-memory list of Mentions. */
-  private List<Mention> mentions;
-
   /** This class is a singleton, so its constructor is private. Call getInstance() instead. */
   private MentionStore(PersistentStorageAgent persistentStorageAgent) {
     this.persistentStorageAgent = persistentStorageAgent;
@@ -83,6 +82,24 @@ public class MentionStore {
     return null;
   }
 
+  /** Adds new emntion to current set of mentions.*/
+
+  public void addMention(Mention mention) {
+    if (isPresent(mention.getMentionedUser()){
+      return;
+    }
+    mentions.add(mention);
+    persistentStorageAgent.writeThrough(mention);
+  }
+
+/** Updates existing mention. */ 
+
+public void updateMention(Mention mention) {
+  if (isPresent(mention.getMentionedUser()){
+      persistentStorageAgent.writeThrough(mention);
+  } 
+}
+
   /**
    * Access the  object with the given UUID.
    *
@@ -99,7 +116,7 @@ public class MentionStore {
 
 
   /** Return true if the given username is known to the application. */
-  public boolean doesMentionExist(String name) {
+  public boolean isPresent(String name) {
     for (Mention mention : mentions) {
       if (mention.getMentionedUser().equals(name)) {
         return true;
