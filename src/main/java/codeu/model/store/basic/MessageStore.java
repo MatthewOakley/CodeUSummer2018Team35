@@ -92,7 +92,7 @@ public class MessageStore {
           for (Message old : messagesInConversation) {
             if (old.getId().equals(message.getId())
                 && old.getCreationTime().isBefore(message.getCreationTime())) {
-                messagesInConversation.remove(old);
+              messagesInConversation.remove(old);
               messagesInConversation.add(message);
               break;
             }
