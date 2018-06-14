@@ -31,6 +31,12 @@ import java.util.List;
 import java.util.UUID;
 import java.util.Collections;
 import java.util.Collection;
+import java.util.Set;
+import java.util.HashSet;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.stream.Collectors;
+
 /**
  * This class handles all interactions with Google App Engine's Datastore service. On startup it
  * sets the state of the applications's data objects from the current contents of its Datastore. It
@@ -170,14 +176,14 @@ public class PersistentDataStore {
 
     for (Entity entity : results.asIterable()) {
       try {
-        List<String> conversatoinIds = new ArrayList((Collection<String>) entity.getProperty("uuid_list")); 
-        List<UUID> messageIdsList = new ArrayList<UUID>();
-        String mentionedUser = (String) entity.getProperty("Mentioned User");
+        List<String> dataStoreMessageIds = new ArrayList((Collection<String>) entity.getProperty("uuid_list")); 
+        Set<UUID> messageIds = new HashSet<UUID>();
+        String mentionedUser = (String) entity.getProperty("mentioned_user");
         
-        for (String uuid: results.asIterable()) { 
-          conversationIdsList.add(UUID.fromString(uuid));
+        for (String uuid: dataStoreMessageIds) { 
+          messageIds.add(UUID.fromString(uuid));
         }
-        Mention mention = new Mention (conversationIdsList, mentionedUser);
+        Mention mention = new Mention (mentionIds, mentionedUser);
         mentions.add(mention);
 
       } catch (Exception e) {
@@ -226,14 +232,10 @@ public class PersistentDataStore {
 
   /** Write a Conversation object to the Datastore service. */
   public void writeThrough(Mention mention) {
-    Entity mentionEntity = new Entity("chat-mentions", mention.getId().toString());
-    mentionEntity.setProperty("tag_name", hashtag.getName());
-    userEntity.setProperty("uuid", user.getId().toString());
-    userEntity.setProperty("username", user.getName());
-    userEntity.setProperty("password_hash", user.getPasswordHash());
-    userEntity.setProperty("creation_time", user.getCreationTime().toString());
-    userEntity.setProperty("aboutMe", user.getAboutMe());
-    userEntity.setProperty("adminStatus", user.isAdmin());
-    datastore.put(userEntity);
+    Entity mentionEntity = new Entity("chat-mentions", mention.getMentionedUser());
+    mentionEntity.setProperty("mentioned_user", mention.getMentionedUser());
+    Collection<String> messageIds = mention.getMessageIds().stream().map(id -> id.toString()).collect(Collectors.toList());
+    mentionEntity.setProperty("uuid_list", messageIds);
+    datastore.put(mentionEntity);
   }
 }
