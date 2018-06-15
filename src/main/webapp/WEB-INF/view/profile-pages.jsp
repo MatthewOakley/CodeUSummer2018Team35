@@ -81,9 +81,26 @@
             <li><strong><%= author %>:</strong> <%=message.getStyledContent(message.getContent()) %></li>
         <% } %>
           </ul>
+          
+
+          <h3><%= request.getAttribute("username") %>'s Mentioned Messages</h2>
+            <div id="mentionedMessages">
+          <ul>
+        <% List<Message> messages = (List<Message>)request.getAttribute("messages");
+        
+        for (Message message : messages) { %>
+            <li><strong><%= message.getContent();
+        %>
+     
+        <% } %>
+          </ul>
+
+
         </div>
       <% } %>
     <% } %>
+
+
   </div>
 </body>
 </html>
