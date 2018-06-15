@@ -99,8 +99,8 @@ public class ConversationServlet extends HttpServlet {
       return;
     }
 
-    String deleteConvo = request.getParameter("deleteConvoButton");
-    if (deleteConvo != null) {
+    Boolean isDeleteConvo = Boolean.valueOf(request.getParameter("deleteConvo"));
+    if (isDeleteConvo == true) {
       conversationStore.deleteConversation();
       response.sendRedirect("/conversations");
       return;

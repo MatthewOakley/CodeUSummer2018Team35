@@ -75,7 +75,8 @@
         <a href="/chat/<%= conversation.getTitle() %>">
         <%= conversation.getTitle() %></a>
         <form action="/conversations" method="POST">
-          <input type="submit" name="deleteConvoButton" value="Delete">
+          <button type="submit">Delete Convo</button>
+          <input type="hidden" name="deleteConvo" value="true">
         </form>
       </li>
     <%

@@ -76,7 +76,8 @@ List<Message> messages = (List<Message>) request.getAttribute("messages");
       <li>
         <strong><%= author %>:</strong> <%= message.getStyledContent(message.getContent()) %>
         <form action="/chat/<%= conversation.getTitle() %>" method="POST">
-          <input type="submit" name="deleteButton" value="Delete">
+          <button type="submit">Delete</button>
+          <input type="hidden" name="delete" value="true">
         </form>
       </li>
     <%
