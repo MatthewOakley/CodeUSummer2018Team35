@@ -81,7 +81,6 @@ public class HashtagServlet extends HttpServlet {
     
     List<Message> messages = messageIds.stream().map(id -> messageStore.getMessageById(id)).collect(Collectors.toList());
     
-    
     request.setAttribute("hashtagName", hashtag.getName());
     request.setAttribute("messages", messages);
     

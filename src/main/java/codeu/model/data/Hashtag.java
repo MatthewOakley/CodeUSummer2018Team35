@@ -16,21 +16,20 @@ public class Hashtag {
   
   /** Setup the hashtag object */
   public Hashtag(String tag, UUID initialId) {
-    this.hashtag = tag.toUpperCase();
+    this.hashtag = tag;
     this.messageIds = new HashSet<UUID>();
     this.messageIds.add(initialId);
   }
   
   /** Setup when making a hashtag from datastore */
   public Hashtag(String tag, Set<UUID> messageIds) {
-    this.hashtag = tag.toUpperCase();
+    this.hashtag = tag;
     this.messageIds = messageIds;
   }
   
   /** This will add a message to the hashtag */
   public void addMessageId(UUID id) {
     messageIds.add(id);
-    return;
   }
   
   /** This will return the name of the hashtag */

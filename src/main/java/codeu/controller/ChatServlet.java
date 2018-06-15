@@ -195,7 +195,6 @@ public class ChatServlet extends HttpServlet {
       
     }
     
-    
     Message message =
         new Message(
             messageUUID,
@@ -203,7 +202,6 @@ public class ChatServlet extends HttpServlet {
             user.getId(),
             cleanedAndEmojiMessage,
             Instant.now());
-
 
     messageStore.addMessage(message);
 
