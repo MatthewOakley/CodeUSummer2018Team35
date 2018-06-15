@@ -182,25 +182,23 @@ public class ChatServlet extends HttpServlet {
     Set<String> mentionedUsers = new HashSet<String>();
 
     while (mentionMatch.find()) {
-      String mentionedUser = matcher.group();
+      String mentionedUser = mentionMatch.group();
       mentionedUser = mentionedUser.trim();
       mentionedUser = mentionedUser.substring(1);
       mentionedUsers.add(mentionedUser);
     }
 
     for (String mentionedUser : mentionedUsers) {
-      mentionedUser  = mentionedUser.toUpperCase();
-      Mention currentMention = mentionStore.getMentionedUser(messageUUID, mentionedUser);
+      //mentionedUser  = mentionedUser;
+      Mention currentMention = mentionStore.getMention(mentionedUser);
       
       if (currentMention == null) {
         currentMention = new Mention (messageUUID, mentionedUser);
-        mentionStore.addMention(currentMention)
+        mentionStore.addMention(currentMention);
       } else {
         currentMention.addMessageId(messageUUID);
         mentionStore.updateMention(currentMention);
       }
-
-    }
 
     }
   
