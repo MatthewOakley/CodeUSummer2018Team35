@@ -176,11 +176,7 @@ public class PersistentDataStore {
       try {
         String tagName = (String) entity.getProperty("tag_name");
         List<String> datastoreMessageIds = new ArrayList( (Collection<String>) entity.getProperty("uuid_list"));
-        Set<UUID> messageIds = datastoreMessageIds.stream().map(id -> UUID.fromString(id)).collectors(Collectors.toSet());
-        //Set<UUID> messageIds = new HashSet<UUID>();
-        //for (String uuid : datastoreMessageIds){
-          //messageIds.add(UUID.fromString(uuid));
-        //}
+        Set<UUID> messageIds = datastoreMessageIds.stream().map(id -> UUID.fromString(id)).collect(Collectors.toSet());
         Hashtag hashtag = new Hashtag(tagName, messageIds);
         hashtags.add(hashtag);
       } catch (Exception e) {
