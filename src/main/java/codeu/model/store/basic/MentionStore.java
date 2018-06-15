@@ -85,7 +85,7 @@ public class MentionStore {
   /** Adds new emntion to current set of mentions.*/
 
   public void addMention(Mention mention) {
-    if (isPresent(mention.getMentionedUser()){
+    if (isPresent(mention.getMentionedUser())){
       return;
     }
     mentions.add(mention);
@@ -95,7 +95,7 @@ public class MentionStore {
 /** Updates existing mention. */ 
 
 public void updateMention(Mention mention) {
-  if (isPresent(mention.getMentionedUser()){
+  if (isPresent(mention.getMentionedUser())){
       persistentStorageAgent.writeThrough(mention);
   } 
 }
@@ -107,7 +107,7 @@ public void updateMention(Mention mention) {
    */
   public Mention getMention(UUID id) {
     for (Mention mention : mentions) {
-      if (mention.getConversationId().equals(id)) {
+      if (mention.getMessageIds().equals(id)) {
         return mention;
       }
     }
