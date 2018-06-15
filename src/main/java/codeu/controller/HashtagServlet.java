@@ -70,21 +70,15 @@ public class HashtagServlet extends HttpServlet {
       throws IOException, ServletException {
     
     String requestUrl = request.getRequestURI();
-
     String tagName = requestUrl.substring(HASHTAG_INDEX);
-
     tagName = tagName.toUpperCase();
-    
     Hashtag hashtag = hashtagStore.getHashtag(tagName);
     
     Set<UUID> messageIds = hashtag.getMessageIds();
-    
     List<Message> messages = messageIds.stream().map(id -> messageStore.getMessageById(id)).collect(Collectors.toList());
     
     request.setAttribute("hashtagName", hashtag.getName());
     request.setAttribute("messages", messages);
-    
     request.getRequestDispatcher("/WEB-INF/view/hashtag.jsp").forward(request, response);
-  
   }
 }
