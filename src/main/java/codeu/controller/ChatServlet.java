@@ -175,9 +175,7 @@ public class ChatServlet extends HttpServlet {
     Set<String> hashtags = new HashSet<String>();
     
     while (matcher.find()) {
-      String tag = matcher.group();
-      tag = tag.trim();
-      tag = tag.substring(1);
+      String tag = matcher.group().trim().substring(1);
       hashtags.add(tag);
     }
     
