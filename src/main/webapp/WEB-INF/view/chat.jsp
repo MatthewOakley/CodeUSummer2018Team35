@@ -78,6 +78,7 @@ List<Message> messages = (List<Message>) request.getAttribute("messages");
         <form action="/chat/<%= conversation.getTitle() %>" method="POST">
           <button type="submit">Delete</button>
           <input type="hidden" name="delete" value="true">
+          <input type="hidden" name="messageId" value="<%= message.getId() %>">
         </form>
       </li>
     <%
