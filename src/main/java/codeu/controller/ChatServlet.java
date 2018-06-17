@@ -38,8 +38,6 @@ import org.jsoup.safety.Whitelist;
 import com.vdurmont.emoji.EmojiParser;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-import java.util.ArrayList;
-
 
 /** Servlet class responsible for the chat page. */
 public class ChatServlet extends HttpServlet {
@@ -190,7 +188,6 @@ public class ChatServlet extends HttpServlet {
         currentTag.addMessageId(messageUUID);
         hashtagStore.updateHashtag(currentTag);
       }
-      
     }
     
     Message message =
@@ -206,5 +203,4 @@ public class ChatServlet extends HttpServlet {
     // redirect to a GET request
     response.sendRedirect("/chat/" + conversationTitle);
   }
-
 }

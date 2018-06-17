@@ -91,7 +91,6 @@ public class MessageStore {
 
   /** Access the set of Messages sent by the user. */
   public List<Message> getMessagesByUser(UUID author) {
-
     return messages.stream().filter(m -> m.getAuthorId().equals(author)).collect(Collectors.toList());
   }
 
@@ -107,7 +106,6 @@ public class MessageStore {
         return message;
       }
     }
-    
     return null;
   }
   
