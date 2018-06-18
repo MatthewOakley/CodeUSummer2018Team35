@@ -108,4 +108,9 @@ public class PersistentStorageAgent {
   public void deleteThrough(Message message) {
     persistentDataStore.deleteThrough(message);
   }
+
+  /** Remove a Conversation object from the Datastore service. */
+  public void deleteThrough(Conversation conversation) {
+    persistentDataStore.deleteThrough(conversation);
+  }
 }

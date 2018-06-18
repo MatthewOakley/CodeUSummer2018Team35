@@ -189,4 +189,10 @@ public class PersistentDataStore {
     conversationEntity.setProperty("creation_time", conversation.getCreationTime().toString());
     datastore.put(conversationEntity);
   }
+
+  /** Remove a Conversation object from the Datastore service. */
+  public void deleteThrough(Conversation conversation){
+    Key conversationKey = KeyFactory.createKey("chat-conversations", conversation.getId().toString());
+    datastore.delete(conversationKey);
+  }
 }
