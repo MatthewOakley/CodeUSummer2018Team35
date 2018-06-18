@@ -76,16 +76,6 @@ public class MessageStore {
     persistentStorageAgent.writeThrough(message);
   }
 
-  /** Access the index of the current message by UUID. */
-  public int getIndexOfMessage(String messageId) {
-    for (Message message : messages) {
-      if (message.getId().toString().equals(messageId)) {
-          return messages.indexOf(message);
-      }
-    }
-    return -1;
-  }
-
   /** Access Message by UUID. */
   public Message getMessage(String messageId) {
     for (Message message : messages) {
@@ -97,8 +87,8 @@ public class MessageStore {
   }
 
   /** Deletes a message from the current set of messages known to the application. */
-  public void deleteMessage(Message message, String messageId) {
-    messages.remove(getIndexOfMessage(messageId));
+  public void deleteMessage(Message message) {
+    messages.remove(message);
     persistentStorageAgent.deleteThrough(message);
   }
 
