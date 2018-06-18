@@ -24,6 +24,8 @@ import com.google.appengine.api.datastore.Entity;
 import com.google.appengine.api.datastore.PreparedQuery;
 import com.google.appengine.api.datastore.Query;
 import com.google.appengine.api.datastore.Query.SortDirection;
+import com.google.appengine.api.datastore.Key;
+import com.google.appengine.api.datastore.KeyFactory;
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
@@ -169,6 +171,13 @@ public class PersistentDataStore {
     messageEntity.setProperty("content", message.getContent());
     messageEntity.setProperty("creation_time", message.getCreationTime().toString());
     datastore.put(messageEntity);
+
+  }
+
+  /** Remove a Message object from the Datastore service. */
+  public void deleteThrough(Message message){
+    Key messageKey = KeyFactory.createKey("chat-messages", message.getId().toString());
+    datastore.delete(messageKey);
   }
 
   /** Write a Conversation object to the Datastore service. */
