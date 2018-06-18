@@ -75,11 +75,13 @@ List<Message> messages = (List<Message>) request.getAttribute("messages");
     %>
       <li>
         <strong><%= author %>:</strong> <%= message.getStyledContent(message.getContent()) %>
-        <form action="/chat/<%= conversation.getTitle() %>" method="POST">
-          <button type="submit">Delete</button>
-          <input type="hidden" name="delete" value="true">
-          <input type="hidden" name="messageId" value="<%= message.getId() %>">
-        </form>
+        <% if (UserStore.getInstance().getUser(author).getName().equals(request.getSession().getAttribute("user"))) { %>
+          <form action="/chat/<%= conversation.getTitle() %>" method="POST">
+            <button type="submit">Delete</button>
+            <input type="hidden" name="delete" value="true">
+            <input type="hidden" name="messageId" value="<%= message.getId() %>">
+          </form>
+        <% } %>
       </li>
     <%
       }
