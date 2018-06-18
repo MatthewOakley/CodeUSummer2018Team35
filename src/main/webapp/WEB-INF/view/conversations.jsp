@@ -77,6 +77,7 @@
         <form action="/conversations" method="POST">
           <button type="submit">Delete Convo</button>
           <input type="hidden" name="deleteConvo" value="true">
+          <input type="hidden" name="conversationId" value="<%= conversation.getId() %>">
         </form>
       </li>
     <%

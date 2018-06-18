@@ -75,8 +75,19 @@ public class ConversationStore {
     persistentStorageAgent.writeThrough(conversation);
   }
 
+  /** Access Conversation by UUID. */
+  public Conversation getConversation(String conversationId) {
+    for (Conversation conversation : conversations) {
+      if (conversation.getId().toString().equals(conversationId)) {
+        return conversation;
+      }
+    }
+    return null;
+  }
+
   /** Deletes a conversation from the current set of conversations known to the application. */
-  public void deleteConversation() {
+  public void deleteConversation(Conversation conversation) {
+    conversations.remove(conversation);
     System.out.println("delete convo success");
   }
 
