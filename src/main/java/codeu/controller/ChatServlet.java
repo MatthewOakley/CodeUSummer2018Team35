@@ -158,16 +158,13 @@ public class ChatServlet extends HttpServlet {
     }
     
     String messageContent = request.getParameter("message");
-
     UUID messageUUID = UUID.randomUUID();
     
     // this removes any HTML from the message content
     String cleanedMessageContent = Jsoup.clean(messageContent, Whitelist.none());
-    
     String cleanedAndEmojiMessage = EmojiParser.parseToUnicode(cleanedMessageContent);
 
     Pattern hashtagPattern = Pattern.compile("(?:^|\\s|\\n)#([a-z\\d-]+)");
-    
     Matcher matcher = hashtagPattern.matcher(cleanedAndEmojiMessage);
     
     Set<String> hashtags = new HashSet<String>();
