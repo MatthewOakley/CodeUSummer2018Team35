@@ -142,7 +142,7 @@ public class ChatServlet extends HttpServlet {
 
     boolean shouldDelete = Boolean.valueOf(request.getParameter("delete"));
     if (shouldDelete) {
-      messageStore.deleteMessage(messageStore.getMessage(request.getParameter("messageId")));
+      messageStore.deleteMessage(messageStore.getMessage(UUID.fromString(request.getParameter("messageId"))));
       response.sendRedirect("/chat/" + conversationTitle);
       return;
     }
