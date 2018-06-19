@@ -69,11 +69,10 @@ public class MentionStore {
 
   /**
    * Access the Mention object with the given name.
-   *
-   * @return null if username does not match any existing User.
+   * @return null if username does not match any existing Mention
    */
-  public Mention getMention(String name) {
-    // This approach will be pretty slow if we have many users.
+  public Mention getMentionByName(String name) {
+    // This approach will be pretty slow if we have many mentions.
     for (Mention mention : mentions) {
       if (mention.getMentionedUser().equals(name)) {
         return mention;
@@ -82,8 +81,7 @@ public class MentionStore {
     return null;
   }
 
-  /** Adds new emntion to current set of mentions.*/
-
+  /** Adds new mention to current set of mentions.*/
   public void addMention(Mention mention) {
     if (isPresent(mention.getMentionedUser())){
       return;
@@ -93,19 +91,18 @@ public class MentionStore {
   }
 
 /** Updates existing mention. */ 
-
-public void updateMention(Mention mention) {
-  if (isPresent(mention.getMentionedUser())){
+  public void updateMention(Mention mention) {
+    if (isPresent(mention.getMentionedUser()))  {
       persistentStorageAgent.writeThrough(mention);
+    } 
   } 
-}
 
   /**
    * Access the  object with the given UUID.
    *
-   * @return null if the UUID does not match any existing User.
+   * @return null if the UUID does not match any existing Mention.
    */
-  public Mention getMention(UUID id) {
+  public Mention getMentionById(UUID id) {
     for (Mention mention : mentions) {
       if (mention.getMessageIds().equals(id)) {
         return mention;
@@ -115,7 +112,7 @@ public void updateMention(Mention mention) {
   }
 
 
-  /** Return true if the given username is known to the application. */
+  /** Return true if the given mention is known to the application. */
   public boolean isPresent(String name) {
     for (Mention mention : mentions) {
       if (mention.getMentionedUser().equals(name)) {

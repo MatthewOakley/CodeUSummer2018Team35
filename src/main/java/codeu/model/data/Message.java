@@ -37,7 +37,6 @@ public class Message {
    * @param author the ID of the User who sent this Message
    * @param content the text content of this Message
    * @param creation the creation time of this Message
-   * @param mentions in message
    */
   public Message(UUID id, UUID conversation, UUID author, String content, Instant creation) {
     this.id = id;

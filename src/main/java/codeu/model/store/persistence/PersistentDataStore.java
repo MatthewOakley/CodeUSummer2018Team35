@@ -183,7 +183,7 @@ public class PersistentDataStore {
         for (String uuid: dataStoreMessageIds) { 
           messageIds.add(UUID.fromString(uuid));
         }
-        Mention mention = new Mention (messageIds, mentionedUser);
+        Mention mention = new Mention(messageIds, mentionedUser);
         mentions.add(mention);
 
       } catch (Exception e) {

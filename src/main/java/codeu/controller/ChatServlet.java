@@ -43,8 +43,6 @@ import java.util.Comparator;
 import java.util.stream.Collectors;
 
 
-
-
 /** Servlet class responsible for the chat page. */
 public class ChatServlet extends HttpServlet {
 
@@ -59,7 +57,6 @@ public class ChatServlet extends HttpServlet {
 
   /** Store class that gives access to Mentions. */
   private MentionStore mentionStore;
-
 
   /** Set up state for handling chat requests. */
   @Override
@@ -178,28 +175,22 @@ public class ChatServlet extends HttpServlet {
 
     Matcher mentionMatch = mentionPattern.matcher(cleanedAndEmojiMessage);
 
-
     Set<String> mentionedUsers = new HashSet<String>();
 
     while (mentionMatch.find()) {
-      String mentionedUser = mentionMatch.group();
-      mentionedUser = mentionedUser.trim();
-      mentionedUser = mentionedUser.substring(1);
+      String mentionedUser = mentionMatch.group().trim().substring(1);
       mentionedUsers.add(mentionedUser);
     }
 
     for (String mentionedUser : mentionedUsers) {
-      //mentionedUser  = mentionedUser;
-      Mention currentMention = mentionStore.getMention(mentionedUser);
-      
+      Mention currentMention = mentionStore.getMentionByName(mentionedUser);
       if (currentMention == null) {
-        currentMention = new Mention (messageUUID, mentionedUser);
+        currentMention = new Mention(messageUUID, mentionedUser);
         mentionStore.addMention(currentMention);
       } else {
         currentMention.addMessageId(messageUUID);
         mentionStore.updateMention(currentMention);
       }
-
     }
   
     Message message =

@@ -39,15 +39,14 @@ public class Mention {
     this.mentionedUser = mentionedUser;
   }
 
-public Mention(Set<UUID> messageIds, String mentionedUser) {
+  public Mention(Set<UUID> messageIds, String mentionedUser) {
     this.messageIds = messageIds; 
     this.mentionedUser = mentionedUser;
   }
 
-public void addMessageId(UUID id) {
-  messageIds.add(id);
-  return;
-}
+  public void addMessageId(UUID id) {
+    messageIds.add(id);
+  }
 
   /** Returns the ID of the Conversation this Message belongs to. */
   public Set<UUID> getMessageIds() {
