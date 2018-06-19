@@ -28,7 +28,6 @@ public class MessageTest {
     UUID author = UUID.randomUUID();
     String content = "test content";
     Instant creation = Instant.now();
-    String mentionedUser = "test content";
 
     Message message = new Message(id, conversation, author, content, creation);
 

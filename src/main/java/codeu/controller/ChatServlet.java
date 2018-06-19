@@ -172,9 +172,7 @@ public class ChatServlet extends HttpServlet {
     String cleanedAndEmojiMessage = EmojiParser.parseToUnicode(cleanedMessageContent);
 
     Pattern mentionPattern = Pattern.compile("@[^@]+(\\s|\\n|$)");
-
     Matcher mentionMatch = mentionPattern.matcher(cleanedAndEmojiMessage);
-
     Set<String> mentionedUsers = new HashSet<String>();
 
     while (mentionMatch.find()) {
