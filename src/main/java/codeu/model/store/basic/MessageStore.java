@@ -91,13 +91,22 @@ public class MessageStore {
 
   /** Access the set of Messages sent by the user. */
   public List<Message> getMessagesByUser(UUID author) {
-
     return messages.stream().filter(m -> m.getAuthorId().equals(author)).collect(Collectors.toList());
   }
 
   /** Sets the List of Messages stored by this MessageStore. */
   public void setMessages(List<Message> messages) {
     this.messages = messages;
+  }
+  
+  /** Get message by its unique id */
+  public Message getMessageById(UUID id) {
+    for (Message message : messages) {
+      if (message.getId().equals(id)) {
+        return message;
+      }
+    }
+    return null;
   }
   
   /** Returns the size of the messages */
