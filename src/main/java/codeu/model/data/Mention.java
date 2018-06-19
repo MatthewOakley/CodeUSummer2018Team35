@@ -54,7 +54,7 @@ public class Mention {
   }
 
  /** Returns mentioned user. */
-  public String getMentionedUser(){
+  public String getMentionedUser() {
     return mentionedUser;
   }
 

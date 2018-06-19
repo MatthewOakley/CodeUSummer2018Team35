@@ -42,7 +42,6 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.stream.Collectors;
 
-
 /** Servlet class responsible for the chat page. */
 public class ChatServlet extends HttpServlet {
 
@@ -181,7 +180,7 @@ public class ChatServlet extends HttpServlet {
     }
 
     for (String mentionedUser : mentionedUsers) {
-      Mention currentMention = mentionStore.getMentionByName(mentionedUser);
+      Mention currentMention = mentionStore.getMention(mentionedUser);
       if (currentMention == null) {
         currentMention = new Mention(messageUUID, mentionedUser);
         mentionStore.addMention(currentMention);

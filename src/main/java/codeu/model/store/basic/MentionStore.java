@@ -71,7 +71,7 @@ public class MentionStore {
    * Access the Mention object with the given name.
    * @return null if username does not match any existing Mention
    */
-  public Mention getMentionByName(String name) {
+  public Mention getMention(String name) {
     // This approach will be pretty slow if we have many mentions.
     for (Mention mention : mentions) {
       if (mention.getMentionedUser().equals(name)) {
@@ -92,7 +92,7 @@ public class MentionStore {
 
 /** Updates existing mention. */ 
   public void updateMention(Mention mention) {
-    if (isPresent(mention.getMentionedUser()))  {
+    if (isPresent(mention.getMentionedUser())) {
       persistentStorageAgent.writeThrough(mention);
     } 
   } 
@@ -102,6 +102,7 @@ public class MentionStore {
    *
    * @return null if the UUID does not match any existing Mention.
    */
+
   public Mention getMentionById(UUID id) {
     for (Mention mention : mentions) {
       if (mention.getMessageIds().equals(id)) {
