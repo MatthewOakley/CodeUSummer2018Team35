@@ -176,13 +176,10 @@ public class PersistentDataStore {
 
     for (Entity entity : results.asIterable()) {
       try {
-        List<String> dataStoreMessageIds = new ArrayList((Collection<String>) entity.getProperty("uuid_list")); 
-        Set<UUID> messageIds = new HashSet<UUID>();
+        Set<String> dataStoreMessageIds = new HashSet<>((Collection<String>)
+          entity.getProperty("uuid_list")); 
+        Set<UUID> messageIds = dataStoreMessageIds.stream().map(id -> UUID.fromString(id)).collect(Collectors.toSet());
         String mentionedUser = (String) entity.getProperty("mentioned_user");
-        
-        for (String uuid: dataStoreMessageIds) { 
-          messageIds.add(UUID.fromString(uuid));
-        }
         Mention mention = new Mention(messageIds, mentionedUser);
         mentions.add(mention);
 
