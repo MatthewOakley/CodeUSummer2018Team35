@@ -83,7 +83,7 @@ public class MentionStore {
 
   /** Adds new mention to current set of mentions.*/
   public void addMention(Mention mention) {
-    if (isPresent(mention.getMentionedUser())){
+    if (isPresent(mention.getMentionedUser())) {
       return;
     }
     mentions.add(mention);
