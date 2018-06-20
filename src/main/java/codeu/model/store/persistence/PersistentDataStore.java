@@ -190,7 +190,6 @@ public class PersistentDataStore {
         throw new PersistentDataStoreException(e);
       }
     }
-
     return mentions;
   }
 
