@@ -72,8 +72,18 @@ List<Message> messages = (List<Message>) request.getAttribute("messages");
       for (Message message : messages) {
         String author = UserStore.getInstance()
           .getUser(message.getAuthorId()).getName();
+        String content = message.getContent();
+        String[] messageSplit = content.split(" ");
+        String output = "";
+        for (String word : messageSplit) {
+          if (word.charAt(0) == '#') {
+            word = "<a href='../../hashtag/" + word.substring(1) + "'>" 
+              + word + "</a>";
+          }
+          output = output + " " + word;
+        }
     %>
-      <li><strong><%= author %>:</strong> <%= message.getStyledContent(message.getContent()) %></li>
+      <li><strong><%= author %>:</strong> <%= message.getStyledContent(output) %></li>
     <%
       }
     %>
