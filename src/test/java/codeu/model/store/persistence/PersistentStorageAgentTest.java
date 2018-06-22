@@ -66,11 +66,30 @@ public class PersistentStorageAgentTest {
   }
 
   @Test
+  public void testDeleteThroughConversation() {
+    Conversation conversation =
+        new Conversation(UUID.randomUUID(), UUID.randomUUID(), "test_conversation", Instant.now());
+    persistentStorageAgent.writeThrough(conversation);
+    persistentStorageAgent.deleteThrough(conversation);
+    Mockito.verify(mockPersistentDataStore).deleteThrough(conversation);
+  }
+
+  @Test
   public void testWriteThroughMessage() {
     Message message =
         new Message(
             UUID.randomUUID(), UUID.randomUUID(), UUID.randomUUID(), "test content", Instant.now());
     persistentStorageAgent.writeThrough(message);
     Mockito.verify(mockPersistentDataStore).writeThrough(message);
+  }
+
+  @Test
+  public void testDeleteThroughMessage() {
+    Message message =
+        new Message(
+            UUID.randomUUID(), UUID.randomUUID(), UUID.randomUUID(), "test content", Instant.now());
+    persistentStorageAgent.writeThrough(message);
+    persistentStorageAgent.deleteThrough(message);
+    Mockito.verify(mockPersistentDataStore).deleteThrough(message);
   }
 }
