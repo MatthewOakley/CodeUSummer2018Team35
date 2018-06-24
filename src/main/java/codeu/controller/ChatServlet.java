@@ -165,10 +165,11 @@ public class ChatServlet extends HttpServlet {
             Instant.now());
 
     Boolean isReply = Boolean.valueOf(request.getParameter("reply"));
-    if (isReply == null || isReply == false) {
+    if (isReply == null || !isReply) {
       messageStore.addMessage(message);
     } else {
-      messageStore.reply(messageStore.getMessage(request.getParameter("messageId")), message);
+      messageStore.reply(messageStore.getMessage(UUID.fromString(request.getParameter("messageId"))),
+                         message);
     }
 
     // redirect to a GET request

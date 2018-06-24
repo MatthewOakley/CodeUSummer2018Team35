@@ -140,9 +140,9 @@ public class PersistentDataStore {
         String parentId = (String) entity.getProperty("parent");
         Message message = new Message(uuid, conversationUuid, authorUuid, content, creationTime);
         if (parentId != null) {
-          for (Message msg : messages) {
-            if (parentId.equals(msg.getId().toString())) {
-              msg.addReply(message);
+          for (Message parent : messages) {
+            if (parentId.equals(parent.getId().toString())) {
+              parent.addReply(message);
               break;
             }
           }
