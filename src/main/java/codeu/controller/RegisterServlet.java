@@ -51,7 +51,7 @@ public class RegisterServlet extends HttpServlet {
     String password = request.getParameter("password");
     boolean isAttack = false;
     
-    if (username.contains(';') || username.contains("'") || username.contains('"')) {
+    if (username.contains(";") || username.contains("'") || username.contains("\"")) {
       isAttack = true;
       request.getRequestDispatcher("/WEB-INF/view/register.jsp").forward(request, response);
       
