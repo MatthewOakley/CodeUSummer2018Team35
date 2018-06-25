@@ -30,12 +30,14 @@
     Welcome to the admin page!
   </p>
   <!-- The stats about the web app -->
+  <!-- TO-DO(Matthew Oakley) get the number of attacks that have happened -->
   <p> Stats about the web app </p>
   <ul id="stats">
     <li>Users: <%= request.getAttribute("userCount") %></li>
     <li>Conversations: <%= request.getAttribute("conversationCount") %></li>
     <li>Messages: <%= request.getAttribute("messageCount") %></li>
     <li>Newest User: <%= request.getAttribute("newestUser") %></li>
+    <li>Number of Attacks: </li>
   </ul>
 </body>
 </html>
