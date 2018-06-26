@@ -14,6 +14,7 @@
 
 package codeu.model.store.basic;
 
+import java.time.Instant;
 import java.util.stream.Collectors;
 import codeu.model.data.Message;
 import codeu.model.store.persistence.PersistentStorageAgent;
@@ -73,6 +74,22 @@ public class MessageStore {
   public void addMessage(Message message) {
     messages.add(message);
     persistentStorageAgent.writeThrough(message);
+  }
+
+  /** Access Message by UUID. */
+  public Message getMessage(UUID messageId) {
+    for (Message message : messages) {
+      if (message.getId().equals(messageId)) {
+        return message;
+      }
+    }
+    return null;
+  }
+
+  /** Deletes a message from the current set of messages known to the application. */
+  public void deleteMessage(Message message) {
+    messages.remove(message);
+    persistentStorageAgent.deleteThrough(message);
   }
 
   /** Access the current set of Messages within the given Conversation. */

@@ -157,11 +157,19 @@ public class ChatServlet extends HttpServlet {
       return;
     }
     
+    boolean shouldDelete = Boolean.valueOf(request.getParameter("delete"));
+    if (shouldDelete) {
+      messageStore.deleteMessage(messageStore.getMessage(UUID.fromString(request.getParameter("messageId"))));
+      response.sendRedirect("/chat/" + conversationTitle);
+      return;
+    }
+    
     String messageContent = request.getParameter("message");
     UUID messageUUID = UUID.randomUUID();
     
     // this removes any HTML from the message content
     String cleanedMessageContent = Jsoup.clean(messageContent, Whitelist.none());
+
     String cleanedAndEmojiMessage = EmojiParser.parseToUnicode(cleanedMessageContent);
 
     Pattern hashtagPattern = Pattern.compile("(?:^|\\s|\\n)#([a-z\\d-]+)");
