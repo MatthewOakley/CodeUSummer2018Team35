@@ -18,6 +18,7 @@ import codeu.model.data.Conversation;
 import codeu.model.data.Message;
 import codeu.model.data.User;
 import codeu.model.data.Mention;
+import codeu.model.data.Hashtag;
 import codeu.model.store.persistence.PersistentDataStoreException;
 import com.google.appengine.api.datastore.DatastoreService;
 import com.google.appengine.api.datastore.DatastoreServiceFactory;
@@ -25,12 +26,12 @@ import com.google.appengine.api.datastore.Entity;
 import com.google.appengine.api.datastore.PreparedQuery;
 import com.google.appengine.api.datastore.Query;
 import com.google.appengine.api.datastore.Query.SortDirection;
+import com.google.appengine.api.datastore.Key;
+import com.google.appengine.api.datastore.KeyFactory;
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
-import java.util.Collections;
-import java.util.Collection;
 import java.util.Set;
 import java.util.HashSet;
 import java.util.Collection;
@@ -162,7 +163,6 @@ public class PersistentDataStore {
   /**
    * Loads all Mention objects from the Datastore service and returns them in a List, sorted in
    * ascending order by creation time.
-   *
    * @throws PersistentDataStoreException if an error was detected during the load from the
    *     Datastore service
    */
@@ -172,17 +172,48 @@ public class PersistentDataStore {
 
     // Retrieve all messages from the datastore.
     Query query = new Query("chat-mentions");
+  
+      for (Entity entity : results.asIterable()) {
+          try {
+
+            Set<String> dataStoreMessageIds = new HashSet<>((Collection<String>)
+              entity.getProperty("uuid_list")); 
+            Set<UUID> messageIds = dataStoreMessageIds.stream().map(id -> UUID.fromString(id)).collect(Collectors.toSet());
+            String mentionedUser = (String) entity.getProperty("mentioned_user");
+            Mention mention = new Mention(messageIds, mentionedUser);
+            mentions.add(mention);
+            
+        } catch (Exception e) {
+        // In a production environment, errors should be very rare. Errors which may
+        // occur include network errors, Datastore service errors, authorization errors,
+        // database entity definition mismatches, or service mismatches.
+        throw new PersistentDataStoreException(e);
+      }
+    }
+  return message; 
+}
+  
+   /**
+   * Loads all Hashtag objects from the Datastore service and returns them in a List.
+   * @throws PersistentDataStoreException if an error was detected during the load from the
+   *     Datastore service
+   */
+  public List<Hashtag> loadHashtags() throws PersistentDataStoreException {
+
+    List<Hashtag> hashtags = new ArrayList<>();
+
+    // Retrieve all hashtags from the datastore.
+    Query query = new Query("chat_hashtags");
+
     PreparedQuery results = datastore.prepare(query);
 
     for (Entity entity : results.asIterable()) {
       try {
-        Set<String> dataStoreMessageIds = new HashSet<>((Collection<String>)
-          entity.getProperty("uuid_list")); 
-        Set<UUID> messageIds = dataStoreMessageIds.stream().map(id -> UUID.fromString(id)).collect(Collectors.toSet());
-        String mentionedUser = (String) entity.getProperty("mentioned_user");
-        Mention mention = new Mention(messageIds, mentionedUser);
-        mentions.add(mention);
-
+        String tagName = (String) entity.getProperty("tag_name");
+        List<String> datastoreMessageIds = new ArrayList( (Collection<String>) entity.getProperty("uuid_list"));
+        Set<UUID> messageIds = datastoreMessageIds.stream().map(id -> UUID.fromString(id)).collect(Collectors.toSet());
+        Hashtag hashtag = new Hashtag(tagName, messageIds);
+        hashtags.add(hashtag);
       } catch (Exception e) {
         // In a production environment, errors should be very rare. Errors which may
         // occur include network errors, Datastore service errors, authorization errors,
@@ -190,7 +221,7 @@ public class PersistentDataStore {
         throw new PersistentDataStoreException(e);
       }
     }
-    return mentions;
+    return hashtags;
   }
 
   /** Write a User object to the Datastore service. */
@@ -214,6 +245,13 @@ public class PersistentDataStore {
     messageEntity.setProperty("content", message.getContent());
     messageEntity.setProperty("creation_time", message.getCreationTime().toString());
     datastore.put(messageEntity);
+
+  }
+
+  /** Remove a Message object from the Datastore service. */
+  public void deleteThrough(Message message){
+    Key messageKey = KeyFactory.createKey("chat-messages", message.getId().toString());
+    datastore.delete(messageKey);
   }
 
   /** Write a Conversation object to the Datastore service. */
@@ -235,3 +273,20 @@ public class PersistentDataStore {
     datastore.put(mentionEntity);
   }
 }
+
+  /** Remove a Conversation object from the Datastore service. */
+  public void deleteThrough(Conversation conversation){
+    Key conversationKey = KeyFactory.createKey("chat-conversations", conversation.getId().toString());
+    datastore.delete(conversationKey);
+  }
+
+  /** Write a Hashtag object to the Datastore service. */
+  public void writeThrough(Hashtag hashtag) {
+    Entity hashtagEntity = new Entity("chat_hashtags", hashtag.getName());
+    hashtagEntity.setProperty("tag_name", hashtag.getName());
+    Collection<String> messageIds = hashtag.getMessageIds().stream().map(id -> id.toString()).collect(Collectors.toList());
+    hashtagEntity.setProperty("uuid_list", messageIds);
+    datastore.put(hashtagEntity);
+  }
+}
+
