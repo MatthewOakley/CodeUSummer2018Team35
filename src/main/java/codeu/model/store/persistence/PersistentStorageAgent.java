@@ -17,6 +17,7 @@ package codeu.model.store.persistence;
 import codeu.model.data.Conversation;
 import codeu.model.data.Message;
 import codeu.model.data.User;
+import codeu.model.data.Hashtag;
 import codeu.model.store.persistence.PersistentDataStore;
 import java.util.List;
 
@@ -88,6 +89,16 @@ public class PersistentStorageAgent {
   public List<Message> loadMessages() throws PersistentDataStoreException {
     return persistentDataStore.loadMessages();
   }
+  
+  /**
+   * Retrieve all Hashtag objects from the Datastore service. The returned list may be empty.
+   *
+   * @throws PersistentDataStoreException if an error was detected during the load from the
+   *     Datastore service
+   */
+  public List<Hashtag> loadHashtags() throws PersistentDataStoreException {
+    return persistentDataStore.loadHashtags();
+  }
 
   /** Write a User object to the Datastore service. */
   public void writeThrough(User user) {
@@ -112,5 +123,9 @@ public class PersistentStorageAgent {
   /** Remove a Conversation object from the Datastore service. */
   public void deleteThrough(Conversation conversation) {
     persistentDataStore.deleteThrough(conversation);
+  
+  /** Write a Hashtag object to the Datastore service. */
+  public void writeThrough(Hashtag hashtag) {
+    persistentDataStore.writeThrough(hashtag);
   }
 }
