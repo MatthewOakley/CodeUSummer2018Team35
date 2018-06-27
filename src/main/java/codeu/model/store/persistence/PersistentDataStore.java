@@ -170,27 +170,28 @@ public class PersistentDataStore {
 
     List<Mention> mentions = new ArrayList<>();
 
-    // Retrieve all messages from the datastore.
+    // Retrieve all mentions from the datastore.
     Query query = new Query("chat-mentions");
   
-      for (Entity entity : results.asIterable()) {
-          try {
-
-            Set<String> dataStoreMessageIds = new HashSet<>((Collection<String>)
+    PreparedQuery results = datastore.prepare(query);
+  
+    for (Entity entity : results.asIterable()) {
+      try {
+        Set<String> dataStoreMessageIds = new HashSet<>((Collection<String>)
               entity.getProperty("uuid_list")); 
-            Set<UUID> messageIds = dataStoreMessageIds.stream().map(id -> UUID.fromString(id)).collect(Collectors.toSet());
-            String mentionedUser = (String) entity.getProperty("mentioned_user");
-            Mention mention = new Mention(messageIds, mentionedUser);
-            mentions.add(mention);
+        Set<UUID> messageIds = dataStoreMessageIds.stream().map(id -> UUID.fromString(id)).collect(Collectors.toSet());
+        String mentionedUser = (String) entity.getProperty("mentioned_user");
+        Mention mention = new Mention(messageIds, mentionedUser);
+        mentions.add(mention);
             
-        } catch (Exception e) {
+      } catch (Exception e) {
         // In a production environment, errors should be very rare. Errors which may
         // occur include network errors, Datastore service errors, authorization errors,
         // database entity definition mismatches, or service mismatches.
         throw new PersistentDataStoreException(e);
       }
     }
-  return message; 
+  return mentions; 
 }
   
    /**
@@ -272,7 +273,6 @@ public class PersistentDataStore {
     mentionEntity.setProperty("uuid_list", messageIds);
     datastore.put(mentionEntity);
   }
-}
 
   /** Remove a Conversation object from the Datastore service. */
   public void deleteThrough(Conversation conversation){
