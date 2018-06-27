@@ -18,6 +18,7 @@ import codeu.model.data.Conversation;
 import codeu.model.store.persistence.PersistentStorageAgent;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 /**
  * Store class that uses in-memory data structures to hold values and automatically loads from and
@@ -75,6 +76,22 @@ public class ConversationStore {
     persistentStorageAgent.writeThrough(conversation);
   }
 
+  /** Access Conversation by UUID. */
+  public Conversation getConversation(UUID conversationId) {
+    for (Conversation conversation : conversations) {
+      if (conversation.getId().equals(conversationId)) {
+        return conversation;
+      }
+    }
+    return null;
+  }
+
+  /** Deletes a conversation from the current set of conversations known to the application. */
+  public void deleteConversation(Conversation conversation) {
+    conversations.remove(conversation);
+    persistentStorageAgent.deleteThrough(conversation);
+  }
+
   /** Check whether a Conversation title is already known to the application. */
   public boolean isTitleTaken(String title) {
     // This approach will be pretty slow if we have many Conversations.
@@ -100,7 +117,7 @@ public class ConversationStore {
   public void setConversations(List<Conversation> conversations) {
     this.conversations = conversations;
   }
-  
+
   /** Returns the amount of conversations currently in the database. */
   public int getConversationAmount() {
     return conversations.size();
