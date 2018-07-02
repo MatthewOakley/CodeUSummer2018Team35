@@ -90,6 +90,8 @@ public class AdminServlet extends HttpServlet {
     String newestUser = userStore.getNewestUser();
     request.setAttribute("newestUser", newestUser);
     
+    /** TO-DO(Matthew Oakley) get the number of attacks on the website */
+    
     request.getRequestDispatcher("/WEB-INF/view/admin.jsp").forward(request, response);
   }
 }
