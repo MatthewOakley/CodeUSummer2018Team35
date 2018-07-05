@@ -90,28 +90,12 @@ public class MentionStore {
     persistentStorageAgent.writeThrough(mention);
   }
 
-/** Updates existing mention. */ 
+  /** Updates existing mention. */ 
   public void updateMention(Mention mention) {
     if (isPresent(mention.getMentionedUser())) {
       persistentStorageAgent.writeThrough(mention);
     } 
   } 
-
-  /**
-   * Access the  object with the given UUID.
-   *
-   * @return null if the UUID does not match any existing Mention.
-   */
-
-  public Mention getMentionById(UUID id) {
-    for (Mention mention : mentions) {
-      if (mention.getMessageIds().equals(id)) {
-        return mention;
-      }
-    }
-    return null;
-  }
-
 
   /** Return true if the given mention is known to the application. */
   public boolean isPresent(String name) {

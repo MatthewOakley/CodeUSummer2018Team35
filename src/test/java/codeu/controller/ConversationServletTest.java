@@ -188,7 +188,8 @@ public class ConversationServletTest {
             "test_username",
             "$2a$10$eDhncK/4cNH2KE.Y51AWpeL8/5znNBQLuAFlyJpSYNODR/SJQ/Fg6",
             Instant.now(),
-            "test_aboutme");
+            "test_aboutme",
+            false);
     Mockito.when(mockUserStore.getUser("test_username")).thenReturn(fakeUser);
 
     UUID conversationId = UUID.randomUUID();

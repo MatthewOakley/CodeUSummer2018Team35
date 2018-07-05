@@ -31,7 +31,7 @@ public class MentionTest {
     
     Mention mention = new Mention(messageId, mentionedUser);
 
-    Assert.assertEquals(mention.getMessageIds().contains(messageId));
+    assert(mention.getMessageIds().contains(messageId));
     Assert.assertEquals(mentionedUser, mention.getMentionedUser());
   }
 }
