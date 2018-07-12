@@ -31,7 +31,22 @@ public class MentionTest {
     
     Mention mention = new Mention(messageId, mentionedUser);
 
-    Assert.assertEquals(mention.getMessageIds().contains(messageId));
-    Assert.assertEquals(mentionedUser, mention.getMentionedUser());
+    
+    Assert.assertEquals(mentionedUser, mention.getName());
+    assert(mention.getMessageIds().contains(messageId));
+  }
+
+  @Test
+ public void addId() {
+    UUID messageIdOne = UUID.randomUUID();
+    String name = "@test";
+    
+    Mention mention = new Mention(messageIdOne, name);
+    UUID messageIdTwo = UUID.randomUUID();
+    mention.addMessageId(messageIdTwo);
+    
+    Assert.assertEquals(name, mention.getName());
+    assert(mention.getMessageIds().contains(messageIdOne));
+    assert(mention.getMessageIds().contains(messageIdTwo));
   }
 }

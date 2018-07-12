@@ -147,7 +147,8 @@ public class PersistentDataStore {
         UUID authorUuid = UUID.fromString((String) entity.getProperty("author_uuid"));
         Instant creationTime = Instant.parse((String) entity.getProperty("creation_time"));
         String content = (String) entity.getProperty("content");
-        Message message = new Message(uuid, conversationUuid, authorUuid, content, creationTime);
+        String type = (String) entity.getProperty("type");
+        Message message = new Message(uuid, conversationUuid, authorUuid, content, creationTime, type);
         messages.add(message);
       } catch (Exception e) {
         // In a production environment, errors should be very rare. Errors which may
@@ -172,6 +173,7 @@ public class PersistentDataStore {
 
     // Retrieve all messages from the datastore.
     Query query = new Query("chat-mentions");
+    PreparedQuery results = datastore.prepare(query);
   
       for (Entity entity : results.asIterable()) {
           try {
@@ -190,7 +192,7 @@ public class PersistentDataStore {
         throw new PersistentDataStoreException(e);
       }
     }
-  return message; 
+  return mentions; 
 }
   
    /**
@@ -244,6 +246,7 @@ public class PersistentDataStore {
     messageEntity.setProperty("author_uuid", message.getAuthorId().toString());
     messageEntity.setProperty("content", message.getContent());
     messageEntity.setProperty("creation_time", message.getCreationTime().toString());
+    messageEntity.setProperty("type", message.getType().toString());
     datastore.put(messageEntity);
 
   }
@@ -266,13 +269,12 @@ public class PersistentDataStore {
 
   /** Write a Conversation object to the Datastore service. */
   public void writeThrough(Mention mention) {
-    Entity mentionEntity = new Entity("chat-mentions", mention.getMentionedUser());
-    mentionEntity.setProperty("mentioned_user", mention.getMentionedUser());
+    Entity mentionEntity = new Entity("chat-mentions", mention.getName());
+    mentionEntity.setProperty("mentioned_user", mention.getName());
     Collection<String> messageIds = mention.getMessageIds().stream().map(id -> id.toString()).collect(Collectors.toList());
     mentionEntity.setProperty("uuid_list", messageIds);
     datastore.put(mentionEntity);
   }
-}
 
   /** Remove a Conversation object from the Datastore service. */
   public void deleteThrough(Conversation conversation){

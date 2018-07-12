@@ -45,12 +45,6 @@ public class MentionStoreTest {
     mentionStore.setMentions(mentionList);
   }
 
-  @Test
-  public void testGetMention_byUsername_found() {
-    Mention resultMention = mentionStore.getMentionByName(MENTION_ONE.getMentionedUser());
-
-    assertEquals(MENTION_ONE, resultMention);
-  }
 
   @Test 
   public void testSetConstructor() {
@@ -58,25 +52,23 @@ public class MentionStoreTest {
     UUIDs.add(UUID.randomUUID());
     UUIDs.add(UUID.randomUUID());
     Mention setMention = new Mention(UUIDs, "Mention_Set");
+
+    mentionStore.addMention(setMention);
+    Mention resultMention = mentionStore.getMention("Mention_Set");
+
+    assertEquals(setMention, resultMention);
   }
 
   @Test
-  public void testGetMention_byId_found() {
-    Mention resultMention = mentionStore.getMentionById(MENTION_ONE.getId());
-
+  public void testGetMention_byUsername_found() {
+    Mention resultMention = mentionStore.getMention(MENTION_ONE.getName());
     assertEquals(MENTION_ONE, resultMention);
   }
+
 
   @Test
   public void testGetMention_byUsername_notFound() {
     Mention resultMention = mentionStore.getMention("fake mention");
-
-    Assert.assertNull(resultMention);
-  }
-
-  @Test
-  public void testGetMention_byId_notFound() {
-    Mention resultMention = mentionStore.getMentionById(UUID.randomUUID());
 
     Assert.assertNull(resultMention);
   }
@@ -89,7 +81,7 @@ public class MentionStoreTest {
             "test_mention");
 
     mentionStore.addMention(inputMention);
-    Mention resultMention = mentionStore.getMention("test_username");
+    Mention resultMention = mentionStore.getMention("test_mention");
 
     assertEquals(inputMention, resultMention);
     Mockito.verify(mockPersistentStorageAgent).writeThrough(inputMention);
@@ -97,7 +89,7 @@ public class MentionStoreTest {
 
   @Test
   public void testIsPresent_true() {
-    Assert.assertTrue(mentionStore.isPresent(MENTION_ONE.getMentionedUser()));
+    Assert.assertTrue(mentionStore.isPresent(MENTION_ONE.getName()));
   }
 
   @Test
@@ -106,7 +98,7 @@ public class MentionStoreTest {
   }
 
   private void assertEquals(Mention expectedMention, Mention actualMention) {
-    Assert.assertEquals(expectedMention.getMentionedUser(), actualMention.getMentionedUser());
+    Assert.assertEquals(expectedMention.getName(), actualMention.getName());
     
     Set<UUID> mentionOne = expectedMention.getMessageIds();
     Set<UUID> mentionTwo = actualMention.getMessageIds();

@@ -130,14 +130,4 @@ public class MessageStore {
   public int getMessageCount() {
     return messages.size();
   }
-
-  /** Returns message by Id */
-  public Message getMessageById(UUID id) {
-    for (Message message : messages) {
-      if (message.getId().equals(id)) { 
-        return message; 
-      }
-    }
-    return null; 
-  }
 }

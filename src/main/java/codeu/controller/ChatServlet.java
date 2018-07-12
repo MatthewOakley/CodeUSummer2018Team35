@@ -17,7 +17,6 @@ package codeu.controller;
 import codeu.model.data.Conversation;
 import codeu.model.data.Message;
 import codeu.model.data.User;
-
 import codeu.model.data.Mention;
 import codeu.model.store.basic.MentionStore;
 import codeu.model.data.Hashtag;
@@ -242,7 +241,8 @@ public class ChatServlet extends HttpServlet {
             conversation.getId(),
             user.getId(),
             cleanedAndEmojiMessage,
-            Instant.now());
+            Instant.now(), 
+            "string");
 
     messageStore.addMessage(message);
 

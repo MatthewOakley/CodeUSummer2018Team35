@@ -108,4 +108,24 @@
     <url-pattern>/hashtag/*</url-pattern>
   </servlet-mapping>
 
+  <servlet>
+    <servlet-name>ImageUploadServlet</servlet-name>
+    <servlet-class>codeu.controller.ImageUploadServlet</servlet-class>
+  </servlet>
+
+  <servlet-mapping>
+    <servlet-name>ImageUploadServlet</servlet-name>
+    <url-pattern>/ImageUploadServlet</url-pattern>
+  </servlet-mapping>
+
+  <servlet>
+    <servlet-name>ImageServlet</servlet-name>
+    <servlet-class>codeu.controller.ImageServlet</servlet-class>
+  </servlet>
+
+  <servlet-mapping>
+    <servlet-name>ImageServlet</servlet-name>
+    <url-pattern>/ImageServlet</url-pattern>
+  </servlet-mapping>
+
 </web-app>

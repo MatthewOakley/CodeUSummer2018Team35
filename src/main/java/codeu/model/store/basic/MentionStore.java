@@ -74,7 +74,7 @@ public class MentionStore {
   public Mention getMention(String name) {
     // This approach will be pretty slow if we have many mentions.
     for (Mention mention : mentions) {
-      if (mention.getMentionedUser().equals(name)) {
+      if (mention.getName().equals(name)) {
         return mention;
       }
     }
@@ -83,7 +83,7 @@ public class MentionStore {
 
   /** Adds new mention to current set of mentions.*/
   public void addMention(Mention mention) {
-    if (isPresent(mention.getMentionedUser())) {
+    if (isPresent(mention.getName())) {
       return;
     }
     mentions.add(mention);
@@ -92,7 +92,7 @@ public class MentionStore {
 
 /** Updates existing mention. */ 
   public void updateMention(Mention mention) {
-    if (isPresent(mention.getMentionedUser())) {
+    if (isPresent(mention.getName())) {
       persistentStorageAgent.writeThrough(mention);
     } 
   } 
@@ -116,7 +116,7 @@ public class MentionStore {
   /** Return true if the given mention is known to the application. */
   public boolean isPresent(String name) {
     for (Mention mention : mentions) {
-      if (mention.getMentionedUser().equals(name)) {
+      if (mention.getName().equals(name)) {
         return true;
       }
     }
