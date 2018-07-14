@@ -12,7 +12,11 @@ import codeu.model.data.User;
 import codeu.model.store.basic.UserStore;
 import java.io.File;
 import java.io.FileWriter;
-
+import java.io.BufferedWriter;
+import java.time.format.DateTimeFormatter;
+import java.util.Locale;
+import java.time.format.FormatStyle;
+import java.time.ZoneId;
 
 public class RegisterServlet extends HttpServlet {
 
@@ -58,13 +62,31 @@ public class RegisterServlet extends HttpServlet {
     String userAgent = "";
     
     if (isAttack) {
-      userAgent = request.getHeader("User-Agent");
-      // save the user info to a file
-      File file = new File("attacks.txt");
-      FileWriter fileWriter = new FileWriter(file);
-      fileWriter.write(userAgent + Instant.now());
-      fileWriter.flush();
-      fileWriter.close();
+      File file = new File("C:/Users/matt/Desktop/attackLog.txt");
+      BufferedWriter writer = new BufferedWriter(new FileWriter(file, true));
+      System.out.println("writing to file!!!");
+      try {
+        userAgent = request.getHeader("User-Agent");
+        // save the user info to a file
+        writer.append(userAgent + "\n");
+        
+        // setting up the date and time of attack
+        DateTimeFormatter formatter = DateTimeFormatter
+            .ofLocalizedDateTime(FormatStyle.SHORT)
+            .withLocale(Locale.US)
+            .withZone(ZoneId.systemDefault());
+        Instant instant = Instant.now();
+        String time = formatter.format(instant);
+        writer.append(time + "\n");
+      } catch (Exception e) {
+        e.printStackTrace();
+      } finally {
+        if(writer == null){
+          System.out.println("no init for buffer");
+        }
+        writer.close();
+        
+      }
     }
     System.out.println(userAgent);
     

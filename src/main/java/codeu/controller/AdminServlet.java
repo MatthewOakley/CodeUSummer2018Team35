@@ -17,6 +17,10 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.jsoup.Jsoup;
 import org.jsoup.safety.Whitelist;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.BufferedWriter;
+import java.util.Scanner;
 
 /** 
  * This servlet class is for the admin page
@@ -90,7 +94,16 @@ public class AdminServlet extends HttpServlet {
     String newestUser = userStore.getNewestUser();
     request.setAttribute("newestUser", newestUser);
     
-    /** TO-DO(Matthew Oakley) get the number of attacks on the website */
+    // get the number of attacks on the website 
+    File file = new File("C:/Users/matt/Desktop/attackLog.txt");
+    Scanner input = new Scanner(file);
+    int counter = 0;
+    while (input.hasNextLine()) {
+      input.nextLine();
+      input.nextLine();
+      counter++;
+    }
+    request.setAttribute("attackCount", counter);
     
     request.getRequestDispatcher("/WEB-INF/view/admin.jsp").forward(request, response);
   }
