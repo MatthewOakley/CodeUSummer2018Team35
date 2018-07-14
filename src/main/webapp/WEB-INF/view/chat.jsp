@@ -17,6 +17,7 @@
 <%@ page import="codeu.model.data.Conversation" %>
 <%@ page import="codeu.model.data.Message" %>
 <%@ page import="codeu.model.store.basic.UserStore" %>
+<%@ page import="codeu.model.data.Mention" %>
 
 <%
 Conversation conversation = (Conversation) request.getAttribute("conversation");
@@ -111,6 +112,29 @@ List<Message> messages = (List<Message>) request.getAttribute("messages");
         }
       %>
         </ul>
+        String author = UserStore.getInstance()
+          .getUser(message.getAuthorId()).getName();
+        String content = message.getContent();
+        String[] messageSplit = content.split(" ");
+        String output = "";
+        for (String word : messageSplit) {
+          if (word.charAt(0) == '#') {
+            word = "<a href='../../hashtag/" + word.substring(1) + "'>" 
+              + word + "</a>";
+          }
+          output = output + " " + word;
+        }
+    %>
+      <li>
+        <strong><%= author %>:</strong> <%= message.getStyledContent(message.getContent()) %>
+        <% if (UserStore.getInstance().getUser(author).getName().equals(request.getSession().getAttribute("user"))) { %>
+          <form action="/chat/<%= conversation.getTitle() %>" method="POST">
+            <button type="submit">Delete</button>
+            <input type="hidden" name="delete" value="true">
+            <input type="hidden" name="messageId" value="<%= message.getId() %>">
+          </form>
+        <% } %>
+      </li>
     <%
       }
     %>

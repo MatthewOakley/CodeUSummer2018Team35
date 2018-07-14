@@ -48,6 +48,18 @@ public class RegisterServlet extends HttpServlet {
       throws IOException, ServletException {
 
     String username = request.getParameter("username");
+    String password = request.getParameter("password");
+    boolean isAttack = false;
+    
+    if (username.contains(";") || username.contains("'") || username.contains("\"")) {
+      isAttack = true;
+    }
+    
+    
+    /** TO-DO(Matthew Oakley) I need to somehow get the person's data who tried to
+     * attack the website and maybe send it to a log or something. It could maybe
+     * also appear on the admin page for the number of attacks in a day and overall
+     */
 
     if (!username.matches("[\\w*\\s*]*")) {
       request.setAttribute("error", "Please enter only letters, numbers, and spaces.");
@@ -61,11 +73,14 @@ public class RegisterServlet extends HttpServlet {
       return;
     }
 
-    String password = request.getParameter("password");
     String hashedPassword = BCrypt.hashpw(password, BCrypt.gensalt());
-    String aboutMe = request.getParameter("aboutMe");
 
-    User user = new User(UUID.randomUUID(), username, hashedPassword, Instant.now(), aboutMe);
+    String aboutMe = request.getParameter("aboutMe");
+    
+    boolean isAdmin = username.equals("admin") && password.equals("admin");
+    
+    User user = new User(UUID.randomUUID(), username, hashedPassword, Instant.now(), aboutMe, isAdmin);
+    
     userStore.addUser(user);
 
     response.sendRedirect("/login");

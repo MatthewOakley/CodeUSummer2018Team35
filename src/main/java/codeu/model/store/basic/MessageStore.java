@@ -80,6 +80,22 @@ public class MessageStore {
     persistentStorageAgent.writeThrough(message);
   }
 
+  /** Access Message by UUID. */
+  public Message getMessage(UUID messageId) {
+    for (Message message : messages) {
+      if (message.getId().equals(messageId)) {
+        return message;
+      }
+    }
+    return null;
+  }
+
+  /** Deletes a message from the current set of messages known to the application. */
+  public void deleteMessage(Message message) {
+    messages.remove(message);
+    persistentStorageAgent.deleteThrough(message);
+  }
+
   /** Access the current set of Messages within the given Conversation. */
   public List<Message> getMessagesInConversation(UUID conversationId) {
 
@@ -125,13 +141,22 @@ public class MessageStore {
 
   /** Access the set of Messages sent by the user. */
   public List<Message> getMessagesByUser(UUID author) {
-
     return messages.stream().filter(m -> m.getAuthorId().equals(author)).collect(Collectors.toList());
   }
 
   /** Sets the List of Messages stored by this MessageStore. */
   public void setMessages(List<Message> messages) {
     this.messages = messages;
+  }
+  
+  /** Get message by its unique id */
+  public Message getMessageById(UUID id) {
+    for (Message message : messages) {
+      if (message.getId().equals(id)) {
+        return message;
+      }
+    }
+    return null;
   }
   
   /** Returns the size of the messages */

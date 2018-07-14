@@ -71,8 +71,15 @@
     <%
       for(Conversation conversation : conversations){
     %>
-      <li><a href="/chat/<%= conversation.getTitle() %>">
-        <%= conversation.getTitle() %></a></li>
+      <li>
+        <a href="/chat/<%= conversation.getTitle() %>">
+        <%= conversation.getTitle() %></a>
+        <form action="/conversations" method="POST">
+          <button type="submit">Delete Convo</button>
+          <input type="hidden" name="deleteConvo" value="true">
+          <input type="hidden" name="conversationId" value="<%= conversation.getId() %>">
+        </form>
+      </li>
     <%
       }
     %>

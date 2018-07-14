@@ -77,6 +77,7 @@ public class Message {
     return renderer.render(document);
   }
 
+
   /** Returns the creation time of this Message. */
   public Instant getCreationTime() {
     return creation;

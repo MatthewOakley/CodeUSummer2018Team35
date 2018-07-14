@@ -17,12 +17,20 @@ package codeu.controller;
 import codeu.model.data.Conversation;
 import codeu.model.data.Message;
 import codeu.model.data.User;
+
+import codeu.model.data.Mention;
+import codeu.model.store.basic.MentionStore;
+import codeu.model.data.Hashtag;
 import codeu.model.store.basic.ConversationStore;
 import codeu.model.store.basic.MessageStore;
 import codeu.model.store.basic.UserStore;
+import codeu.model.store.basic.HashtagStore;
 import java.io.IOException;
 import java.time.Instant;
 import java.util.List;
+import java.util.ArrayList;
+import java.util.Set;
+import java.util.HashSet;
 import java.util.UUID;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -31,7 +39,11 @@ import javax.servlet.http.HttpServletResponse;
 import org.jsoup.Jsoup;
 import org.jsoup.safety.Whitelist;
 import com.vdurmont.emoji.EmojiParser;
-
+import java.util.regex.Matcher;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.stream.Collectors;
+import java.util.regex.Pattern;
 
 /** Servlet class responsible for the chat page. */
 public class ChatServlet extends HttpServlet {
@@ -44,6 +56,11 @@ public class ChatServlet extends HttpServlet {
 
   /** Store class that gives access to Users. */
   private UserStore userStore;
+  
+  private HashtagStore hashtagStore;
+
+  /** Store class that gives access to Mentions. */
+  private MentionStore mentionStore;
 
   /** Set up state for handling chat requests. */
   @Override
@@ -52,6 +69,8 @@ public class ChatServlet extends HttpServlet {
     setConversationStore(ConversationStore.getInstance());
     setMessageStore(MessageStore.getInstance());
     setUserStore(UserStore.getInstance());
+    setMentionStore(MentionStore.getInstance());
+    setHashtagStore(HashtagStore.getInstance());
   }
 
   /**
@@ -78,6 +97,22 @@ public class ChatServlet extends HttpServlet {
     this.userStore = userStore;
   }
 
+   /**
+   * Sets the MentionStore used by this servlet. This function provides a common setup method for use
+   * by the test framework or the servlet's init() function.
+   */
+  void setMentionStore(MentionStore mentionStore) {
+    this.mentionStore = mentionStore;
+  }
+
+  /**
+   * Sets the HashtagStore used by this servlet. 
+   * This function provides a common setup method
+   */
+  void setHashtagStore(HashtagStore hashtagStore) {
+    this.hashtagStore = hashtagStore;
+  }
+  
   /**
    * This function fires when a user navigates to the chat page. It gets the conversation title from
    * the URL, finds the corresponding Conversation, and fetches the messages in that Conversation.
@@ -148,17 +183,71 @@ public class ChatServlet extends HttpServlet {
       response.sendRedirect("/conversations");
       return;
     }
-
+    
+    boolean shouldDelete = Boolean.valueOf(request.getParameter("delete"));
+    if (shouldDelete) {
+      messageStore.deleteMessage(messageStore.getMessage(UUID.fromString(request.getParameter("messageId"))));
+      response.sendRedirect("/chat/" + conversationTitle);
+      return;
+    }
+    
     String messageContent = request.getParameter("message");
 
+    UUID messageUUID = UUID.randomUUID();
+    
     // this removes any HTML from the message content
     String cleanedMessageContent = Jsoup.clean(messageContent, Whitelist.none());
-    
+
     String cleanedAndEmojiMessage = EmojiParser.parseToUnicode(cleanedMessageContent);
+
+
+    Pattern mentionPattern = Pattern.compile("@[^@]+(\\s|\\n|$)");
+    Matcher mentionMatch = mentionPattern.matcher(cleanedAndEmojiMessage);
+    Set<String> mentionedUsers = new HashSet<String>();
+
+    while (mentionMatch.find()) {
+      String mentionedUser = mentionMatch.group().trim().substring(1);
+      mentionedUsers.add(mentionedUser);
+    }
+
+    for (String mentionedUser : mentionedUsers) {
+      Mention currentMention = mentionStore.getMention(mentionedUser);
+      if (currentMention == null) {
+        currentMention = new Mention(messageUUID, mentionedUser);
+        mentionStore.addMention(currentMention);
+      } else {
+        currentMention.addMessageId(messageUUID);
+        mentionStore.updateMention(currentMention);
+      }
+    }
+  
+
+    Pattern hashtagPattern = Pattern.compile("(?:^|\\s|\\n)#([a-z\\d-]+)");
+    Matcher matcher = hashtagPattern.matcher(cleanedAndEmojiMessage);
+    
+    Set<String> hashtags = new HashSet<String>();
+    
+    while (matcher.find()) {
+      String tag = matcher.group().trim().substring(1);
+      hashtags.add(tag);
+    }
+    
+    for (String tag : hashtags) {
+      tag = tag.toUpperCase();
+      Hashtag currentTag = hashtagStore.getHashtag(tag);
+      
+      if (currentTag == null) {
+        currentTag = new Hashtag(tag, messageUUID);
+        hashtagStore.addHashtag(currentTag);
+      } else {
+        currentTag.addMessageId(messageUUID);
+        hashtagStore.updateHashtag(currentTag);
+      }
+    }
 
     Message message =
         new Message(
-            UUID.randomUUID(),
+            messageUUID,
             conversation.getId(),
             user.getId(),
             cleanedAndEmojiMessage,
@@ -175,5 +264,4 @@ public class ChatServlet extends HttpServlet {
     // redirect to a GET request
     response.sendRedirect("/chat/" + conversationTitle);
   }
-
 }

@@ -111,7 +111,9 @@ public class ConversationServletTest {
             "test_username",
             "$2a$10$eDhncK/4cNH2KE.Y51AWpeL8/5znNBQLuAFlyJpSYNODR/SJQ/Fg6",
             Instant.now(),
-            "test_aboutme");
+            "test_aboutme",
+            false);
+            
     Mockito.when(mockUserStore.getUser("test_username")).thenReturn(fakeUser);
 
     conversationServlet.doPost(mockRequest, mockResponse);
@@ -133,7 +135,8 @@ public class ConversationServletTest {
             "test_username",
             "$2a$10$eDhncK/4cNH2KE.Y51AWpeL8/5znNBQLuAFlyJpSYNODR/SJQ/Fg6",
             Instant.now(),
-            "test_aboutmex");
+            "test_aboutme",
+            false);
     Mockito.when(mockUserStore.getUser("test_username")).thenReturn(fakeUser);
 
     Mockito.when(mockConversationStore.isTitleTaken("test_conversation")).thenReturn(true);
@@ -156,7 +159,9 @@ public class ConversationServletTest {
             "test_username",
             "$2a$10$eDhncK/4cNH2KE.Y51AWpeL8/5znNBQLuAFlyJpSYNODR/SJQ/Fg6",
             Instant.now(),
-            "test_aboutme");
+            "test_aboutme",
+            false);
+            
     Mockito.when(mockUserStore.getUser("test_username")).thenReturn(fakeUser);
 
     Mockito.when(mockConversationStore.isTitleTaken("test_conversation")).thenReturn(false);
@@ -169,5 +174,30 @@ public class ConversationServletTest {
     Assert.assertEquals(conversationArgumentCaptor.getValue().getTitle(), "test_conversation");
 
     Mockito.verify(mockResponse).sendRedirect("/chat/test_conversation");
+  }
+
+  @Test
+  public void testDoPost_DeleteConversation() throws IOException, ServletException {
+    Mockito.when(mockRequest.getParameter("conversationTitle")).thenReturn("test_conversation");
+    Mockito.when(mockSession.getAttribute("user")).thenReturn("test_username");
+    Mockito.when(mockRequest.getParameter("deleteConvo")).thenReturn("true");
+
+    User fakeUser =
+        new User(
+            UUID.randomUUID(),
+            "test_username",
+            "$2a$10$eDhncK/4cNH2KE.Y51AWpeL8/5znNBQLuAFlyJpSYNODR/SJQ/Fg6",
+            Instant.now(),
+            "test_aboutme");
+    Mockito.when(mockUserStore.getUser("test_username")).thenReturn(fakeUser);
+
+    UUID conversationId = UUID.randomUUID();
+    Mockito.when(mockRequest.getParameter("conversationId")).thenReturn(conversationId.toString());
+
+    conversationServlet.doPost(mockRequest, mockResponse);
+
+    ArgumentCaptor<Conversation> conversationArgumentCaptor =
+        ArgumentCaptor.forClass(Conversation.class);
+    Mockito.verify(mockConversationStore).deleteConversation(conversationArgumentCaptor.capture());
   }
 }
