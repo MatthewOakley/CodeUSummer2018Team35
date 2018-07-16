@@ -64,7 +64,6 @@ public class RegisterServlet extends HttpServlet {
     if (isAttack) {
       File file = new File("C:/Users/matt/Desktop/attackLog.txt");
       BufferedWriter writer = new BufferedWriter(new FileWriter(file, true));
-      System.out.println("writing to file!!!");
       try {
         userAgent = request.getHeader("User-Agent");
         // save the user info to a file
@@ -81,19 +80,10 @@ public class RegisterServlet extends HttpServlet {
       } catch (Exception e) {
         e.printStackTrace();
       } finally {
-        if(writer == null){
-          System.out.println("no init for buffer");
-        }
         writer.close();
         
       }
     }
-    System.out.println(userAgent);
-    
-    /** TO-DO(Matthew Oakley) I need to somehow get the person's data who tried to
-     * attack the website and maybe send it to a log or something. It could maybe
-     * also appear on the admin page for the number of attacks in a day and overall
-     */
 
     if (!username.matches("[\\w*\\s*]*")) {
       request.setAttribute("error", "Please enter only letters, numbers, and spaces.");

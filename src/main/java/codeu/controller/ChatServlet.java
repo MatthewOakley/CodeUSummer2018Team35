@@ -167,6 +167,15 @@ public class ChatServlet extends HttpServlet {
 
     String requestUrl = request.getRequestURI();
     String conversationTitle = requestUrl.substring("/chat/".length());
+          
+    String edit = request.getParameter("edit");
+    if (edit != null) {
+      edit = Jsoup.clean(edit, Whitelist.none());
+      edit = EmojiParser.parseToUnicode(edit);
+      messageStore.editMessage((String) request.getParameter("messageId"), edit);
+      response.sendRedirect("/chat/" + conversationTitle);
+      return;
+    }
 
     Conversation conversation = conversationStore.getConversationWithTitle(conversationTitle);
     if (conversation == null) {
@@ -244,7 +253,13 @@ public class ChatServlet extends HttpServlet {
             cleanedAndEmojiMessage,
             Instant.now());
 
-    messageStore.addMessage(message);
+    Boolean isReply = Boolean.valueOf(request.getParameter("reply"));
+    if (isReply == null || !isReply) {
+      messageStore.addMessage(message);
+    } else {
+      messageStore.reply(messageStore.getMessage(UUID.fromString(request.getParameter("messageId"))),
+                         message);
+    }
 
     // redirect to a GET request
     response.sendRedirect("/chat/" + conversationTitle);
