@@ -163,16 +163,6 @@ public class MessageStore {
   public int getMessageCount() {
     return messages.size();
   }
-    
-  /** Access Message by UUID. */
-  public Message getMessage(UUID messageId) {
-      for (Message message : messages) {
-          if (message.getId().equals(messageId)) {
-              return message;
-          }
-      }
-      return null;
-  }
 
   /** Creates new message from old with new content then persists it. */
   public void editMessage(String messageId, String edit) {

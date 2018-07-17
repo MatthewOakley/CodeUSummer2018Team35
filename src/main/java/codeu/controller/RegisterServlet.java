@@ -59,10 +59,9 @@ public class RegisterServlet extends HttpServlet {
       isAttack = true;
     }
     
-    String userAgent = "";
-    
     if (isAttack) {
-      File file = new File("C:/Users/matt/Desktop/attackLog.txt");
+      String userAgent = "";
+      File file = new File(System.getProperty("user.dir"), "attackLog.txt");
       BufferedWriter writer = new BufferedWriter(new FileWriter(file, true));
       try {
         userAgent = request.getHeader("User-Agent");

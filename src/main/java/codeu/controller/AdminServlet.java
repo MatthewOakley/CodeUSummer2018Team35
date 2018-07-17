@@ -95,7 +95,7 @@ public class AdminServlet extends HttpServlet {
     request.setAttribute("newestUser", newestUser);
     
     // get the number of attacks on the website 
-    File file = new File("C:/Users/matt/Desktop/attackLog.txt");
+    File file = new File(System.getProperty("user.dir"), "attackLog.txt");
     Scanner input = new Scanner(file);
     int counter = 0;
     while (input.hasNextLine()) {

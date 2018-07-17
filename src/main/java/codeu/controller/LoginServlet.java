@@ -21,7 +21,14 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
+import java.io.File;
+import java.io.FileWriter;
+import java.io.BufferedWriter;
+import java.time.format.DateTimeFormatter;
+import java.util.Locale;
+import java.time.format.FormatStyle;
+import java.time.ZoneId;
+import java.time.Instant;
 import org.mindrot.jbcrypt.BCrypt;
 
 /** Servlet class responsible for the login page. */
@@ -68,7 +75,37 @@ public class LoginServlet extends HttpServlet {
       throws IOException, ServletException {
     String username = request.getParameter("username");
     String password = request.getParameter("password");
-
+    boolean isAttack = false;
+    
+    if (username.contains(";") || username.contains("'") || username.contains("\"")) {
+      isAttack = true;
+    }
+    
+    if (isAttack) {
+      String userAgent = "";
+      File file = new File(System.getProperty("user.dir"), "attackLog.txt");
+      BufferedWriter writer = new BufferedWriter(new FileWriter(file, true));
+      try {
+        userAgent = request.getHeader("User-Agent");
+        // save the user info to a file
+        writer.append(userAgent + "\n");
+        
+        // setting up the date and time of attack
+        DateTimeFormatter formatter = DateTimeFormatter
+            .ofLocalizedDateTime(FormatStyle.SHORT)
+            .withLocale(Locale.US)
+            .withZone(ZoneId.systemDefault());
+        Instant instant = Instant.now();
+        String time = formatter.format(instant);
+        writer.append(time + "\n");
+      } catch (Exception e) {
+        e.printStackTrace();
+      } finally {
+        writer.close();
+        
+      }
+    }
+    
     if (!userStore.isUserRegistered(username)) {
       request.setAttribute("error", "That username was not found.");
       request.getRequestDispatcher("/WEB-INF/view/login.jsp").forward(request, response);
