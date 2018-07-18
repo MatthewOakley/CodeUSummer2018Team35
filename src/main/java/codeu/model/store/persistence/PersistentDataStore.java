@@ -180,15 +180,15 @@ public class PersistentDataStore {
 
     List<Mention> mentions = new ArrayList<>();
 
-    // Retrieve all messages from the datastore.
+    // Retrieve all mentions from the datastore.
     Query query = new Query("chat-mentions");
+
     PreparedQuery results = datastore.prepare(query);
 
     for (Entity entity : results.asIterable()) {
       try {
-
         Set<String> dataStoreMessageIds = new HashSet<>((Collection<String>)
-          entity.getProperty("uuid_list"));
+              entity.getProperty("uuid_list"));
         Set<UUID> messageIds = dataStoreMessageIds.stream().map(id -> UUID.fromString(id)).collect(Collectors.toSet());
         String mentionedUser = (String) entity.getProperty("mentioned_user");
         Mention mention = new Mention(messageIds, mentionedUser);
@@ -201,9 +201,8 @@ public class PersistentDataStore {
         throw new PersistentDataStoreException(e);
       }
     }
-
-    return mentions;
-  }
+  return mentions;
+}
 
    /**
    * Loads all Hashtag objects from the Datastore service and returns them in a List.

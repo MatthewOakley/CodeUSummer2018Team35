@@ -21,17 +21,32 @@
 // import java.util.Set;
 // import java.util.HashSet;
 //
-//
-// public class MentionTest {
-//
-//   @Test
-//   public void testCreate() {
-//     UUID messageId = UUID.randomUUID();
-//     String mentionedUser = "test_username";
-//
-//     Mention mention = new Mention(messageId, mentionedUser);
-//
-//     Assert.assertEquals(messageId, mention.getMessageIds().contains(messageId));
-//     Assert.assertEquals(mentionedUser, mention.getMentionedUser());
-//   }
-// }
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+
+package codeu.model.data;
+
+import java.time.Instant;
+import java.util.UUID;
+import org.junit.Assert;
+import org.junit.Test;
+import java.util.Set;
+import java.util.HashSet;
+
+
+public class MentionTest {
+
+  @Test
+  public void testCreate() {
+    UUID messageId = UUID.randomUUID();
+    String mentionedUser = "test_username";
+
+    Mention mention = new Mention(messageId, mentionedUser);
+
+    assert(mention.getMessageIds().contains(messageId));
+    Assert.assertEquals(mentionedUser, mention.getMentionedUser());
+  }
+}

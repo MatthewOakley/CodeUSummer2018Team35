@@ -37,7 +37,7 @@
     <li>Conversations: <%= request.getAttribute("conversationCount") %></li>
     <li>Messages: <%= request.getAttribute("messageCount") %></li>
     <li>Newest User: <%= request.getAttribute("newestUser") %></li>
-    <li>Number of Attacks: </li>
+    <li>Number of Attacks: <%= request.getAttribute("attackCount") %></li>
   </ul>
 </body>
 </html>
