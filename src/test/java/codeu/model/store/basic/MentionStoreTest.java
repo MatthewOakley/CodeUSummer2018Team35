@@ -47,7 +47,7 @@ public class MentionStoreTest {
 
   @Test
   public void testGetMention_byUsername_found() {
-    Mention resultMention = mentionStore.getMentionByName(MENTION_ONE.getMentionedUser());
+    Mention resultMention = mentionStore.getMention(MENTION_ONE.getMentionedUser());
 
     assertEquals(MENTION_ONE, resultMention);
   }
@@ -61,22 +61,8 @@ public class MentionStoreTest {
   }
 
   @Test
-  public void testGetMention_byId_found() {
-    Mention resultMention = mentionStore.getMentionById(MENTION_ONE.getId());
-
-    assertEquals(MENTION_ONE, resultMention);
-  }
-
-  @Test
   public void testGetMention_byUsername_notFound() {
     Mention resultMention = mentionStore.getMention("fake mention");
-
-    Assert.assertNull(resultMention);
-  }
-
-  @Test
-  public void testGetMention_byId_notFound() {
-    Mention resultMention = mentionStore.getMentionById(UUID.randomUUID());
 
     Assert.assertNull(resultMention);
   }
@@ -89,7 +75,7 @@ public class MentionStoreTest {
             "test_mention");
 
     mentionStore.addMention(inputMention);
-    Mention resultMention = mentionStore.getMention("test_username");
+    Mention resultMention = mentionStore.getMention("test_mention");
 
     assertEquals(inputMention, resultMention);
     Mockito.verify(mockPersistentStorageAgent).writeThrough(inputMention);

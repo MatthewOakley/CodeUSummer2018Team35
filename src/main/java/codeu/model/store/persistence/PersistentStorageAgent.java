@@ -141,6 +141,7 @@ public class PersistentStorageAgent {
   /** Remove a Conversation object from the Datastore service. */
   public void deleteThrough(Conversation conversation) {
     persistentDataStore.deleteThrough(conversation);
+  }
   
   /** Write a Hashtag object to the Datastore service. */
   public void writeThrough(Hashtag hashtag) {
