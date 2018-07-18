@@ -11,6 +11,8 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
+package codeu.controller;
+
 import codeu.model.data.Conversation;
 import codeu.model.data.Message;
 import codeu.model.data.User;
@@ -23,8 +25,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 import javax.servlet.ServletException;
-import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletResponse;
 import org.jsoup.Jsoup;
 import org.jsoup.safety.Whitelist;
@@ -82,11 +84,11 @@ public class ImageUploadServlet extends HttpServlet {
     public void doPost(HttpServletRequest request, HttpServletResponse response)
         throws ServletException, IOException {
         String username = (String) request.getSession().getAttribute("user");
-     if (username == null) {
+        if (username == null) {
          // user is not logged in, don't let them add a message
-         response.sendRedirect("/login");
-         return;
-     }
+           response.sendRedirect("/login");
+           return;
+        }
 
      User user = userStore.getUser(username);
      if (user == null) {
@@ -96,17 +98,11 @@ public class ImageUploadServlet extends HttpServlet {
          return;
      }
 
-
-
-
-
-
-
      String conversationTitle = request.getParameter("conversationTitle");
      Conversation conversation = conversationStore.getConversationWithTitle(conversationTitle);
      if (conversation == null) {
          // couldn't find conversation, redirect to conversation list
-         System.out.println("conversation is not found");
+         System.out.println("Conversation is not found");
          response.sendRedirect("/conversations");
          return;
      }

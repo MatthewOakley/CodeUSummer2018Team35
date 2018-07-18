@@ -13,15 +13,18 @@
   See the License for the specific language governing permissions and
   limitations under the License.
 --%>
+
+
 <%@ page import="java.util.List" %>
+<%@ page import="java.util.UUID" %>
+<%@ page import="java.util.ArrayList" %>
 <%@ page import="codeu.model.data.Conversation" %>
 <%@ page import="codeu.model.data.Message" %>
+<%@ page import="codeu.model.data.User" %>
 <%@ page import="codeu.model.store.basic.UserStore" %>
 <%@ page import="codeu.model.data.Mention" %>
 <%@ page import="com.google.appengine.api.blobstore.BlobstoreServiceFactory" %>
 <%@ page import="com.google.appengine.api.blobstore.BlobstoreService" %>
-
-
 
 <%
 Conversation conversation = (Conversation) request.getAttribute("conversation");
@@ -88,20 +91,20 @@ BlobstoreService blobstoreService = BlobstoreServiceFactory.getBlobstoreService(
           }
           output = output + " " + word;
         }
-
+    %>
+        <%
         if (message.getType().equals("image")){
-      %>
-          <li><strong><%= author %>:</strong> 
+        %>
+            <li><strong><%= author %>:</strong> 
             <img src="<%= message.getStyledContent(message.getContent()) %>" alt = "Image" width = 50% height = 50% </li>
         <%
         } else {
-      %>
-          <li><strong><%= author %>:</strong> <%= message.getStyledContent(message.getContent()) %>
+        %>
+          <li><strong><%= author %>:</strong> 
+  
       }
-
-    %>
-
-        <% if (UserStore.getInstance().getUser(author).getName().equals(request.getSession().getAttribute("user"))) { %>
+        <% if (UserStore.getInstance().getUser(author).getName().equals(request.getSession().getAttribute("user"))) { 
+        %>
           <form action="/chat/<%= conversation.getTitle() %>" method="POST">
             <button type="submit">Delete</button>
             <input type="hidden" name="delete" value="true">
@@ -123,18 +126,19 @@ BlobstoreService blobstoreService = BlobstoreServiceFactory.getBlobstoreService(
         <br/>
         <button type="submit">Send</button>
     </form>
-    <form action ="<%= blobstoreService.createUploadUrl("/ImageUploadServlet") %>" method= "POST" enctype = "multipart/form-data">
+
+    <form action="<%= blobstoreService.createUploadUrl('/ImageUploadServlet') %>" method= "POST" enctype = "multipart/form-data">
             <input type="hidden" name="conversationTitle" value="<%=conversation.getTitle() %>">
             <input type="file" name="myFile" >
             <input type="submit" value="Submit">
     </form>
+
     <% } else { %>
       <p><a href="/login">Login</a> to send a message.</p>
     <% } %>
+    
 
     <hr/>
-
   </div>
-
 </body>
 </html>
