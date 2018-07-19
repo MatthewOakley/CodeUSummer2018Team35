@@ -25,6 +25,7 @@ public class User {
   private final Instant creation;
   private final boolean isAdmin;
   private String aboutMe;
+  private String profileImageString;
 
   /**
    * Constructs a new User.
@@ -43,6 +44,7 @@ public class User {
     this.creation = creation;
     this.aboutMe = aboutMe;
     this.isAdmin = isAdmin;
+    this.profileImageString = null;
   }
 
   /** Returns the ID of this User. */
@@ -64,7 +66,7 @@ public class User {
   public Instant getCreationTime() {
     return creation;
   }
-  
+
   /** Returns true if the user is an admin. */
   public boolean isAdmin() {
     return isAdmin;
@@ -76,5 +78,12 @@ public class User {
 
   public String getAboutMe() {
     return aboutMe;
+  }
+
+  public String getImageString(){
+    return profileImageString;
+  }
+  public void setImageString(String image){
+    this.profileImageString = image;
   }
 }

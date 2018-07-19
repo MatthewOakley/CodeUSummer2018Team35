@@ -3,8 +3,12 @@
 <%@ page import="codeu.model.data.Message" %>
 <%@ page import="codeu.model.store.basic.MentionStore" %>
 <%@ page import="codeu.model.data.Mention" %>
+<%@ page import="codeu.model.data.User" %>
 
-
+<%
+/** Gets the UserStore instance to access all users. */
+UserStore userStore = UserStore.getInstance();
+%>
 <% List<Message> messages = (List<Message>) request.getAttribute("messages"); %>
 
 <!DOCTYPE html>
@@ -40,7 +44,7 @@
     <% } %>
     <a href="/about.jsp">About</a>
   </nav>
-  
+
   <div id="container">
 
     <% if(request.getAttribute("error") != null){ %>
@@ -51,6 +55,25 @@
         <h1><%= request.getAttribute("username") %>'s Profile Page</h1>
 
         <hr/>
+
+        <form method="POST" action="upload" enctype="multipart/form-data" >
+          File:
+          <input type="file" name="file" id="file" /> <br/>
+          <input type="submit" value="Upload" name="upload" id="upload" />
+        </form>
+        <%
+          String userProfile = (String) request.getAttribute("username");
+          User currentUser = userStore.getUser(userProfile);
+          if (currentUser.getImageString() != null) {
+        %>
+        <img src="data:image/jpeg;base64,<%=request.getAttribute("image")%>" width="200" height="200" />
+        <%
+        } else {
+        %>
+        <%= request.getAttribute("image")%>
+        <%
+          }
+        %>
 
         <h2>About <%= request.getAttribute("username") %> </h2>
         <p> <%= UserStore.getInstance().getUser((String)request.getAttribute("username")).getAboutMe() %> </p>

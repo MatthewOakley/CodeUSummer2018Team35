@@ -16,8 +16,22 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.jsoup.Jsoup;
 import org.jsoup.safety.Whitelist;
+import com.google.appengine.repackaged.com.google.api.client.util.Base64;
+import java.awt.image.BufferedImage;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.InputStream;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.imageio.ImageIO;
+import javax.servlet.annotation.MultipartConfig;
+import javax.servlet.http.Part;
 
 /** Servlet class responsible for the profile pages. */
+@MultipartConfig(maxFileSize=10*1024*1024)
 public class ProfilePagesServlet extends HttpServlet {
 
   /** Store class that gives access to Users. */
@@ -93,6 +107,18 @@ public class ProfilePagesServlet extends HttpServlet {
       return;
     }
 
+    String requestUrl = request.getRequestURI();
+
+    Part filePart = request.getPart("file");
+    InputStream fileContent = filePart.getInputStream();
+    String imageString = encodeString(fileContent);
+
+    user.setImageString(imageString);
+    if (user == null) {
+        response.sendRedirect("/login");
+        return;
+    }
+
     String aboutMeContent = request.getParameter("aboutMe");
 
     // this removes any HTML from the about me content
@@ -102,5 +128,27 @@ public class ProfilePagesServlet extends HttpServlet {
     UserStore.getInstance().updateUser(user);
     response.sendRedirect("/users/" + username);
 
+  }
+
+  private String encodeString(InputStream fileInputStreamReader) {
+    String resultEncoded = null;
+    try {
+      ByteArrayOutputStream output = new ByteArrayOutputStream();
+      byte[] buffer = new byte[1024];
+      int zero = 0;
+      while ((zero = fileInputStreamReader.read(buffer, 0, buffer.length)) != -1) {
+        output.write(buffer, 0, zero);
+      }
+      output.flush();
+
+      byte[] bytes = output.toByteArray();
+      fileInputStreamReader.read(bytes);
+      resultEncoded = new String(Base64.encodeBase64(bytes), "UTF-8");
+    } catch (FileNotFoundException e) {
+      e.printStackTrace();
+    } catch (IOException e) {
+      e.printStackTrace();
+    }
+    return resultEncoded;
   }
 }
