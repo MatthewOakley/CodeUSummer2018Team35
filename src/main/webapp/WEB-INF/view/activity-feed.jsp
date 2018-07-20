@@ -23,6 +23,9 @@
 
     <nav>
         <a id="navTitle" href="/">CodeU Chat App</a>
+        <% if(request.getSession().getAttribute("user") != null){ %>
+          <a href="/users/<%= request.getSession().getAttribute("user") %>">My Profile</a>
+        <% } %>
         <a href="/activityfeed">Activity Feed</a>
         <a href="/conversations">Conversations</a>
         <% if(request.getSession().getAttribute("user") != null){ %>
