@@ -37,6 +37,7 @@ import java.util.HashSet;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.stream.Collectors;
+import com.google.appengine.api.datastore.Text;
 
 /**
  * This class handles all interactions with Google App Engine's Datastore service. On startup it
@@ -78,7 +79,8 @@ public class PersistentDataStore {
         Instant creationTime = Instant.parse((String) entity.getProperty("creation_time"));
         String aboutMe = (String) entity.getProperty("aboutMe");
         boolean adminStatus = (boolean) entity.getProperty("adminStatus");
-        User user = new User(uuid, userName, passwordHash, creationTime, aboutMe, adminStatus);
+        Text profilePic = (Text) entity.getProperty("profilepic");
+        User user = new User(uuid, userName, passwordHash, creationTime, aboutMe, adminStatus, profilePic);
         users.add(user);
       } catch (Exception e) {
         // In a production environment, errors should be very rare. Errors which may
@@ -245,6 +247,7 @@ public class PersistentDataStore {
     userEntity.setProperty("creation_time", user.getCreationTime().toString());
     userEntity.setProperty("aboutMe", user.getAboutMe());
     userEntity.setProperty("adminStatus", user.isAdmin());
+    userEntity.setProperty("profilepic", user.getProfilePic());
     datastore.put(userEntity);
   }
 

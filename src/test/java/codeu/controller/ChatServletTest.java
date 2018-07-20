@@ -142,7 +142,8 @@ public class ChatServletTest {
             "$2a$10$bBiLUAVmUFK6Iwg5rmpBUOIBW6rIMhU1eKfi3KR60V9UXaYTwPfHy",
             Instant.now(),
             "test_aboutme",
-            false);
+            false,
+            null);
 
     Mockito.when(mockUserStore.getUser("test_username")).thenReturn(fakeUser);
 
@@ -167,7 +168,8 @@ public class ChatServletTest {
             "$2a$10$bBiLUAVmUFK6Iwg5rmpBUOIBW6rIMhU1eKfi3KR60V9UXaYTwPfHy",
             Instant.now(),
             "test_aboutme",
-            false);
+            false,
+            null);
 
     Mockito.when(mockUserStore.getUser("test_username")).thenReturn(fakeUser);
 
@@ -199,7 +201,8 @@ public class ChatServletTest {
             "$2a$10$eDhncK/4cNH2KE.Y51AWpeL8/5znNBQLuAFlyJpSYNODR/SJQ/Fg6",
             Instant.now(),
             "test_aboutme",
-            false);
+            false,
+            null);
     Mockito.when(mockUserStore.getUser("test_username")).thenReturn(fakeUser);
 
     Conversation fakeConversation =
@@ -232,7 +235,8 @@ public class ChatServletTest {
             "$2a$10$eDhncK/4cNH2KE.Y51AWpeL8/5znNBQLuAFlyJpSYNODR/SJQ/Fg6",
             Instant.now(),
             "test_aboutme",
-            false);
+            false,
+            null);
     Mockito.when(mockUserStore.getUser("test_username")).thenReturn(fakeUser);
 
     Conversation fakeConversation =
@@ -266,7 +270,8 @@ public class ChatServletTest {
             "$2a$10$bBiLUAVmUFK6Iwg5rmpBUOIBW6rIMhU1eKfi3KR60V9UXaYTwPfHy",
             Instant.now(),
             "test_aboutme",
-            false);
+            false,
+            null);
     Mockito.when(mockUserStore.getUser("test_username")).thenReturn(fakeUser);
 
     Conversation fakeConversation =

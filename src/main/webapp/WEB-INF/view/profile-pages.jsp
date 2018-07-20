@@ -4,6 +4,7 @@
 <%@ page import="codeu.model.store.basic.MentionStore" %>
 <%@ page import="codeu.model.data.Mention" %>
 <%@ page import="codeu.model.data.User" %>
+<%@ page import="com.google.appengine.api.datastore.Text" %>
 
 <%
 /** Gets the UserStore instance to access all users. */
@@ -56,24 +57,28 @@ UserStore userStore = UserStore.getInstance();
 
         <hr/>
 
-        <form method="POST" action="upload" enctype="multipart/form-data" >
-          File:
-          <input type="file" name="file" id="file" /> <br/>
-          <input type="submit" value="Upload" name="upload" id="upload" />
-        </form>
         <%
           String userProfile = (String) request.getAttribute("username");
           User currentUser = userStore.getUser(userProfile);
-          if (currentUser.getImageString() != null) {
         %>
-        <img src="data:image/jpeg;base64,<%=request.getAttribute("image")%>" width="200" height="200" />
-        <%
-        } else {
-        %>
-        <%= request.getAttribute("image")%>
-        <%
-          }
-        %>
+
+        <% if (currentUser.getProfilePic() == null) { %>
+          <img src="../images/default_pfp.jpg" alt="temp"/>
+        <% } else { %>
+          <img src="data:image/jpeg;base64,<%= currentUser.getProfilePic().getValue() %>" alt="temp" width="250" />
+        <% } %>
+
+        <% if (request.getSession().getAttribute("user").equals(request.getAttribute("username"))) { %>
+           <form action="/users/<%= request.getSession().getAttribute("user") %>" method="POST" enctype="multipart/form-data">
+             <label for="EditProfilePicture">Edit Your Profile Picture: </label>
+             <br/>
+             <br/>
+             <input type="file" name="pic" accept="image/*">
+             <button type="submit" name="EditProfilePage" value="EditProfilePicture" class="btn btn-primary">Upload</button>
+           </form>
+        <% } else {} %>
+
+        <hr/>
 
         <h2>About <%= request.getAttribute("username") %> </h2>
         <p> <%= UserStore.getInstance().getUser((String)request.getAttribute("username")).getAboutMe() %> </p>

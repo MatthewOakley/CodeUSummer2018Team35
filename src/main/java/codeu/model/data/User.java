@@ -16,6 +16,7 @@ package codeu.model.data;
 
 import java.time.Instant;
 import java.util.UUID;
+import com.google.appengine.api.datastore.Text;
 
 /** Class representing a registered user. */
 public class User {
@@ -25,7 +26,7 @@ public class User {
   private final Instant creation;
   private final boolean isAdmin;
   private String aboutMe;
-  private String profileImageString;
+  private Text profilePic;
 
   /**
    * Constructs a new User.
@@ -37,14 +38,14 @@ public class User {
    * @param aboutMe the aboutMe of this User
    * @param admin if the User is an admin or not
    */
-  public User(UUID id, String name, String passwordHash, Instant creation, String aboutMe, boolean isAdmin) {
+  public User(UUID id, String name, String passwordHash, Instant creation, String aboutMe, boolean isAdmin, Text profilePic) {
     this.id = id;
     this.name = name;
     this.passwordHash = passwordHash;
     this.creation = creation;
     this.aboutMe = aboutMe;
     this.isAdmin = isAdmin;
-    this.profileImageString = null;
+    this.profilePic = profilePic;
   }
 
   /** Returns the ID of this User. */
@@ -80,10 +81,11 @@ public class User {
     return aboutMe;
   }
 
-  public String getImageString(){
-    return profileImageString;
+  public Text getProfilePic() {
+	  return profilePic;
   }
-  public void setImageString(String image){
-    this.profileImageString = image;
+
+  public void setProfilePic(Text profilePic) {
+	  this.profilePic = profilePic;
   }
 }

@@ -16,22 +16,32 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.jsoup.Jsoup;
 import org.jsoup.safety.Whitelist;
-import com.google.appengine.repackaged.com.google.api.client.util.Base64;
-import java.awt.image.BufferedImage;
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+
 import java.io.InputStream;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import java.io.OutputStream;
+import java.nio.file.Paths;
+import java.util.Base64;
+import java.util.Set;
+
+import java.time.LocalDate;
+import java.time.Period;
+
+
 import javax.imageio.ImageIO;
+import javax.servlet.ServletContext;
 import javax.servlet.annotation.MultipartConfig;
+import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.Part;
 
+import org.mindrot.jbcrypt.BCrypt;
+
+import com.google.appengine.api.datastore.Text;
+import com.google.appengine.repackaged.com.google.common.io.Files;
+
 /** Servlet class responsible for the profile pages. */
-@MultipartConfig(maxFileSize=10*1024*1024)
+@MultipartConfig
 public class ProfilePagesServlet extends HttpServlet {
 
   /** Store class that gives access to Users. */
@@ -93,6 +103,7 @@ public class ProfilePagesServlet extends HttpServlet {
   public void doPost(HttpServletRequest request, HttpServletResponse response)
       throws IOException, ServletException {
 
+    String action = (String) request.getParameter("EditProfilePage");
     String username = (String) request.getSession().getAttribute("user");
     if (username == null) {
       // user is not logged in, don't let them add a message
@@ -109,14 +120,21 @@ public class ProfilePagesServlet extends HttpServlet {
 
     String requestUrl = request.getRequestURI();
 
-    Part filePart = request.getPart("file");
-    InputStream fileContent = filePart.getInputStream();
-    String imageString = encodeString(fileContent);
+    if (action != null && action.equals("EditProfilePicture")) {
+      System.out.println(action);
+      Part file = request.getPart("pic");
 
-    user.setImageString(imageString);
-    if (user == null) {
-        response.sendRedirect("/login");
-        return;
+      InputStream content = file.getInputStream();
+
+		  byte[] buffer = new byte[content.available()];
+		  content.read(buffer, 0, content.available());
+
+		  String base64 = Base64.getEncoder().encodeToString(buffer);
+		  Text t = new Text(base64);
+		  user.setProfilePic(t);
+
+      UserStore.getInstance().updateUser(user);
+      response.sendRedirect("/users/" + username);
     }
 
     String aboutMeContent = request.getParameter("aboutMe");
@@ -128,27 +146,5 @@ public class ProfilePagesServlet extends HttpServlet {
     UserStore.getInstance().updateUser(user);
     response.sendRedirect("/users/" + username);
 
-  }
-
-  private String encodeString(InputStream fileInputStreamReader) {
-    String resultEncoded = null;
-    try {
-      ByteArrayOutputStream output = new ByteArrayOutputStream();
-      byte[] buffer = new byte[1024];
-      int zero = 0;
-      while ((zero = fileInputStreamReader.read(buffer, 0, buffer.length)) != -1) {
-        output.write(buffer, 0, zero);
-      }
-      output.flush();
-
-      byte[] bytes = output.toByteArray();
-      fileInputStreamReader.read(bytes);
-      resultEncoded = new String(Base64.encodeBase64(bytes), "UTF-8");
-    } catch (FileNotFoundException e) {
-      e.printStackTrace();
-    } catch (IOException e) {
-      e.printStackTrace();
-    }
-    return resultEncoded;
   }
 }
