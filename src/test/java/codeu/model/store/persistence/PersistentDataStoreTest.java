@@ -12,6 +12,7 @@ import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
+import com.google.appengine.api.datastore.Text;
 
 /**
  * Test class for PersistentDataStore. The PersistentDataStore class relies on DatastoreService,
@@ -44,7 +45,8 @@ public class PersistentDataStoreTest {
     Instant creationOne = Instant.ofEpochMilli(1000);
     String aboutMeOne = "test_aboutme_one";
     boolean adminStatusOne = true;
-    User inputUserOne = new User(idOne, nameOne, passwordHashOne, creationOne, aboutMeOne, adminStatusOne);
+    Text profilePicOne = null;
+    User inputUserOne = new User(idOne, nameOne, passwordHashOne, creationOne, aboutMeOne, adminStatusOne, profilePicOne);
 
     UUID idTwo = UUID.fromString("10000001-2222-3333-4444-555555555555");
     String nameTwo = "test_username_two";
@@ -52,7 +54,8 @@ public class PersistentDataStoreTest {
     Instant creationTwo = Instant.ofEpochMilli(2000);
     String aboutMeTwo = "test_aboutme_two";
     boolean adminStatusTwo = false;
-    User inputUserTwo = new User(idTwo, nameTwo, passwordHashTwo, creationTwo, aboutMeTwo, adminStatusTwo);
+    Text profilePicTwo = null;
+    User inputUserTwo = new User(idTwo, nameTwo, passwordHashTwo, creationTwo, aboutMeTwo, adminStatusTwo, profilePicTwo);
 
     // save
     persistentDataStore.writeThrough(inputUserOne);

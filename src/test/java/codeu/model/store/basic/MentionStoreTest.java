@@ -52,7 +52,7 @@ public class MentionStoreTest {
     assertEquals(MENTION_ONE, resultMention);
   }
 
-  @Test 
+  @Test
   public void testSetConstructor() {
     Set<UUID> UUIDs = new HashSet<UUID>();
     UUIDs.add(UUID.randomUUID());
@@ -93,7 +93,7 @@ public class MentionStoreTest {
 
   private void assertEquals(Mention expectedMention, Mention actualMention) {
     Assert.assertEquals(expectedMention.getMentionedUser(), actualMention.getMentionedUser());
-    
+
     Set<UUID> mentionOne = expectedMention.getMessageIds();
     Set<UUID> mentionTwo = actualMention.getMessageIds();
 

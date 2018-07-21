@@ -37,6 +37,7 @@ import java.util.HashSet;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.stream.Collectors;
+import com.google.appengine.api.datastore.Text;
 
 /**
  * This class handles all interactions with Google App Engine's Datastore service. On startup it
@@ -78,7 +79,8 @@ public class PersistentDataStore {
         Instant creationTime = Instant.parse((String) entity.getProperty("creation_time"));
         String aboutMe = (String) entity.getProperty("aboutMe");
         boolean adminStatus = (boolean) entity.getProperty("adminStatus");
-        User user = new User(uuid, userName, passwordHash, creationTime, aboutMe, adminStatus);
+        Text profilePic = (Text) entity.getProperty("profilepic");
+        User user = new User(uuid, userName, passwordHash, creationTime, aboutMe, adminStatus, profilePic);
         users.add(user);
       } catch (Exception e) {
         // In a production environment, errors should be very rare. Errors which may
@@ -182,18 +184,18 @@ public class PersistentDataStore {
 
     // Retrieve all mentions from the datastore.
     Query query = new Query("chat-mentions");
-  
+
     PreparedQuery results = datastore.prepare(query);
-  
+
     for (Entity entity : results.asIterable()) {
       try {
         Set<String> dataStoreMessageIds = new HashSet<>((Collection<String>)
-              entity.getProperty("uuid_list")); 
+              entity.getProperty("uuid_list"));
         Set<UUID> messageIds = dataStoreMessageIds.stream().map(id -> UUID.fromString(id)).collect(Collectors.toSet());
         String mentionedUser = (String) entity.getProperty("mentioned_user");
         Mention mention = new Mention(messageIds, mentionedUser);
         mentions.add(mention);
-            
+
       } catch (Exception e) {
         // In a production environment, errors should be very rare. Errors which may
         // occur include network errors, Datastore service errors, authorization errors,
@@ -201,9 +203,9 @@ public class PersistentDataStore {
         throw new PersistentDataStoreException(e);
       }
     }
-  return mentions; 
+  return mentions;
 }
-  
+
    /**
    * Loads all Hashtag objects from the Datastore service and returns them in a List.
    * @throws PersistentDataStoreException if an error was detected during the load from the
@@ -232,6 +234,7 @@ public class PersistentDataStore {
         throw new PersistentDataStoreException(e);
       }
     }
+
     return hashtags;
   }
 
@@ -244,6 +247,7 @@ public class PersistentDataStore {
     userEntity.setProperty("creation_time", user.getCreationTime().toString());
     userEntity.setProperty("aboutMe", user.getAboutMe());
     userEntity.setProperty("adminStatus", user.isAdmin());
+    userEntity.setProperty("profilepic", user.getProfilePic());
     datastore.put(userEntity);
   }
 
@@ -314,4 +318,3 @@ public class PersistentDataStore {
     datastore.put(hashtagEntity);
   }
 }
-
