@@ -51,6 +51,9 @@ List<Message> messages = (List<Message>) request.getAttribute("messages");
 <body onload="scrollChat()">
   <nav>
     <a id="navTitle" href="/">CodeU Chat App</a>
+    <% if(request.getSession().getAttribute("user") != null){ %>
+      <a href="/users/<%= request.getSession().getAttribute("user") %>">My Profile</a>
+    <% } %>
     <a href="/conversations">Conversations</a>
       <% if (request.getSession().getAttribute("user") != null) { %>
     <a>Hello <%= request.getSession().getAttribute("user") %>!</a>
@@ -105,6 +108,13 @@ List<Message> messages = (List<Message>) request.getAttribute("messages");
             <input type="text" name="message">
             <input type="hidden" name="messageId" value="<%= message.getId() %>">
             <input type="hidden" name="reply" value="true">
+          </form>
+        <% } %>
+        <% if (UserStore.getInstance().getUser(author).getName().equals(request.getSession().getAttribute("user"))) { %>
+          <form action="/chat/<%= conversation.getTitle() %>" method="POST">
+            <button type="submit">Delete</button>
+            <input type="hidden" name="delete" value="true">
+            <input type="hidden" name="messageId" value="<%= message.getId() %>">
           </form>
         <% } %>
       </li>

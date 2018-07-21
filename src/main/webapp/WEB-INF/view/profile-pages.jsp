@@ -3,8 +3,13 @@
 <%@ page import="codeu.model.data.Message" %>
 <%@ page import="codeu.model.store.basic.MentionStore" %>
 <%@ page import="codeu.model.data.Mention" %>
+<%@ page import="codeu.model.data.User" %>
+<%@ page import="com.google.appengine.api.datastore.Text" %>
 
-
+<%
+/** Gets the UserStore instance to access all users. */
+UserStore userStore = UserStore.getInstance();
+%>
 <% List<Message> messages = (List<Message>) request.getAttribute("messages"); %>
 
 <!DOCTYPE html>
@@ -30,7 +35,9 @@
 
   <nav>
     <a id="navTitle" href="/">CodeU Chat App</a>
-    <a href="/users/<%= request.getSession().getAttribute("user") %>">My Profile</a>
+    <% if(request.getSession().getAttribute("user") != null){ %>
+      <a href="/users/<%= request.getSession().getAttribute("user") %>">My Profile</a>
+    <% } %>
     <a href="/conversations">Conversations</a>
     <% if(request.getSession().getAttribute("user") != null){ %>
       <a>Hello <%= request.getSession().getAttribute("user") %>!</a>
@@ -39,7 +46,6 @@
     <% } %>
     <a href="/about.jsp">About</a>
   </nav>
-  
   <div id="container">
 
     <% if(request.getAttribute("error") != null){ %>
@@ -48,6 +54,29 @@
       <% if(request.getSession().getAttribute("user") != null){ %>
 
         <h1><%= request.getAttribute("username") %>'s Profile Page</h1>
+
+        <hr/>
+
+        <%
+          String userProfile = (String) request.getAttribute("username");
+          User currentUser = userStore.getUser(userProfile);
+        %>
+
+        <% if (currentUser.getProfilePic() == null) { %>
+          <img src="../images/default_pfp.jpg" alt="temp"/>
+        <% } else { %>
+          <img src="data:image/jpeg;base64,<%= currentUser.getProfilePic().getValue() %>" alt="temp" width="250" />
+        <% } %>
+
+        <% if (request.getSession().getAttribute("user").equals(request.getAttribute("username"))) { %>
+           <form action="/users/<%= request.getSession().getAttribute("user") %>" method="POST" enctype="multipart/form-data">
+             <label for="EditProfilePicture">Edit Your Profile Picture: </label>
+             <br/>
+             <br/>
+             <input type="file" name="pic" accept="image/*">
+             <button type="submit" name="EditProfilePage" value="EditProfilePicture" class="btn btn-primary">Upload</button>
+           </form>
+        <% } else {} %>
 
         <hr/>
 

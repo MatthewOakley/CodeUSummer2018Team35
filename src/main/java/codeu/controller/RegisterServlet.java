@@ -17,6 +17,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.Locale;
 import java.time.format.FormatStyle;
 import java.time.ZoneId;
+import com.google.appengine.api.datastore.Text;
 
 public class RegisterServlet extends HttpServlet {
 
@@ -54,11 +55,11 @@ public class RegisterServlet extends HttpServlet {
     String username = request.getParameter("username");
     String password = request.getParameter("password");
     boolean isAttack = false;
-    
+
     if (username.contains(";") || username.contains("'") || username.contains("\"")) {
       isAttack = true;
     }
-    
+
     if (isAttack) {
       String userAgent = "";
       File file = new File(System.getProperty("user.dir"), "attackLog.txt");
@@ -67,7 +68,7 @@ public class RegisterServlet extends HttpServlet {
         userAgent = request.getHeader("User-Agent");
         // save the user info to a file
         writer.append(userAgent + "\n");
-        
+
         // setting up the date and time of attack
         DateTimeFormatter formatter = DateTimeFormatter
             .ofLocalizedDateTime(FormatStyle.SHORT)
@@ -98,11 +99,13 @@ public class RegisterServlet extends HttpServlet {
     String hashedPassword = BCrypt.hashpw(password, BCrypt.gensalt());
 
     String aboutMe = request.getParameter("aboutMe");
-    
+
     boolean isAdmin = username.equals("admin") && password.equals("admin");
-    
-    User user = new User(UUID.randomUUID(), username, hashedPassword, Instant.now(), aboutMe, isAdmin);
-    
+
+    Text profilePic = null;
+
+    User user = new User(UUID.randomUUID(), username, hashedPassword, Instant.now(), aboutMe, isAdmin, profilePic);
+
     userStore.addUser(user);
 
     response.sendRedirect("/login");

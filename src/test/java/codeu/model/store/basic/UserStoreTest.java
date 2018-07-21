@@ -23,7 +23,8 @@ public class UserStoreTest {
           "$2a$10$/zf4WlT2Z6tB5sULB9Wec.QQdawmF0f1SbqBw5EeJg5uoVpKFFXAa",
           Instant.ofEpochMilli(1000),
           "test_aboutme_one",
-          false);
+          false,
+          null);
 
   private final User USER_TWO =
       new User(
@@ -32,7 +33,8 @@ public class UserStoreTest {
           "$2a$10$lgZSbmcYyyC7bETcMo/O1uUltWYDK3DW1lrEjCumOE1u8QPMlzNVy",
           Instant.ofEpochMilli(2000),
           "test_aboutme_two",
-          true);
+          true,
+          null);
 
   private final User USER_THREE =
       new User(
@@ -41,7 +43,8 @@ public class UserStoreTest {
           "$2a$10$htXz4E48iPprTexGsEeBFurXyCwW6F6aoiSBqotL4m0NBg/VSkB9.",
           Instant.ofEpochMilli(3000),
           "test_aboutme_three",
-          true);
+          true,
+          null);
 
   @Before
   public void setup() {
@@ -92,7 +95,8 @@ public class UserStoreTest {
             "$2a$10$eDhncK/4cNH2KE.Y51AWpeL8/5znNBQLuAFlyJpSYNODR/SJQ/Fg6",
             Instant.now(),
             "test_aboutme",
-            false);
+            false,
+            null);
 
     userStore.addUser(inputUser);
     User resultUser = userStore.getUser("test_username");

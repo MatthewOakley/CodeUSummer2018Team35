@@ -18,6 +18,7 @@ import java.time.Instant;
 import java.util.UUID;
 import org.junit.Assert;
 import org.junit.Test;
+import com.google.appengine.api.datastore.Text;
 
 public class UserTest {
 
@@ -29,7 +30,8 @@ public class UserTest {
     Instant creation = Instant.now();
     String aboutMe = "test_aboutme";
     boolean adminStatus = false;
-    User user = new User(id, name, passwordHash, creation, aboutMe, adminStatus);
+    Text profilePic = null;
+    User user = new User(id, name, passwordHash, creation, aboutMe, adminStatus, profilePic);
 
     Assert.assertEquals(id, user.getId());
     Assert.assertEquals(name, user.getName());
