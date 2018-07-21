@@ -29,7 +29,6 @@ UserStore userStore = UserStore.getInstance();
       height: 200px;
       overflow-y: scroll
     }
-
   </style>
 </head>
 <body>
@@ -47,7 +46,6 @@ UserStore userStore = UserStore.getInstance();
     <% } %>
     <a href="/about.jsp">About</a>
   </nav>
-
   <div id="container">
 
     <% if(request.getAttribute("error") != null){ %>

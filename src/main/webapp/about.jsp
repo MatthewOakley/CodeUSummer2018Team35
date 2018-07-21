@@ -39,33 +39,24 @@
     <div
       style="width:75%; margin-left:auto; margin-right:auto; margin-top: 50px;">
 
-      <h1>About the CodeU Chat App</h1>
+      <h1>About Pied Piper's CodeU Chat App</h1>
       <p>
-        This is an example chat application designed to be a starting point
-        for your CodeU project team work. Here's some stuff to think about:
+        This is how far we have gotten with our chat app!!!
       </p>
 
       <ul>
-        <li><strong>Algorithms and data structures:</strong> We've made the app
-            and the code as simple as possible. You will have to extend the
-            existing data structures to support your enhancements to the app,
-            and also make changes for performance and scalability as your app
-            increases in complexity.</li>
-        <li><strong>Look and feel:</strong> The focus of CodeU is on the Java
-          side of things, but if you're particularly interested you might use
-          HTML, CSS, and JavaScript to make the chat app prettier.</li>
-        <li><strong>Customization:</strong> Think about a group you care about.
-          What needs do they have? How could you help? Think about technical
-          requirements, privacy concerns, and accessibility and
-          internationalization.</li>
+        <li><strong>Admin:</strong> To access this you must make a user called "admin" and password that is "admin". Then go to /admin part of the webpage. This will show the stats of the webpage and amount of attacks that have been detected.</li>
+        <li><strong>Hashtag:</strong> Putting a # before a word in conversations will create a link that can be clicked. Click and all messages with that hashtag will be displayed.</li>
+        <li><strong>SQL-Injection:</strong> When making a new user or signing in it will detect if there is a " ; ", " ' " or " " " in the username. If it detects an "attack" it will log the user's client info and current time and send it to a log. The total amount of attacks can be seen on the admin page.</li>
+        <li><strong>Profile Page:</strong>To access the profile page of any user go to /users/username , username being the person's profile you would like to access. You can also easily access your own profile by clicking on the My Profile tab which only appears after the user logs in. 
+	On the profile page a user can add/edit their bio or profile pic. The profile page also displays all of the users sent messages and mentioned messages.
+</li>
+        <li><strong>Delete Button:</strong>A user can delete any message or conversation by clicking the delete button.</li>
+        <li><strong>Emojis and Styled Text:</strong>Type in the desired emoji with a colon on both ends and emoji will be displayed when message is sent. Ex. :camel: (find emoji guide at <a href ="https://github.com/vdurmont/emoji-java">https://github.com/vdurmont/emoji-java</a> To style text do the following ---italics: asterisk or underscore on both end ---- bold: double asterisks or double underscores on both ends ---italics and bold: double asterisks followed by single underscore on both ends.</li>
       </ul>
 
       <p>
-        This is your code now. Get familiar with it and get comfortable
-        working with your team to plan and make changes. Start by updating the
-        homepage and this about page to tell your users more about your team.
-        This page should also be used to describe the features and improvements
-        you've added.
+        Enjoy the work we have put into this website!
       </p>
     </div>
   </div>

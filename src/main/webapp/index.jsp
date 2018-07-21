@@ -45,6 +45,10 @@
       <h2>Meet Team Pied Piper!</h2>
 
       <ul>
+        <li>Nicki Anselmo - CodeU Team</li>
+        <li>Erika Schwartz - PA</li>
+      </ul>
+      <ul>
         <li>Steven Abreu</li>
         <li>Iliana Cantu</li>
         <li>Asma Makhdoom</li>
