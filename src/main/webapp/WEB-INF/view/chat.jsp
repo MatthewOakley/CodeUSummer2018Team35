@@ -74,7 +74,23 @@ List<Message> messages = (List<Message>) request.getAttribute("messages");
         String author = UserStore.getInstance().getUser(message.getAuthorId()).getName();
     %>
       <li>
-        <strong><%= author %>:</strong> <%= message.getStyledContent(message.getContent()) %>
+        <%
+        String content = message.getContent();
+        String[] messageSplit = content.split(" ");
+        String output = "";
+        for (String word : messageSplit) {
+          if (word.length() >= 2 &&  word.charAt(0) == '#') {
+            if(word.charAt(word.length() - 1) == '.') {
+              word = word.substring(0, word.length() - 1);
+            }
+            word = "<a href='../../hashtag/" + word.substring(1) + "'>" 
+              + word + "</a>";
+          }
+          output = output + " " + word;
+        }
+        %>
+      
+        <strong><%= author %>:</strong> <%= output %>
         <% if (UserStore.getInstance().getUser(author).getName().equals(
                 request.getSession().getAttribute("user"))) { %>
           <form action="/chat/<%= conversation.getTitle() %>" method="POST">
@@ -95,10 +111,24 @@ List<Message> messages = (List<Message>) request.getAttribute("messages");
         <ul class="tab">
       <%
         for (Message reply : message.getReplies()) {
+        
         author = UserStore.getInstance().getUser(reply.getAuthorId()).getName();
+        String contentReply = reply.getContent();
+        String[] replySplit = contentReply.split(" ");
+        String replyOutput = "";
+        for (String word : replySplit) {
+          if (word.length() >= 2 && word.charAt(0) == '#') {
+            if(word.charAt(word.length() - 1) == '.') {
+              word = word.substring(0, word.length() - 1);
+            } 
+            word = "<a href='../../hashtag/" + word.substring(1) + "'>" 
+              + word + "</a>";
+          }
+          replyOutput = replyOutput + " " + word;
+        }
       %>
         <li>
-            <strong><%= author %>:</strong> <%= reply.getStyledContent(reply.getContent()) %>
+            <strong><%= author %>:</strong> <%= replyOutput %>
             <% if (UserStore.getInstance().getUser(author).getName().equals(
                     request.getSession().getAttribute("user"))) { %>
               <form action="/chat/<%= conversation.getTitle() %>" method="POST">
@@ -112,29 +142,6 @@ List<Message> messages = (List<Message>) request.getAttribute("messages");
         }
       %>
         </ul>
-        String author = UserStore.getInstance()
-          .getUser(message.getAuthorId()).getName();
-        String content = message.getContent();
-        String[] messageSplit = content.split(" ");
-        String output = "";
-        for (String word : messageSplit) {
-          if (word.charAt(0) == '#') {
-            word = "<a href='../../hashtag/" + word.substring(1) + "'>" 
-              + word + "</a>";
-          }
-          output = output + " " + word;
-        }
-    %>
-      <li>
-        <strong><%= author %>:</strong> <%= message.getStyledContent(message.getContent()) %>
-        <% if (UserStore.getInstance().getUser(author).getName().equals(request.getSession().getAttribute("user"))) { %>
-          <form action="/chat/<%= conversation.getTitle() %>" method="POST">
-            <button type="submit">Delete</button>
-            <input type="hidden" name="delete" value="true">
-            <input type="hidden" name="messageId" value="<%= message.getId() %>">
-          </form>
-        <% } %>
-      </li>
     <%
       }
     %>

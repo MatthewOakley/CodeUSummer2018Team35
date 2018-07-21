@@ -19,7 +19,11 @@
       height: 200px;
       overflow-y: scroll
     }
-
+    #mentionedMessages {
+      background-color: white;
+      height: 200px;
+      overflow-y: scroll
+    }
   </style>
 </head>
 <body>
@@ -35,12 +39,7 @@
     <% } %>
     <a href="/about.jsp">About</a>
   </nav>
-
-  <!--TODO(asma526):
-
-  Add profile pic option
-
-  -->
+  
   <div id="container">
 
     <% if(request.getAttribute("error") != null){ %>
@@ -53,7 +52,7 @@
         <hr/>
 
         <h2>About <%= request.getAttribute("username") %> </h2>
-        <p> <%= UserStore.getInstance().getUser((String)request.getSession().getAttribute("user")).getAboutMe() %> </p>
+        <p> <%= UserStore.getInstance().getUser((String)request.getAttribute("username")).getAboutMe() %> </p>
 
         <% if(request.getSession().getAttribute("user").equals(request.getAttribute("username"))){ %>
           <h2>Edit About Me</h2>
@@ -75,27 +74,26 @@
         <h2><%= request.getAttribute("username") %>'s Sent Messages</h2>
         <div id="profileMessages">
           <ul>
-        <% for (Message message : messages) {
-            String author = UserStore.getInstance().getUser(message.getAuthorId()).getName();
-        %>
-            <li><strong><%= author %>:</strong> <%=message.getStyledContent(message.getContent()) %></li>
-        <% } %>
+            <% for (Message message : messages) {
+                String author = UserStore.getInstance().getUser(message.getAuthorId()).getName();
+            %>
+                <li><strong><%= author %>:</strong> <%=message.getStyledContent(message.getContent()) %></li>
+            <% } %>
           </ul>
-          <h3><%= request.getAttribute("username") %>'s Mentioned Messages</h2>
-            <div id="mentionedMessages">
+        </div>
+
+        <h2><%= request.getAttribute("username") %>'s Mentioned Messages</h2>
+        <div id="mentionedMessages">
           <ul>
-        <% List<Message> messages = (List<Message>)request.getAttribute("messages");
-        
-        for (Message message : messages) { %>
-            <li><strong><%= message.getContent();%></strong></li>
-     
-        <% } %>
+            <% for (Message message : messages) { %>
+                <li><%= message.getStyledContent(message.getContent()) %></li>
+
+            <% } %>
           </ul>
         </div>
       <% } %>
     <% } %>
-
-
+    <br/>
   </div>
 </body>
 </html>

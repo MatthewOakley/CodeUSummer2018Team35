@@ -201,8 +201,8 @@ public class PersistentDataStore {
         throw new PersistentDataStoreException(e);
       }
     }
-  return mentions; 
-}
+    return mentions; 
+  }
   
    /**
    * Loads all Hashtag objects from the Datastore service and returns them in a List.
