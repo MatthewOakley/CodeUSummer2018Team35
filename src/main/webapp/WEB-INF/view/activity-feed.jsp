@@ -22,7 +22,7 @@
 -->
 
     <nav>
-        <a id="navTitle" href="/">CodeU Chat App</a>
+        <a id="navTitle" href="/">Pied Piper Chat App</a>
         <% if(request.getSession().getAttribute("user") != null){ %>
           <a href="/users/<%= request.getSession().getAttribute("user") %>">My Profile</a>
         <% } %>

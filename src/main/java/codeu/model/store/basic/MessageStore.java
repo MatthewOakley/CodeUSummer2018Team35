@@ -154,6 +154,12 @@ public class MessageStore {
     for (Message message : messages) {
       if (message.getId().equals(id)) {
         return message;
+      } else {
+        for (Message reply : message.getReplies()) {
+          if (reply.getId().equals(id)) {
+            return reply;
+          }
+        }
       }
     }
     return null;

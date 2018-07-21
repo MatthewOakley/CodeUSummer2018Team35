@@ -11,12 +11,12 @@
   <!-- This is redirecting the user if they are not an admin -->
   <%  if (request.getSession().getAttribute("user") == null ||
             !(boolean)request.getSession().getAttribute("adminStatus")) {
-        String redirectURL = "http://localhost:8080/";
+        String redirectURL = "http://codeusummer2018team35.appspot.com";
         response.sendRedirect(redirectURL);
       }
   %>
   <nav>
-    <a id="navTitle" href="/">CodeU Chat App</a>
+    <a id="navTitle" href="/">Pied Piper Chat App</a>
     <% if(request.getSession().getAttribute("user") != null){ %>
       <a href="/users/<%= request.getSession().getAttribute("user") %>">My Profile</a>
     <% } %>

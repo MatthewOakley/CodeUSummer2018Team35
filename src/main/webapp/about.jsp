@@ -16,13 +16,13 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>CodeU Chat App</title>
+  <title>Pied Piper Chat App</title>
   <link rel="stylesheet" href="/css/main.css">
 </head>
 <body>
 
   <nav>
-    <a id="navTitle" href="/">CodeU Chat App</a>
+    <a id="navTitle" href="/">Pied Piper Chat App</a>
     <% if(request.getSession().getAttribute("user") != null){ %>
       <a href="/users/<%= request.getSession().getAttribute("user") %>">My Profile</a>
     <% } %>
@@ -39,7 +39,7 @@
     <div
       style="width:75%; margin-left:auto; margin-right:auto; margin-top: 50px;">
 
-      <h1>About Pied Piper's CodeU Chat App</h1>
+      <h1>About Pied Piper's Chat App</h1>
       <p>
         This is how far we have gotten with our chat app!!!
       </p>
