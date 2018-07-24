@@ -101,7 +101,6 @@ BlobstoreService blobstoreService = BlobstoreServiceFactory.getBlobstoreService(
         if (message.getType().equals("image")){
         %>
             <li><strong><%= author %>:</strong> 
-            <h3> hi there </h3>
             <img src="<%= message.getContent() %>" alt = "Image" width = 50% height = 50%> </li>
         <%
         } else if (message.getType().equals("text") || message.getType() == null) {
