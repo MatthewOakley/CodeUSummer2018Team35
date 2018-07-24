@@ -100,6 +100,7 @@ public class ImageUploadServlet extends HttpServlet {
 
      String conversationTitle = request.getParameter("conversationTitle");
      Conversation conversation = conversationStore.getConversationWithTitle(conversationTitle);
+
      if (conversation == null) {
          // couldn't find conversation, redirect to conversation list
          System.out.println("Conversation is not found");
@@ -111,11 +112,14 @@ public class ImageUploadServlet extends HttpServlet {
      List<BlobKey> blobKeys = blobs.get("myFile");
           String url = "";
    
-          if (blobKeys == null || blobKeys.isEmpty()) {
-            response.sendRedirect("/");
-          }else{
-            response.sendRedirect("/serve?blob-key=" + blobKeys.get(0).getKeyString());
-          }
+          //if (blobKeys == null || blobKeys.isEmpty()) {
+            //response.sendRedirect("/");
+          //}else{
+           // response.sendRedirect("/ImageUploadServlet?blob-key=" + blobKeys.get(0).getKeyString());
+          //}
+          if (!(blobKeys == null || blobKeys.isEmpty())) {
+          url = "/ImageServlet?blob-key=" + blobKeys.get(0).getKeyString();
+         }
         
      if(url != ""){
        

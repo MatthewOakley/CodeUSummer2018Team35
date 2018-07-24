@@ -102,7 +102,7 @@ BlobstoreService blobstoreService = BlobstoreServiceFactory.getBlobstoreService(
         %>
             <li><strong><%= author %>:</strong> 
             <h3> hi there </h3>
-            <img src="<%= message.getStyledContent(message.getContent()) %>" alt = "Image" width = 50% height = 50%> </li>
+            <img src="<%= message.getContent() %>" alt = "Image" width = 50% height = 50%> </li>
         <%
         } else if (message.getType().equals("text") || message.getType() == null) {
         %>
@@ -136,7 +136,6 @@ BlobstoreService blobstoreService = BlobstoreServiceFactory.getBlobstoreService(
 
     <form action="<%= blobstoreService.createUploadUrl("/ImageUploadServlet") %>" method= "POST" enctype = "multipart/form-data">
             <input type="hidden" name="conversationTitle" value="<%=conversation.getTitle() %>"> 
-            <input type="text" name="foo" >
             <input type="file" name="myFile" >
             <input type="submit" value="Submit">
     </form>
