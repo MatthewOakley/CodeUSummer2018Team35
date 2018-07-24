@@ -79,30 +79,37 @@ BlobstoreService blobstoreService = BlobstoreServiceFactory.getBlobstoreService(
       <ul>
     <%
       for (Message message : messages) {
-        String author = UserStore.getInstance()
-          .getUser(message.getAuthorId()).getName();
+        String author = UserStore.getInstance().getUser(message.getAuthorId()).getName();
+    %>
+        <%
         String content = message.getContent();
         String[] messageSplit = content.split(" ");
         String output = "";
         for (String word : messageSplit) {
-          if (word.charAt(0) == '#') {
+          if (word.length() >= 2 &&  word.charAt(0) == '#') {
+            if(word.charAt(word.length() - 1) == '.') {
+              word = word.substring(0, word.length() - 1);
+            }
             word = "<a href='../../hashtag/" + word.substring(1) + "'>" 
               + word + "</a>";
           }
           output = output + " " + word;
         }
-    %>
+        %>
+
         <%
         if (message.getType().equals("image")){
         %>
             <li><strong><%= author %>:</strong> 
-            <img src="<%= message.getStyledContent(message.getContent()) %>" alt = "Image" width = 50% height = 50% </li>
+            <h3> hi there </h3>
+            <img src="<%= message.getStyledContent(message.getContent()) %>" alt = "Image" width = 50% height = 50%> </li>
         <%
-        } else {
+        } else if (message.getType().equals("text") || message.getType() == null) {
         %>
-          <li><strong><%= author %>:</strong> 
+          <li><strong><%= author %>:</strong> <%= output %>
   
-      }
+      <% } %>
+
         <% if (UserStore.getInstance().getUser(author).getName().equals(request.getSession().getAttribute("user"))) { 
         %>
           <form action="/chat/<%= conversation.getTitle() %>" method="POST">
@@ -127,8 +134,9 @@ BlobstoreService blobstoreService = BlobstoreServiceFactory.getBlobstoreService(
         <button type="submit">Send</button>
     </form>
 
-    <form action="<%= blobstoreService.createUploadUrl('/ImageUploadServlet') %>" method= "POST" enctype = "multipart/form-data">
-            <input type="hidden" name="conversationTitle" value="<%=conversation.getTitle() %>">
+    <form action="<%= blobstoreService.createUploadUrl("/ImageUploadServlet") %>" method= "POST" enctype = "multipart/form-data">
+            <input type="hidden" name="conversationTitle" value="<%=conversation.getTitle() %>"> 
+            <input type="text" name="foo" >
             <input type="file" name="myFile" >
             <input type="submit" value="Submit">
     </form>
@@ -137,7 +145,6 @@ BlobstoreService blobstoreService = BlobstoreServiceFactory.getBlobstoreService(
       <p><a href="/login">Login</a> to send a message.</p>
     <% } %>
     
-
     <hr/>
   </div>
 </body>

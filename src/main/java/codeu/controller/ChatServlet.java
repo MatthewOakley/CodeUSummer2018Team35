@@ -242,7 +242,7 @@ public class ChatServlet extends HttpServlet {
             user.getId(),
             cleanedAndEmojiMessage,
             Instant.now(), 
-            "string");
+            "text");
 
     messageStore.addMessage(message);
 

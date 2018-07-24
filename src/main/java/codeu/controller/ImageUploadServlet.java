@@ -108,15 +108,19 @@ public class ImageUploadServlet extends HttpServlet {
      }
      
      Map<String, List<BlobKey>> blobs = blobstoreService.getUploads(request);
-        List<BlobKey> blobKeys = blobs.get("myFile");
+     List<BlobKey> blobKeys = blobs.get("myFile");
           String url = "";
    
-          if (!(blobKeys == null || blobKeys.isEmpty())) {
-            url = "/messageServe?blob-key=" + blobKeys.get(0).getKeyString();
+          if (blobKeys == null || blobKeys.isEmpty()) {
+            response.sendRedirect("/");
+          }else{
+            response.sendRedirect("/serve?blob-key=" + blobKeys.get(0).getKeyString());
           }
         
      if(url != ""){
+       
        System.out.println("The URL is:" + url);
+       
        Message message =
          new Message(
              UUID.randomUUID(),
