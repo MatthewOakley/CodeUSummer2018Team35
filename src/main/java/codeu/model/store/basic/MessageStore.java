@@ -18,8 +18,12 @@ import java.time.Instant;
 import java.util.stream.Collectors;
 import codeu.model.data.Message;
 import codeu.model.store.persistence.PersistentStorageAgent;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.TreeSet;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.HashSet;
 import java.util.UUID;
 
 /**
@@ -96,15 +100,44 @@ public class MessageStore {
   public List<Message> getMessagesInConversation(UUID conversationId) {
 
     List<Message> messagesInConversation = new ArrayList<>();
+    HashSet<UUID> messageIds = new HashSet<UUID>();
 
     for (Message message : messages) {
       if (message.getConversationId().equals(conversationId)) {
-        messagesInConversation.add(message);
+        if (!messageIds.contains(message.getId())) {
+          messageIds.add(message.getId());
+          messagesInConversation.add(message);
+        } else {
+          for (Message old : messagesInConversation) {
+            if (old.getId().equals(message.getId())
+                && old.getCreationTime().isBefore(message.getCreationTime())) {
+              messagesInConversation.remove(old);
+              messagesInConversation.add(message);
+              break;
+            }
+          }
+        }
       }
     }
 
     return messagesInConversation;
   }
+
+/**
+  private List<Message> getCurrentMessagesInConversation(UUID conversationId) {
+    return messages.stream().filter(message -> message.getConversationId().equals(conversationId)).collect(Collectors.toList());
+  }
+
+  public List<Message> getMessagesInConversation(UUID conversationId) {
+    List<Message> messages = getCurrentMessagesInConversation(conversationId);
+    // Ensures messages are sorted in reverse chronological order (newest -> oldest): Please check if they are
+    // somewhere before this. if they are, can remove
+    Collections.sort(messages, (o1, o2) -> o2.getCreationTime().compareTo(o1.getCreationTime()));
+    // Put into a tree set to get rid of all duplicate entries after the newest message (comparator looks at UUID
+    // to do this), and then collects back into list
+    return messages.stream().collect(Collectors.collectingAndThen(Collectors.toCollection(() -> new TreeSet<UUID>(Comparator.comparing(UUID::toString))), ArrayList::new));
+  }
+*/
 
   /** Access the set of Messages sent by the user. */
   public List<Message> getMessagesByUser(UUID author) {
@@ -115,7 +148,7 @@ public class MessageStore {
   public void setMessages(List<Message> messages) {
     this.messages = messages;
   }
-  
+
   /** Get message by its unique id */
   public Message getMessageById(UUID id) {
     for (Message message : messages) {
@@ -125,9 +158,27 @@ public class MessageStore {
     }
     return null;
   }
-  
+
   /** Returns the size of the messages */
   public int getMessageCount() {
     return messages.size();
+  }
+
+  /** Creates new message from old with new content then persists it. */
+  public void editMessage(String messageId, String edit) {
+    Message message = getMessage(UUID.fromString(messageId));
+    Message editedMessage = new Message(message.getId(),
+                                        message.getConversationId(),
+                                        message.getAuthorId(),
+                                        edit,
+                                        Instant.now());
+    messages.add(editedMessage);
+    persistentStorageAgent.writeThrough(editedMessage);
+  }
+
+  /** Adds reply to parent message and persists. */
+  public void reply(Message parent, Message reply) {
+    parent.addReply(reply);
+    persistentStorageAgent.writeThrough(parent);
   }
 }

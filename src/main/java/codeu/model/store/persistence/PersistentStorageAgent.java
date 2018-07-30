@@ -90,7 +90,7 @@ public class PersistentStorageAgent {
   public List<Message> loadMessages() throws PersistentDataStoreException {
     return persistentDataStore.loadMessages();
   }
-  
+
   /**
    * Retrieve all Hashtag objects from the Datastore service. The returned list may be empty.
    *
@@ -142,7 +142,7 @@ public class PersistentStorageAgent {
   public void deleteThrough(Conversation conversation) {
     persistentDataStore.deleteThrough(conversation);
   }
-  
+
   /** Write a Hashtag object to the Datastore service. */
   public void writeThrough(Hashtag hashtag) {
     persistentDataStore.writeThrough(hashtag);

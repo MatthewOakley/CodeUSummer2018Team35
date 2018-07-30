@@ -46,7 +46,14 @@ public class MentionStoreTest {
   }
 
 
-  @Test 
+  @Test
+  public void testGetMention_byUsername_found() {
+    Mention resultMention = mentionStore.getMention(MENTION_ONE.getMentionedUser());
+
+    assertEquals(MENTION_ONE, resultMention);
+  }
+
+  @Test
   public void testSetConstructor() {
     Set<UUID> UUIDs = new HashSet<UUID>();
     UUIDs.add(UUID.randomUUID());
@@ -58,13 +65,6 @@ public class MentionStoreTest {
 
     assertEquals(setMention, resultMention);
   }
-
-  @Test
-  public void testGetMention_byUsername_found() {
-    Mention resultMention = mentionStore.getMention(MENTION_ONE.getName());
-    assertEquals(MENTION_ONE, resultMention);
-  }
-
 
   @Test
   public void testGetMention_byUsername_notFound() {
@@ -98,8 +98,9 @@ public class MentionStoreTest {
   }
 
   private void assertEquals(Mention expectedMention, Mention actualMention) {
+
     Assert.assertEquals(expectedMention.getName(), actualMention.getName());
-    
+
     Set<UUID> mentionOne = expectedMention.getMessageIds();
     Set<UUID> mentionTwo = actualMention.getMessageIds();
 

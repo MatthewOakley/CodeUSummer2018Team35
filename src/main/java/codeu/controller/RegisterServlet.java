@@ -3,16 +3,21 @@ package codeu.controller;
 import java.io.IOException;
 import java.time.Instant;
 import java.util.UUID;
-
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
 import org.mindrot.jbcrypt.BCrypt;
-
 import codeu.model.data.User;
 import codeu.model.store.basic.UserStore;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.BufferedWriter;
+import java.time.format.DateTimeFormatter;
+import java.util.Locale;
+import java.time.format.FormatStyle;
+import java.time.ZoneId;
+import com.google.appengine.api.datastore.Text;
 
 public class RegisterServlet extends HttpServlet {
 
@@ -50,16 +55,34 @@ public class RegisterServlet extends HttpServlet {
     String username = request.getParameter("username");
     String password = request.getParameter("password");
     boolean isAttack = false;
-    
+
     if (username.contains(";") || username.contains("'") || username.contains("\"")) {
       isAttack = true;
     }
-    
-    
-    /** TO-DO(Matthew Oakley) I need to somehow get the person's data who tried to
-     * attack the website and maybe send it to a log or something. It could maybe
-     * also appear on the admin page for the number of attacks in a day and overall
-     */
+
+    if (isAttack) {
+      String userAgent = "";
+      File file = new File(System.getProperty("user.dir"), "attackLog.txt");
+      BufferedWriter writer = new BufferedWriter(new FileWriter(file, true));
+      try {
+        userAgent = request.getHeader("User-Agent");
+        // save the user info to a file
+        writer.append(userAgent + "\n");
+
+        // setting up the date and time of attack
+        DateTimeFormatter formatter = DateTimeFormatter
+            .ofLocalizedDateTime(FormatStyle.SHORT)
+            .withLocale(Locale.US)
+            .withZone(ZoneId.systemDefault());
+        Instant instant = Instant.now();
+        String time = formatter.format(instant);
+        writer.append(time + "\n");
+      } catch (Exception e) {
+        e.printStackTrace();
+      } finally {
+        writer.close();
+      }
+    }
 
     if (!username.matches("[\\w*\\s*]*")) {
       request.setAttribute("error", "Please enter only letters, numbers, and spaces.");
@@ -76,11 +99,13 @@ public class RegisterServlet extends HttpServlet {
     String hashedPassword = BCrypt.hashpw(password, BCrypt.gensalt());
 
     String aboutMe = request.getParameter("aboutMe");
-    
+
     boolean isAdmin = username.equals("admin") && password.equals("admin");
-    
-    User user = new User(UUID.randomUUID(), username, hashedPassword, Instant.now(), aboutMe, isAdmin);
-    
+
+    Text profilePic = null;
+
+    User user = new User(UUID.randomUUID(), username, hashedPassword, Instant.now(), aboutMe, isAdmin, profilePic);
+
     userStore.addUser(user);
 
     response.sendRedirect("/login");

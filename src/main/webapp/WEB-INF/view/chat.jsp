@@ -59,6 +59,9 @@ BlobstoreService blobstoreService = BlobstoreServiceFactory.getBlobstoreService(
 <body onload="scrollChat()">
   <nav>
     <a id="navTitle" href="/">CodeU Chat App</a>
+    <% if(request.getSession().getAttribute("user") != null){ %>
+      <a href="/users/<%= request.getSession().getAttribute("user") %>">My Profile</a>
+    <% } %>
     <a href="/conversations">Conversations</a>
       <% if (request.getSession().getAttribute("user") != null) { %>
     <a>Hello <%= request.getSession().getAttribute("user") %>!</a>
@@ -97,6 +100,7 @@ BlobstoreService blobstoreService = BlobstoreServiceFactory.getBlobstoreService(
         }
         %>
 
+
         <%
         if (message.getType().equals("image")){
         %>
@@ -109,8 +113,24 @@ BlobstoreService blobstoreService = BlobstoreServiceFactory.getBlobstoreService(
   
       <% } %>
 
-        <% if (UserStore.getInstance().getUser(author).getName().equals(request.getSession().getAttribute("user"))) { 
-        %>
+        <% if (UserStore.getInstance().getUser(author).getName().equals(
+                request.getSession().getAttribute("user"))) { %>
+          <form action="/chat/<%= conversation.getTitle() %>" method="POST">
+            <button type="submit">Edit</button>
+            <input type="text" name="edit">
+            <input type="hidden" name="messageId" value="<%= message.getId() %>">
+          </form>
+        <% } %>
+        <% if (request.getSession().getAttribute("user") != null) { %>
+          <form action="/chat/<%= conversation.getTitle() %>" method="POST">
+            <button type="submit">Reply</button>
+            <input type="text" name="message">
+            <input type="hidden" name="messageId" value="<%= message.getId() %>">
+            <input type="hidden" name="reply" value="true">
+          </form>
+        <% } %>
+        <% if (UserStore.getInstance().getUser(author).getName().equals(request.getSession().getAttribute("user"))) { %>
+
           <form action="/chat/<%= conversation.getTitle() %>" method="POST">
             <button type="submit">Delete</button>
             <input type="hidden" name="delete" value="true">
@@ -118,6 +138,40 @@ BlobstoreService blobstoreService = BlobstoreServiceFactory.getBlobstoreService(
           </form>
         <% } %>
       </li>
+        <ul class="tab">
+      <%
+        for (Message reply : message.getReplies()) {
+        
+        author = UserStore.getInstance().getUser(reply.getAuthorId()).getName();
+        String contentReply = reply.getContent();
+        String[] replySplit = contentReply.split(" ");
+        String replyOutput = "";
+        for (String word : replySplit) {
+          if (word.length() >= 2 && word.charAt(0) == '#') {
+            if(word.charAt(word.length() - 1) == '.') {
+              word = word.substring(0, word.length() - 1);
+            } 
+            word = "<a href='../../hashtag/" + word.substring(1) + "'>" 
+              + word + "</a>";
+          }
+          replyOutput = replyOutput + " " + word;
+        }
+      %>
+        <li>
+            <strong><%= author %>:</strong> <%= replyOutput %>
+            <% if (UserStore.getInstance().getUser(author).getName().equals(
+                    request.getSession().getAttribute("user"))) { %>
+              <form action="/chat/<%= conversation.getTitle() %>" method="POST">
+                <button type="submit">Edit</button>
+                <input type="text" name="edit">
+                <input type="hidden" name="messageId" value="<%= message.getId() %>">
+              </form>
+            <% } %>
+        </li>
+      <%
+        }
+      %>
+        </ul>
     <%
       }
     %>
@@ -130,6 +184,7 @@ BlobstoreService blobstoreService = BlobstoreServiceFactory.getBlobstoreService(
     <form action="/chat/<%= conversation.getTitle() %>" method="POST">
         <input type="text" name="message">
         <br/>
+        <input type="hidden" name="reply" value="false">
         <button type="submit">Send</button>
     </form>
 

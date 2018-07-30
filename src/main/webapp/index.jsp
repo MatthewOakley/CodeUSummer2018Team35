@@ -23,6 +23,9 @@
 
   <nav>
     <a id="navTitle" href="/">CodeU Chat App</a>
+    <% if(request.getSession().getAttribute("user") != null){ %>
+      <a href="/users/<%= request.getSession().getAttribute("user") %>">My Profile</a>
+    <% } %>
     <a href="/conversations">Conversations</a>
     <% if(request.getSession().getAttribute("user") != null){ %>
       <a>Hello <%= request.getSession().getAttribute("user") %>!</a>
@@ -41,6 +44,10 @@
 
       <h2>Meet Team Pied Piper!</h2>
 
+      <ul>
+        <li>Nicki Anselmo - CodeU Team</li>
+        <li>Erika Schwartz - PA</li>
+      </ul>
       <ul>
         <li>Steven Abreu</li>
         <li>Iliana Cantu</li>

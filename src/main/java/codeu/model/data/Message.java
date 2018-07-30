@@ -16,6 +16,8 @@ package codeu.model.data;
 
 import java.time.Instant;
 import java.util.UUID;
+import java.util.List;
+import java.util.ArrayList;
 import org.commonmark.node.Node;
 import org.commonmark.parser.Parser;
 import org.commonmark.renderer.html.HtmlRenderer;
@@ -29,6 +31,7 @@ public class Message {
   private final String content;
   private final Instant creation;
   private String type; 
+  private List<Message> replies;
 
   /**
    * Constructs a new Message.
@@ -47,7 +50,7 @@ public class Message {
     this.content = content;
     this.creation = creation;
     this.type = type;
-
+    this.replies = new ArrayList<Message>();
   }
 
 /**
@@ -110,5 +113,15 @@ public class Message {
   /** Returns the creation time of this Message. */
   public Instant getCreationTime() {
     return creation;
+  }
+
+  /** Access list of replies */
+  public List<Message> getReplies() {
+    return replies;
+  }
+    
+  /** Adds reply sent by the user to message's list of replies */
+  public void addReply(Message reply) {
+    replies.add(reply);
   }
 }

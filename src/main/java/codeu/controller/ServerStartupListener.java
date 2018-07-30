@@ -28,19 +28,19 @@ public class ServerStartupListener implements ServletContextListener {
     try {
       List<User> users = PersistentStorageAgent.getInstance().loadUsers();
       UserStore.getInstance().setUsers(users);
-
+      
       List<Conversation> conversations = PersistentStorageAgent.getInstance().loadConversations();
       ConversationStore.getInstance().setConversations(conversations);
-
+      
       List<Message> messages = PersistentStorageAgent.getInstance().loadMessages();
       MessageStore.getInstance().setMessages(messages);
       
       List<Hashtag> hashtags = PersistentStorageAgent.getInstance().loadHashtags();
       HashtagStore.getInstance().setHashtags(hashtags);
-
+    
       List<Mention> mentions = PersistentStorageAgent.getInstance().loadMentions();
       MentionStore.getInstance().setMentions(mentions);
-
+      
     } catch (PersistentDataStoreException e) {
       System.err.println("Server didn't start correctly. An error occurred during Datastore load!");
       System.err.println("This is usually caused by loading data that's in an invalid format.");
