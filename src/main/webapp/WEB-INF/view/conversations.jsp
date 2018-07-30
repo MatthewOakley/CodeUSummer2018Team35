@@ -26,9 +26,11 @@
 
   <nav>
     <a id="navTitle" href="/">Pied Piper Chat App</a>
+
     <% if(request.getSession().getAttribute("user") != null){ %>
       <a href="/users/<%= request.getSession().getAttribute("user") %>">My Profile</a>
     <% } %>
+
     <a href="/conversations">Conversations</a>
     <% if(request.getSession().getAttribute("user") != null){ %>
       <a>Hello <%= request.getSession().getAttribute("user") %>!</a>

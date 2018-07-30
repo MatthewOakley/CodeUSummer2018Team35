@@ -30,6 +30,7 @@ public class Message {
   private final UUID author;
   private final String content;
   private final Instant creation;
+  private String type; 
   private List<Message> replies;
 
   /**
@@ -40,15 +41,37 @@ public class Message {
    * @param author the ID of the User who sent this Message
    * @param content the text content of this Message
    * @param creation the creation time of this Message
+   * @param type of the Message, "text" or "image"
    */
-  public Message(UUID id, UUID conversation, UUID author, String content, Instant creation) {
+  public Message(UUID id, UUID conversation, UUID author, String content, Instant creation, String type) {
     this.id = id;
     this.conversation = conversation;
     this.author = author;
     this.content = content;
     this.creation = creation;
+    this.type = type;
     this.replies = new ArrayList<Message>();
   }
+
+/**
+    * Constructs a new Message.
+    *
+    * @param id the ID of this Message
+    * @param conversation the ID of the Conversation this Message belongs to
+    * @param author the ID of the User who sent this Message
+    * @param content the text content of this Message
+    * @param creation the creation time of this Message
+    * @param type the type of this Message ("text" or "image")
+    */
+   public Message(UUID id, UUID conversation, UUID author, String content, Instant creation) {
+     //super(creation, "Message");
+     this.id = id;
+     this.conversation = conversation;
+     this.author = author;
+     this.content = content;
+     this.creation = creation;
+     this.type = "default";
+   }
 
   /** Returns the ID of this Message. */
   public UUID getId() {
@@ -65,18 +88,25 @@ public class Message {
     return author;
   }
 
-  /** Returns the text content of this Message. */
+  /** Returns the text or image content of this Message. */
   public String getContent() {
     return content;
   }
 
   public String getStyledContent(String s) {
-    Parser parser = Parser.builder().build();
-    Node document = parser.parse(s);
-    HtmlRenderer renderer = HtmlRenderer.builder().build();
-    return renderer.render(document);
+    if (!(s.equals("image"))){
+      Parser parser = Parser.builder().build();
+      Node document = parser.parse(s);
+      HtmlRenderer renderer = HtmlRenderer.builder().build();
+      return renderer.render(document);
+    } else {
+      return s; 
+    }
   }
 
+  public String getType() { 
+    return type; 
+  }
 
   /** Returns the creation time of this Message. */
   public Instant getCreationTime() {

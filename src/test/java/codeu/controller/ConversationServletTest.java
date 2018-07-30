@@ -194,6 +194,7 @@ public class ConversationServletTest {
             "test_aboutme",
             false,
             null);
+
     Mockito.when(mockUserStore.getUser("test_username")).thenReturn(fakeUser);
 
     UUID conversationId = UUID.randomUUID();
