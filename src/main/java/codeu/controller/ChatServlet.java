@@ -243,7 +243,7 @@ public class ChatServlet extends HttpServlet {
         hashtagStore.updateHashtag(currentTag);
       }
     }
-
+    
     Message message =
         new Message(
             messageUUID,
