@@ -13,15 +13,23 @@
   See the License for the specific language governing permissions and
   limitations under the License.
 --%>
+
+
 <%@ page import="java.util.List" %>
+<%@ page import="java.util.UUID" %>
+<%@ page import="java.util.ArrayList" %>
 <%@ page import="codeu.model.data.Conversation" %>
 <%@ page import="codeu.model.data.Message" %>
+<%@ page import="codeu.model.data.User" %>
 <%@ page import="codeu.model.store.basic.UserStore" %>
 <%@ page import="codeu.model.data.Mention" %>
+<%@ page import="com.google.appengine.api.blobstore.BlobstoreServiceFactory" %>
+<%@ page import="com.google.appengine.api.blobstore.BlobstoreService" %>
 
 <%
 Conversation conversation = (Conversation) request.getAttribute("conversation");
 List<Message> messages = (List<Message>) request.getAttribute("messages");
+BlobstoreService blobstoreService = BlobstoreServiceFactory.getBlobstoreService();
 %>
 
 <!DOCTYPE html>
@@ -76,7 +84,6 @@ List<Message> messages = (List<Message>) request.getAttribute("messages");
       for (Message message : messages) {
         String author = UserStore.getInstance().getUser(message.getAuthorId()).getName();
     %>
-      <li>
         <%
         String content = message.getContent();
         String[] messageSplit = content.split(" ");
@@ -92,8 +99,20 @@ List<Message> messages = (List<Message>) request.getAttribute("messages");
           output = output + " " + word;
         }
         %>
-      
-        <strong><%= author %>:</strong> <%= output %>
+
+
+        <%
+        if (message.getType().equals("image")){
+        %>
+            <li><strong><%= author %>:</strong> 
+            <img src="<%= message.getContent() %>" alt = "Image" width = 50% height = 50%> </li>
+        <%
+        } else if (message.getType().equals("text") || message.getType() == null) {
+        %>
+          <li><strong><%= author %>:</strong> <%= output %>
+  
+      <% } %>
+
         <% if (UserStore.getInstance().getUser(author).getName().equals(
                 request.getSession().getAttribute("user"))) { %>
           <form action="/chat/<%= conversation.getTitle() %>" method="POST">
@@ -111,6 +130,7 @@ List<Message> messages = (List<Message>) request.getAttribute("messages");
           </form>
         <% } %>
         <% if (UserStore.getInstance().getUser(author).getName().equals(request.getSession().getAttribute("user"))) { %>
+
           <form action="/chat/<%= conversation.getTitle() %>" method="POST">
             <button type="submit">Delete</button>
             <input type="hidden" name="delete" value="true">
@@ -167,13 +187,18 @@ List<Message> messages = (List<Message>) request.getAttribute("messages");
         <input type="hidden" name="reply" value="false">
         <button type="submit">Send</button>
     </form>
+
+    <form action="<%= blobstoreService.createUploadUrl("/ImageUploadServlet") %>" method= "POST" enctype = "multipart/form-data">
+            <input type="hidden" name="conversationTitle" value="<%=conversation.getTitle() %>"> 
+            <input type="file" name="myFile" >
+            <input type="submit" value="Submit">
+    </form>
+
     <% } else { %>
       <p><a href="/login">Login</a> to send a message.</p>
     <% } %>
-
+    
     <hr/>
-
   </div>
-
 </body>
 </html>

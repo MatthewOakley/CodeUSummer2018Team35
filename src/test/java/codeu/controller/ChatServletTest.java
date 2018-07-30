@@ -87,7 +87,8 @@ public class ChatServletTest {
             fakeConversationId,
             UUID.randomUUID(),
             "test message",
-            Instant.now()));
+            Instant.now(), 
+            "text"));
     Mockito.when(mockMessageStore.getMessagesInConversation(fakeConversationId))
         .thenReturn(fakeMessageList);
 
@@ -272,6 +273,7 @@ public class ChatServletTest {
             "test_aboutme",
             false,
             null);
+
     Mockito.when(mockUserStore.getUser("test_username")).thenReturn(fakeUser);
 
     Conversation fakeConversation =

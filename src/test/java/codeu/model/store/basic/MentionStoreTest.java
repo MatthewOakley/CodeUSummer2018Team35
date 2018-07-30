@@ -45,6 +45,7 @@ public class MentionStoreTest {
     mentionStore.setMentions(mentionList);
   }
 
+
   @Test
   public void testGetMention_byUsername_found() {
     Mention resultMention = mentionStore.getMention(MENTION_ONE.getMentionedUser());
@@ -58,6 +59,11 @@ public class MentionStoreTest {
     UUIDs.add(UUID.randomUUID());
     UUIDs.add(UUID.randomUUID());
     Mention setMention = new Mention(UUIDs, "Mention_Set");
+
+    mentionStore.addMention(setMention);
+    Mention resultMention = mentionStore.getMention("Mention_Set");
+
+    assertEquals(setMention, resultMention);
   }
 
   @Test
@@ -83,7 +89,7 @@ public class MentionStoreTest {
 
   @Test
   public void testIsPresent_true() {
-    Assert.assertTrue(mentionStore.isPresent(MENTION_ONE.getMentionedUser()));
+    Assert.assertTrue(mentionStore.isPresent(MENTION_ONE.getName()));
   }
 
   @Test
@@ -92,7 +98,8 @@ public class MentionStoreTest {
   }
 
   private void assertEquals(Mention expectedMention, Mention actualMention) {
-    Assert.assertEquals(expectedMention.getMentionedUser(), actualMention.getMentionedUser());
+
+    Assert.assertEquals(expectedMention.getName(), actualMention.getName());
 
     Set<UUID> mentionOne = expectedMention.getMessageIds();
     Set<UUID> mentionTwo = actualMention.getMessageIds();
