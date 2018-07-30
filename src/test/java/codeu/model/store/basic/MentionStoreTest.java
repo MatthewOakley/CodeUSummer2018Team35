@@ -48,7 +48,7 @@ public class MentionStoreTest {
 
   @Test
   public void testGetMention_byUsername_found() {
-    Mention resultMention = mentionStore.getMention(MENTION_ONE.getMentionedUser());
+    Mention resultMention = mentionStore.getMention(MENTION_ONE.getName());
 
     assertEquals(MENTION_ONE, resultMention);
   }

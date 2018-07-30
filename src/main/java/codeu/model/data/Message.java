@@ -73,7 +73,6 @@ public class Message {
      this.type = "default";
    }
 
-
   /** Returns the ID of this Message. */
   public UUID getId() {
     return id;
@@ -108,7 +107,6 @@ public class Message {
   public String getType() { 
     return type; 
   }
-
 
   /** Returns the creation time of this Message. */
   public Instant getCreationTime() {

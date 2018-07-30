@@ -149,11 +149,10 @@ public class PersistentDataStore {
         UUID authorUuid = UUID.fromString((String) entity.getProperty("author_uuid"));
         Instant creationTime = Instant.parse((String) entity.getProperty("creation_time"));
         String content = (String) entity.getProperty("content");
-
         String type = (String) entity.getProperty("type");
+        String parentId = (String) entity.getProperty("parent");
         Message message = new Message(uuid, conversationUuid, authorUuid, content, creationTime, type);
         messages.add(message);
-        String parentId = (String) entity.getProperty("parent");
         
         if (parentId != null) {
           for (Message parent : messages) {
@@ -265,7 +264,7 @@ public class PersistentDataStore {
     messageEntity.setProperty("author_uuid", message.getAuthorId().toString());
     messageEntity.setProperty("content", message.getContent());
     messageEntity.setProperty("creation_time", message.getCreationTime().toString());
-    messageEntity.setProperty("type", message.getType().toString());
+    //messageEntity.setProperty("type", message.getType().toString());
 
     for (Message reply : message.getReplies()) {
       datastore.put(getReplyEntity(message, reply));
