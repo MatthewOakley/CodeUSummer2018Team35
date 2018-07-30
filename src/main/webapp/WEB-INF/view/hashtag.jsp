@@ -20,15 +20,13 @@
     <% } %>
     <a href="/about.jsp">About</a>
   </nav>
-  <p>
-    Welcome to the hashtag page!
-  </p>
+  <p style="text-align: center;"> Welcome to the hashtag page! </p>
   <!-- The current hashtag the user is on -->
-  <p> Your hashtag is <%= request.getAttribute("hashtagName") %></p>
-  <p> Messages: </p>
+  <p style="text-align: center;"> Your hashtag is <strong><%= request.getAttribute("hashtagName") %></strong></p>
+  <p style="text-align: center;"> <strong>Messages:</strong> </p>
   <% List<Message> messages = (List<Message>)request.getAttribute("messages");
     for (Message message : messages) { %>
-    <p>
+    <p style="text-align: center;">
     <%= message.getContent() %>
     </p>
   <% } %>
