@@ -28,18 +28,13 @@
     <% } %>
     <a href="/about.jsp">About</a>
   </nav>
-  <!-- to see if I made it to the right page -->
-  <p>
-    Welcome to the admin page!
-  </p>
-  <!-- The stats about the web app -->
-  <p> Stats about the web app </p>
-  <ul id="stats">
-    <li>Users: <%= request.getAttribute("userCount") %></li>
-    <li>Conversations: <%= request.getAttribute("conversationCount") %></li>
-    <li>Messages: <%= request.getAttribute("messageCount") %></li>
-    <li>Newest User: <%= request.getAttribute("newestUser") %></li>
-    <li>Number of Attacks: <%= request.getAttribute("attackCount") %></li>
-  </ul>
+    <p style="text-align: center;"> Welcome to the admin page! </p>
+    <!-- The stats about the web app -->
+    <p style="text-align: center;"> Stats about the web app </p>
+    <p style="text-align: center;"><strong>Users:</strong> <%= request.getAttribute("userCount") %></p>
+    <p style="text-align: center;"><strong>Conversations:</strong> <%= request.getAttribute("conversationCount") %></p>
+    <p style="text-align: center;"><strong>Messages:</strong> <%= request.getAttribute("messageCount") %></p>
+    <p style="text-align: center;"><strong>Newest User:</strong> <%= request.getAttribute("newestUser") %></p>
+    <p style="text-align: center;"><strong>Number of Attacks:</strong> <%= request.getAttribute("attackCount") %></p>
 </body>
 </html>
